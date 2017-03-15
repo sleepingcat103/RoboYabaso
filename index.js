@@ -103,7 +103,7 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
   
-	if (trigger.match(/貓咪|/) != null) return Meow() ;
+	if (trigger.match(/貓咪/) != null) return Meow();
 	
 	if (trigger.match(/help|幫助/)!= null ) return Help();
 		
@@ -652,5 +652,5 @@ return
 }
 
 function Meow() {
-return '要做什麼喵?\n\n(輸入 help\幫助 以獲得資訊)';
+return '要做什麼喵?\n\n(輸入 help\\幫助 以獲得資訊)';
 }
