@@ -103,6 +103,8 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
   
+	if (trigger.match(/貓咪|/) != null) return Meow() ;
+	
 	if (trigger.match(/help|幫助/)!= null ) return Help();
 		
  	if (trigger.match(/排序/)!= null && mainMsg.length >= 3) {        
@@ -623,10 +625,11 @@ function tarotCardReply(count) {
 }
 
 		function Help() {
-'\
-【擲骰BOT】貓咪改\
+return
+
+'【擲骰BOT】貓咪改\
 \n 例如輸入2d6+1　攻撃！\
-\n 會輸出）2d6+1：攻撃  9[6+3]+1 = 10\
+\n 會輸出 2d6+1：攻撃  9[6+3]+1 = 10\
 \n 如上面一樣,在骰子數字後方隔空白位打字,可以進行發言。\
 \n 以下還有其他例子\
 \n 5 3D6 	：分別骰出5次3d6\
@@ -646,4 +649,8 @@ function tarotCardReply(count) {
 \n  時間tarot 等關键字可啓動\
 \n  死亡FLAG：啓動語 立Flag/死亡flag\
 ';		
+}
+
+function Meow() {
+returen '要做什麼喵?\n\n(輸入 help\幫助 以獲得資訊)'
 }
