@@ -103,7 +103,7 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
   
-	if (trigger.match(/^help$|^幫助$/)!= null ) return Help();
+	if (trigger.match(/help|幫助/)!= null ) return Help();
 		
  	if (trigger.match(/排序/)!= null && mainMsg.length >= 3) {        
 			return SortIt(inputStr,mainMsg);
