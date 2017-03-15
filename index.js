@@ -231,7 +231,7 @@ function YabasoReply(inputStr) {
   
   //沒有觸發關鍵字則是這個
   else{
-	return '要做什麼喵？\n\n(輸入"貓咪說明以獲得幫助")';
+	return '要做什麼喵？\n\n(輸入"貓咪說明"以獲得幫助)';
   }
 
 }
