@@ -83,23 +83,23 @@ function replyMsgToLine(rplyToken, rplyVal) {
 }
 
 ////////////////////////////////////////
-//////////////// 分析開始
+//////////////// 分析開始 //////////////
 ////////////////////////////////////////
 function parseInput(rplyToken, inputStr) {
           
-		console.log('InputStr: ' + inputStr);
-		_isNaN = function(obj) {
-			return isNaN(parseInt(obj));
-        }                   
-        let msgSplitor = (/\S+/ig);	
-		let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
-		let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
+	console.log('InputStr: ' + inputStr);
+	_isNaN = function(obj) {
+		return isNaN(parseInt(obj));
+    }                   
+    let msgSplitor = (/\S+/ig);	
+	let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
+	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
                        
-        //鴨霸獸指令開始於此   
-        if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
+    //指令開始於此   
+    if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
         
-		//FLAG指令開始於此
-        if (trigger.match(/立flag|死亡flag/) != null) return BStyleFlagSCRIPTS() ;        
+	//FLAG指令開始於此
+    if (trigger.match(/立flag|死亡flag/) != null) return BStyleFlagSCRIPTS() ;        
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
   
@@ -123,28 +123,23 @@ function parseInput(rplyToken, inputStr) {
 
 	//tarot 指令
 	if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {
-			if (trigger.match(/每日|daily/)!= null) {
-				return NomalDrawTarot(mainMsg[1], mainMsg[2]);
-			}
-			if (trigger.match(/時間|time/)!= null) {
-				return MultiDrawTarot(mainMsg[1], mainMsg[2], 1);
-			}
-			if (trigger.match(/大十字|cross/)!= null) {
-				return MultiDrawTarot(mainMsg[1], mainMsg[2], 2);
-			}
-			return MultiDrawTarot(mainMsg[1], mainMsg[2], 3); //預設抽 79 張
+		if (trigger.match(/每日|daily/)!= null) {
+			return NomalDrawTarot(mainMsg[1], mainMsg[2]);
 		}
-
-		/*tarot 指令
-		if (trigger.match(/猜拳/) != null) {
-			return RockPaperScissors(inputStr, mainMsg[1]);
+		if (trigger.match(/時間|time/)!= null) {
+			return MultiDrawTarot(mainMsg[1], mainMsg[2], 1);
 		}
-		*/
+		if (trigger.match(/大十字|cross/)!= null) {
+			return MultiDrawTarot(mainMsg[1], mainMsg[2], 2);
+		}
+		return MultiDrawTarot(mainMsg[1], mainMsg[2], 3); //預設抽 79 張
+	}
 
-         //普通ROLL擲骰判定在此        
-		if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {
-          return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);
-        }
+
+    //普通ROLL擲骰判定
+	if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {
+        return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);
+    }
 	
 }
 
@@ -171,90 +166,82 @@ function build6char(){
 ////////////////////////////////////////
 //////////////// 普通ROLL
 ////////////////////////////////////////
- function nomalDiceRoller(inputStr,text0,text1,text2){
+function nomalDiceRoller(inputStr,text0,text1,text2){
   
-  //首先判斷是否是誤啟動（檢查是否有符合骰子格式）
- // if (inputStr.toLowerCase().match(/\d+d\d+/) == null) return undefined;
+	//首先判斷是否是誤啟動（檢查是否有符合骰子格式）
+	// if (inputStr.toLowerCase().match(/\d+d\d+/) == null) return undefined;
   
-  //再來先把第一個分段拆出來，待會判斷是否是複數擲骰
-  let mutiOrNot = text0.toLowerCase();
+	//再來先把第一個分段拆出來，待會判斷是否是複數擲骰
+	let mutiOrNot = text0.toLowerCase();
   
-  //排除小數點
-  if (mutiOrNot.toString().match(/\./)!=null)return undefined;
+	//排除小數點
+	if (mutiOrNot.toString().match(/\./)!=null)return undefined;
 
-  //先定義要輸出的Str
-  let finalStr = '' ;  
+	//先定義要輸出的Str
+	let finalStr = '' ;  
   
   
-  //是複數擲骰喔
-  if(mutiOrNot.toString().match(/\D/)==null ) {
-	  if(text2 != null){
-	  finalStr= text0 + '次擲骰：\n' + text1 +' ' + text2 + '\n';
-    	  }
-		  else{
-		  finalStr= text0 + '次擲骰：\n' + text1 +'\n';
-    		  }
-    if(mutiOrNot>30) return '不支援30次以上的複數擲骰。';
+	//是複數擲骰喔
+	if(mutiOrNot.toString().match(/\D/)==null ) {
+		if(text2 != null){
+			finalStr= text0 + '次擲骰：\n' + text1 +' ' + text2 + '\n';
+    	} else {
+			finalStr= text0 + '次擲骰：\n' + text1 +'\n';
+    	}
+		if(mutiOrNot>30) return '不支援30次以上的複數擲骰。';
     
-    for (i=1 ; i<=mutiOrNot ;i++){
-    let DiceToRoll = text1.toLowerCase();
-    if (DiceToRoll.match('d') == null) return undefined;
+		for (i=1 ; i<=mutiOrNot ;i++){
+			let DiceToRoll = text1.toLowerCase();
+			if (DiceToRoll.match('d') == null) return undefined;
 
-    //寫出算式
-    let equation = DiceToRoll;
-    while(equation.match(/\d+d\d+/)!=null) {
-      let tempMatch = equation.match(/\d+d\d+/);
-      equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
-    }
+			//寫出算式
+			let equation = DiceToRoll;
+			while(equation.match(/\d+d\d+/)!=null) {
+				let tempMatch = equation.match(/\d+d\d+/);
+				equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
+			}
 
-    //計算算式
-    let aaa = equation;
-	aaa = aaa.replace(/\d+[[]/ig, '(' );
-	aaa = aaa.replace(/]/ig, ')' );
-	//aaa = aaa.replace(/[[]\d+|]/ig, "");
-	let answer = eval(aaa.toString());
-	
-    finalStr = finalStr + i + '# ' + equation + ' = ' + answer + '\n';
-    }
+			//計算算式
+			let aaa = equation;
+			aaa = aaa.replace(/\d+[[]/ig, '(' );
+			aaa = aaa.replace(/]/ig, ')' );
+			//aaa = aaa.replace(/[[]\d+|]/ig, "");
+			let answer = eval(aaa.toString());
+		
+			finalStr = finalStr + i + '# ' + equation + ' = ' + answer + '\n';
+		}
         
-  }
-  
-  else
-  {
-  //一般單次擲骰
-  let DiceToRoll = mutiOrNot.toString().toLowerCase();
-  DiceToRoll = DiceToRoll.toLowerCase();
-  if (DiceToRoll.match('d') == null) return undefined;
-  
-  //寫出算式
-  let equation = DiceToRoll;
-  while(equation.match(/\d+d\d+/)!=null) {
-	let totally = 0;
-    let tempMatch = equation.match(/\d+d\d+/);    
-    if (tempMatch.toString().split('d')[0]>300) return undefined;
-    if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>1000000) return undefined;
-    equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
+	} else {
+		//一般單次擲骰
+		let DiceToRoll = mutiOrNot.toString().toLowerCase();
+		DiceToRoll = DiceToRoll.toLowerCase();
+		if (DiceToRoll.match('d') == null) return undefined;
+	  
+		//寫出算式
+		let equation = DiceToRoll;
+		while(equation.match(/\d+d\d+/)!=null) {
+			let totally = 0;
+			let tempMatch = equation.match(/\d+d\d+/);    
+			if (tempMatch.toString().split('d')[0]>300) return undefined;
+			if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>1000000) return undefined;
+			equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
+		}
+	  
+		//計算算式
+		let aaa = equation;
+		aaa = aaa.replace(/\d+[[]/ig, '(' );
+		aaa = aaa.replace(/]/ig, ')' );
+		let answer = eval(aaa.toString());
+		  
+		if(text1 != null){
+			finalStr= text0 + '：' + text1 + '\n' + equation + ' = ' + answer;
+		} else {
+				finalStr= text0 + '：\n' + equation + ' = ' + answer;
+		}
 	
-  }
+	}
   
-  //計算算式
-	let aaa = equation;
-	aaa = aaa.replace(/\d+[[]/ig, '(' );
-	aaa = aaa.replace(/]/ig, ')' );
-	let answer = eval(aaa.toString());
-      
-  if(text1 != null){
-	  finalStr= text0 + '：' + text1 + '\n' + equation + ' = ' + answer;
-    	  }
-		  else{
-		  finalStr= text0 + '：\n' + equation + ' = ' + answer;
-    		  }
-
-  }
-  
-  return finalStr;
-
-
+	return finalStr;
 }        
 
 
@@ -264,29 +251,29 @@ function build6char(){
 
 function sortNumber(a,b)
 {
-return a - b
+	return a - b
 }
 
 
-        function Dice(diceSided){          
-          return Math.floor((Math.random() * diceSided) + 1)
-        }              
+function Dice(diceSided){          
+    return Math.floor((Math.random() * diceSided) + 1)
+}              
 		
-	function RollDice(inputStr){
-  //先把inputStr變成字串（不知道為什麼非這樣不可）
-  let comStr=inputStr.toString();
-  let finalStr = '[';
-  let temp = 0;
-  var totally = 0;
-  for (let i = 1; i <= comStr.split('d')[0]; i++) {
-	temp = Dice(comStr.split('d')[1]);
-	totally +=temp;
-    finalStr = finalStr + temp + '+';
-     }
+function RollDice(inputStr){
+	//先把inputStr變成字串（不知道為什麼非這樣不可）
+	let comStr=inputStr.toString();
+	let finalStr = '[';
+	let temp = 0;
+	var totally = 0;
+	for (let i = 1; i <= comStr.split('d')[0]; i++) {
+		temp = Dice(comStr.split('d')[1]);
+		totally +=temp;
+		finalStr = finalStr + temp + '+';
+    }
 
-  finalStr = finalStr.substring(0, finalStr.length - 1) + ']';
-  finalStr = finalStr.replace('[', totally +'[');
-  return finalStr;
+	finalStr = finalStr.substring(0, finalStr.length - 1) + ']';
+	finalStr = finalStr.replace('[', totally +'[');
+	return finalStr;
 }
 
 function FunnyDice(diceSided) {
@@ -295,47 +282,47 @@ function FunnyDice(diceSided) {
 
 function BuildDiceCal(inputStr){
   
-  //首先判斷是否是誤啟動（檢查是否有符合骰子格式）
-  if (inputStr.toLowerCase().match(/\d+d\d+/) == null) return undefined;
+	//首先判斷是否是誤啟動（檢查是否有符合骰子格式）
+	if (inputStr.toLowerCase().match(/\d+d\d+/) == null) return undefined;
     
-  //排除小數點
-  if (inputStr.toString().match(/\./)!=null)return undefined;
+	//排除小數點
+	if (inputStr.toString().match(/\./)!=null)return undefined;
 
-  //先定義要輸出的Str
-  let finalStr = '' ;  
+	//先定義要輸出的Str
+	let finalStr = '' ;  
   
-  //一般單次擲骰
-  let DiceToRoll = inputStr.toString().toLowerCase();  
-  if (DiceToRoll.match('d') == null) return undefined;
+	//一般單次擲骰
+	let DiceToRoll = inputStr.toString().toLowerCase();  
+	if (DiceToRoll.match('d') == null) return undefined;
   
-  //寫出算式
-  let equation = DiceToRoll;
-  while(equation.match(/\d+d\d+/)!=null) {
-    let tempMatch = equation.match(/\d+d\d+/);    
-    if (tempMatch.toString().split('d')[0]>200) return '不支援200D以上擲骰唷';
-    if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>500) return '不支援D1和超過D500的擲骰唷';
-    equation = equation.replace(/\d+d\d+/, BuildRollDice(tempMatch));
-  }
+	//寫出算式
+	let equation = DiceToRoll;
+	while(equation.match(/\d+d\d+/)!=null) {
+		let tempMatch = equation.match(/\d+d\d+/);    
+		if (tempMatch.toString().split('d')[0]>200) return '不支援200D以上擲骰唷';
+		if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>500) return '不支援D1和超過D500的擲骰唷';
+		equation = equation.replace(/\d+d\d+/, BuildRollDice(tempMatch));
+	}
   
-  //計算算式
-  let answer = eval(equation.toString());
+	//計算算式
+	let answer = eval(equation.toString());
     finalStr= equation + ' = ' + answer;
   
-  return finalStr;
+	return finalStr;
 
 }        
 
 function BuildRollDice(inputStr){
-  //先把inputStr變成字串（不知道為什麼非這樣不可）
-  let comStr=inputStr.toString().toLowerCase();
-  let finalStr = '(';
+	//先把inputStr變成字串（不知道為什麼非這樣不可）
+	let comStr=inputStr.toString().toLowerCase();
+	let finalStr = '(';
 
-  for (let i = 1; i <= comStr.split('d')[0]; i++) {
-    finalStr = finalStr + Dice(comStr.split('d')[1]) + '+';
-     }
+	for (let i = 1; i <= comStr.split('d')[0]; i++) {
+		finalStr = finalStr + Dice(comStr.split('d')[1]) + '+';
+    }
 
-  finalStr = finalStr.substring(0, finalStr.length - 1) + ')';
-  return finalStr;
+	finalStr = finalStr.substring(0, finalStr.length - 1) + ')';
+	return finalStr;
 }
 
 ////////////////////////////////////////
@@ -344,61 +331,62 @@ function BuildRollDice(inputStr){
 
 
 function BStyleFlagSCRIPTS() {
-          let rplyArr = ['\
-「打完這仗我就回老家結婚（この戦いが終わったら、故郷に帰って結婚するんだ）」', '\
-「打完這一仗後我請你喝酒」', '\
-「你、你要錢嗎！要什麼我都能給你！/我可以給你更多的錢！」', '\
-「做完這次任務，我就要結婚了。」', '\
-「幹完這一票我就金盆洗手了。」', '\
-「好想再XXX啊……」', '\
-「已經沒什麼好害怕的了（もう何も恐くない）」', '\
-「我一定會回來的（必ず帰る！）」', '\
-「差不多該走了」', '\
-「我只是希望你永遠不要忘記我。」', '\
-「我只是希望能永遠和你在一起。」', '\
-「啊啊…為什麼會在這種時候、想起了那些無聊的事呢？」', '\
-「能遇見你真是太好了。」', '\
-「我終於…為你們報仇了！」', '\
-「等到一切結束後，我有些話想跟妳說！」', '\
-「這段時間我過的很開心啊。」', '\
-把自己的寶物借給其他人，然後說「待一切結束後記得還給我。」', '\
-「真希望這份幸福可以永遠持續下去。」', '\
-「我們三個人要永永遠遠在一起！」', '\
-「這是我女兒的照片，很可愛吧？」', '\
-「請告訴他/她，我永遠愛他/她」', '\
-「聽好，在我回來之前絕不要亂走動哦（いいか、俺が帰ってくるまでここを動くんじゃないぞ）」', '\
-「要像一個乖孩子一樣等著我回來」', '\
-「我去去就來（先に行って、すぐ戻るから）」', '\
-「快逃！(逃げろう！/早く逃げろう！)」', '\
-「對方只有一個人，大家一起上啊」', '\
-「我就不信，這麼多人還殺不了他一個！」', '\
-「幹，幹掉了嗎？（やったのか？）」', '\
-「身體好輕」', '\
-「可惡！你給我看著！（逃跑）」', '\
-「躲在這裡就應該不會被發現了吧。」', '\
-「我不會讓任何人死的。」', '\
-「可惡！原來是這麼回事！」', '\
-「跑這麼遠應該就行了。」', '\
-「我已經甚麼都不怕了（もう何も恐くない）」', '\
-「這XXX是什麼，怎麼之前沒見過（なんだこのXXX、見たことないな）」', '\
-「什麽聲音……？就去看一下吧（:「何の音だ？ちょっと見てくる」', '\
-「是我的錯覺嗎？/果然是錯覺/錯覺吧/可能是我（看/聽）錯了」', '\
-「二十年後又是一條好漢！」', '\
-「大人/將軍武運昌隆」', '\
-「這次工作的報酬是以前無法比較的（:「今度の仕事でまとまったカネが入るんだ」', '\）」', '\
-「我才不要和罪犯呆在一起，我回自己的房間去了！（この中に殺人者がいるかもしれないのに、一緒に居られるか!俺は自分の部屋に戻るぞ!）」', '\
-「其實我知道事情的真相…（各種廢話）…犯人就是……」', '\
-「我已經天下無敵了~~」', '\
-「大人！這邊就交給小的吧，請快離開這邊吧」', '\
-「XX，這就是我們流派的最終奧義。這一招我只會演示一次，你看好了！」', '\
-「誰敢殺我？」', '\
-「從來沒有人能越過我的劍圍。」', '\
-「就算殺死也沒問題吧？」', '\
-「看我塔下強殺！」', '\
-「騙人的吧，我們不是朋友嗎？」', '\
-「我老爸是....你有種就....」', '\
-「我可以好好利用這件事」'];
-          return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        let rplyArr = ['\
+			「打完這仗我就回老家結婚（この戦いが終わったら、故郷に帰って結婚するんだ）」', '\
+			「打完這一仗後我請你喝酒」', '\
+			「你、你要錢嗎！要什麼我都能給你！/我可以給你更多的錢！」', '\
+			「做完這次任務，我就要結婚了。」', '\
+			「幹完這一票我就金盆洗手了。」', '\
+			「好想再XXX啊……」', '\
+			「已經沒什麼好害怕的了（もう何も恐くない）」', '\
+			「我一定會回來的（必ず帰る！）」', '\
+			「差不多該走了」', '\
+			「我只是希望你永遠不要忘記我。」', '\
+			「我只是希望能永遠和你在一起。」', '\
+			「啊啊…為什麼會在這種時候、想起了那些無聊的事呢？」', '\
+			「能遇見你真是太好了。」', '\
+			「我終於…為你們報仇了！」', '\
+			「等到一切結束後，我有些話想跟妳說！」', '\
+			「這段時間我過的很開心啊。」', '\
+			把自己的寶物借給其他人，然後說「待一切結束後記得還給我。」', '\
+			「真希望這份幸福可以永遠持續下去。」', '\
+			「我們三個人要永永遠遠在一起！」', '\
+			「這是我女兒的照片，很可愛吧？」', '\
+			「請告訴他/她，我永遠愛他/她」', '\
+			「聽好，在我回來之前絕不要亂走動哦（いいか、俺が帰ってくるまでここを動くんじゃないぞ）」', '\
+			「要像一個乖孩子一樣等著我回來」', '\
+			「我去去就來（先に行って、すぐ戻るから）」', '\
+			「快逃！(逃げろう！/早く逃げろう！)」', '\
+			「對方只有一個人，大家一起上啊」', '\
+			「我就不信，這麼多人還殺不了他一個！」', '\
+			「幹，幹掉了嗎？（やったのか？）」', '\
+			「身體好輕」', '\
+			「可惡！你給我看著！（逃跑）」', '\
+			「躲在這裡就應該不會被發現了吧。」', '\
+			「我不會讓任何人死的。」', '\
+			「可惡！原來是這麼回事！」', '\
+			「跑這麼遠應該就行了。」', '\
+			「我已經甚麼都不怕了（もう何も恐くない）」', '\
+			「這XXX是什麼，怎麼之前沒見過（なんだこのXXX、見たことないな）」', '\
+			「什麽聲音……？就去看一下吧（:「何の音だ？ちょっと見てくる」', '\
+			「是我的錯覺嗎？/果然是錯覺/錯覺吧/可能是我（看/聽）錯了」', '\
+			「二十年後又是一條好漢！」', '\
+			「大人/將軍武運昌隆」', '\
+			「這次工作的報酬是以前無法比較的（:「今度の仕事でまとまったカネが入るんだ」', '\）」', '\
+			「我才不要和罪犯呆在一起，我回自己的房間去了！（この中に殺人者がいるかもしれないのに、一緒に居られるか!俺は自分の部屋に戻るぞ!）」', '\
+			「其實我知道事情的真相…（各種廢話）…犯人就是……」', '\
+			「我已經天下無敵了~~」', '\
+			「大人！這邊就交給小的吧，請快離開這邊吧」', '\
+			「XX，這就是我們流派的最終奧義。這一招我只會演示一次，你看好了！」', '\
+			「誰敢殺我？」', '\
+			「從來沒有人能越過我的劍圍。」', '\
+			「就算殺死也沒問題吧？」', '\
+			「看我塔下強殺！」', '\
+			「騙人的吧，我們不是朋友嗎？」', '\
+			「我老爸是....你有種就....」', '\
+			「我可以好好利用這件事」'];
+			
+			return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
         }
 	
 	
@@ -510,16 +498,16 @@ function NomalDrawTarot(CardToCal, text) {
 }
 
 
- function SortIt(input,mainMsg) {   
+function SortIt(input,mainMsg) {   
  
  	let a = input.replace(mainMsg[0], '').match(/\S+/ig);
-     for (var i = a.length-1; i >=0; i--) {
+    for (var i = a.length-1; i >=0; i--) {
  
-         var randomIndex = Math.floor(Math.random()*(i+1));
-         var itemAtIndex = a[randomIndex];
-         a[randomIndex] = a[i];
-         a[i] = itemAtIndex;
-     }
+        var randomIndex = Math.floor(Math.random()*(i+1));
+        var itemAtIndex = a[randomIndex];
+        a[randomIndex] = a[i];
+        a[i] = itemAtIndex;
+    }
      	return mainMsg[0] + ' → ['+ a + ']' ;
  }
 
@@ -621,34 +609,33 @@ function tarotCardReply(count) {
 	if (count == 78) returnStr = '空白牌';
 
 	return returnStr;
-
 }
 
-		function Help() {
-return '【擲骰BOT】貓咪改\
-\n 例如輸入2d6+1　攻撃！\
-\n 會輸出 2d6+1：攻撃  9[6+3]+1 = 10\
-\n 如上面一樣,在骰子數字後方隔空白位打字,可以進行發言。\
-\n 以下還有其他例子\
-\n 5 3D6 	：分別骰出5次3d6\
-\n \
-\n COC創角 啟動語 coc創角\
-\n \
-\n Choice：啓動語choice/隨機/選項/選1\
-\n (問題)(啓動語)(問題)  (選項1) (選項2) \
-\n 例子 隨機收到聖誕禮物數 1 2 3 >4  \
-\n  \
-\n 隨機排序：啓動語　排序\
-\n (問題)(啓動語)(問題)  (選項1) (選項2)(選項3) \
-\n 例子 交換禮物排序 A君 C君 F君 G君\
-\n  \
-\n・占卜運氣功能 字句中包括運氣即可\
-\n・塔羅牌占卜 塔羅/大十字塔羅/每日塔羅牌\
-\n  時間tarot 等關键字可啓動\
-\n  死亡FLAG：啓動語 立Flag/死亡flag\
-';		
+function Help() {
+	return '【擲骰BOT】貓咪改\
+			\n 例如輸入2d6+1　攻撃！\
+			\n 會輸出 2d6+1：攻撃  9[6+3]+1 = 10\
+			\n 如上面一樣,在骰子數字後方隔空白位打字,可以進行發言。\
+			\n 以下還有其他例子\
+			\n 5 3D6 	：分別骰出5次3d6\
+			\n \
+			\n COC創角 啟動語 coc創角\
+			\n \
+			\n Choice：啓動語choice/隨機/選項/選1\
+			\n (問題)(啓動語)(問題)  (選項1) (選項2) \
+			\n 例子 隨機收到聖誕禮物數 1 2 3 >4  \
+			\n  \
+			\n 隨機排序：啓動語　排序\
+			\n (問題)(啓動語)(問題)  (選項1) (選項2)(選項3) \
+			\n 例子 交換禮物排序 A君 C君 F君 G君\
+			\n  \
+			\n・占卜運氣功能 字句中包括運氣即可\
+			\n・塔羅牌占卜 塔羅/大十字塔羅/每日塔羅牌\
+			\n  時間tarot 等關键字可啓動\
+			\n  死亡FLAG：啓動語 立Flag/死亡flag\
+			';		
 }
 
 function Meow() {
-return '要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
+	return '要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
 }
