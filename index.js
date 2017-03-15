@@ -625,9 +625,7 @@ function tarotCardReply(count) {
 }
 
 		function Help() {
-return
-
-'【擲骰BOT】貓咪改\
+return '【擲骰BOT】貓咪改\
 \n 例如輸入2d6+1　攻撃！\
 \n 會輸出 2d6+1：攻撃  9[6+3]+1 = 10\
 \n 如上面一樣,在骰子數字後方隔空白位打字,可以進行發言。\
@@ -652,5 +650,5 @@ return
 }
 
 function Meow() {
-return '要做什麼喵?\n\n(輸入 help\\幫助 以獲得資訊)';
+return '要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
 }
