@@ -669,7 +669,7 @@ function Help() {
 		\n ccb 30 抓兔子\
 		\n \
 		\n == DB查詢 ==\
-		\n DB為str+con的傷害加權\
+		\n DB為STR+SIZE的傷害加權\
 		\n 啟動語: ccdb 數值\
 		\n \
 		\n == coc創角功能 ==\
