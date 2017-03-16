@@ -356,7 +356,7 @@ function db(value, flag){
 	let restr ='';
 	if (value>=2 && value<=12)	restr = '-1D6';
 	if (value>=13 && value<=16)	restr = '-1D4';
-	if (value>=17 && value<=24)	restr = '0';
+	if (value>=17 && value<=24)	restr = '+0';
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
 	if (value<2 || value>40) restr = '?????';
@@ -365,13 +365,6 @@ function db(value, flag){
 	if (flag == 1) return 'db -> ' + restr;
 }
 
-
-////////////////////////////////////////
-//////////////// 對抗成功率
-////////////////////////////////////////
-function vs(val1, val2){
-
-}
 
 ////////////////////////////////////////
 //////////////// 占卜&其他
