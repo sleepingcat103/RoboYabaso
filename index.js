@@ -176,7 +176,7 @@ function build6char(){
 	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
 	ReStr = ReStr + '\nＳＩＺ：' + BuildDiceCal('(2d6+6)');         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
-	ReStr = ReStr + '\nＤＢ：' + db((str+con)toString().toLowerCase(), 0);
+	ReStr = ReStr + '\nＤＢ：' + db((str+con).toString().toLowerCase(), 0);
 	return ReStr;
   } 
         
