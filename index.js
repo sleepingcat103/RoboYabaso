@@ -165,7 +165,7 @@ function coc6(chack,text){
   
 function build6char(){
 
-	let ReStr = '六版核心創角YA：';
+	let ReStr = '六版核心創角：';
 	let str = BuildDiceCal('3d6');
 	let siz = BuildDiceCal('(2d6+6)');
 	let temp = str+siz;
