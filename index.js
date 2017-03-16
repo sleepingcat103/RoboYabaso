@@ -102,8 +102,10 @@ function parseInput(rplyToken, inputStr) {
     if (trigger.match(/立flag|死亡flag/) != null) return BStyleFlagSCRIPTS() ;        
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
+	
+	if (trigger.match(/db/)!= null ) return db(mainMsg[1], 1);
   
-	if (trigger.match(/貓咪/) != null) return Meow();
+	if (trigger.match(/貓咪|臭貓/) != null) return Meow();
 	
 	if (trigger.match(/help|幫助/)!= null ) return Help();
 		
@@ -164,15 +166,18 @@ function coc6(chack,text){
 function build6char(){
 
 	let ReStr = '六版核心創角：';
-	ReStr = ReStr + '\nＳＴＲ：' + BuildDiceCal('3d6');
-    ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
-    ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
+	let str = BuildDiceCal('3d6');
+	let con = BuildDiceCal('3d6');
+	ReStr = ReStr + '\nＳＴＲ：' + str;
+	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
+	ReStr = ReStr + '\nＣＯＮ：' + con;
 	ReStr = ReStr + '\nＰＯＷ：' + BuildDiceCal('3d6');
-    ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6');
-    ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
-    ReStr = ReStr + '\nＳＩＺ：' + BuildDiceCal('(2d6+6)');         
-    ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
-    return ReStr;
+	ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6');
+	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
+	ReStr = ReStr + '\nＳＩＺ：' + BuildDiceCal('(2d6+6)');         
+	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
+	ReStr = ReStr + '\nＤＢ：' + db(str+con, 0);
+	return ReStr;
   } 
         
 ////////////////////////////////////////
@@ -335,6 +340,21 @@ function BuildRollDice(inputStr){
 
 	finalStr = finalStr.substring(0, finalStr.length - 1) + ')';
 	return finalStr;
+}
+
+////////////////////////////////////////
+//////////////// DB計算
+////////////////////////////////////////
+function db(value,flag){
+	let restr ='';
+	if (value>=2 && value<=12)	restr = '-1D6';
+	if (value>=13 && value<=16)	restr = '-1D4';
+	if (value>=17 && value<=24)	restr = '0';
+	if (value>=25 && value<=32)	restr = '+1D4';
+	if (value>=33 && value<=40)	restr = '+1D6';
+	
+	if (flag == 0) return restr;
+	if (flag == 1) return 'db -> ' + restr;
 }
 
 ////////////////////////////////////////
