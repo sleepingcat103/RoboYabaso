@@ -107,7 +107,7 @@ function parseInput(rplyToken, inputStr) {
   
 	if (trigger.match(/貓咪/) != null) return Meow();
 	
-	if (trigger.match(/help|幫助/)!= null ) return Help();
+	if (trigger == 'help' || trigger == '幫助') return Help();
 		
  	if (trigger.match(/排序/)!= null && mainMsg.length >= 3) {        
 			return SortIt(inputStr,mainMsg);
