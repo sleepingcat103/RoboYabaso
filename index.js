@@ -345,13 +345,15 @@ function BuildRollDice(inputStr){
 ////////////////////////////////////////
 //////////////// DB計算
 ////////////////////////////////////////
-function db(value,flag){
+function db(input, flag){
+	let value = input.toString().toLowerCase();
 	let restr ='';
 	if (value>=2 && value<=12)	restr = '-1D6';
 	if (value>=13 && value<=16)	restr = '-1D4';
 	if (value>=17 && value<=24)	restr = '0';
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
+	else restr = '?????';
 	
 	if (flag == 0) return restr;
 	if (flag == 1) return 'db -> ' + restr;
