@@ -674,7 +674,7 @@ function Help() {
 		\n \
 		\n == DB查詢 ==\
 		\n DB為STR+SIZE的傷害加權\
-		\n 啟動語: ccdb 數值\
+		\n 啟動語: db 數值\
 		\n \
 		\n == coc創角功能 ==\
 		\n 啟動語: coc創角\
