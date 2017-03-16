@@ -352,7 +352,7 @@ function db(value, flag){
 	if (value>=17 && value<=24)	restr = '0';
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
-	else restr = '?????';
+	if (value<2 || value>40) restr = '?????';
 	
 	if (flag == 0) return restr;
 	if (flag == 1) return 'db -> ' + restr;
