@@ -166,17 +166,14 @@ function coc6(chack,text){
 function build6char(){
 
 	let ReStr = '六版核心創角：';
-	let str = BuildDiceCal('3d6');
-	let con = BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＳＴＲ：' + str;
+	ReStr = ReStr + '\nＳＴＲ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＣＯＮ：' + con;
+	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＰＯＷ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
 	ReStr = ReStr + '\nＳＩＺ：' + BuildDiceCal('(2d6+6)');         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
-	ReStr = ReStr + '\nＤＢ：' + db((str+con).toString().toLowerCase(), 0);
 	return ReStr;
   } 
         
@@ -356,6 +353,14 @@ function db(value, flag){
 	
 	if (flag == 0) return restr;
 	if (flag == 1) return 'db -> ' + restr;
+}
+
+
+////////////////////////////////////////
+//////////////// 對抗成功率
+////////////////////////////////////////
+function vs(val1, val2){
+
 }
 
 ////////////////////////////////////////
@@ -662,6 +667,9 @@ function Help() {
 		\n 範例輸入:\
 		\n ccb 50\
 		\n ccb 30 抓兔子\
+		\n \
+		\n == DB查詢 ==\
+		\n 啟動語: db 數值\
 		\n \
 		\n == coc創角功能 ==\
 		\n 啟動語: coc創角\
