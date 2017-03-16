@@ -103,9 +103,9 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
 	
-	if (trigger.match(/db/)!= null ) return db(mainMsg[1], 1);
+	if (trigger.match(/ccdb/)!= null ) return db(mainMsg[1], 1);
   
-	if (trigger.match(/貓咪|臭貓/) != null) return Meow();
+	if (trigger.match(/貓咪/) != null) return Meow();
 	
 	if (trigger.match(/help|幫助/)!= null ) return Help();
 		
@@ -669,7 +669,8 @@ function Help() {
 		\n ccb 30 抓兔子\
 		\n \
 		\n == DB查詢 ==\
-		\n 啟動語: db 數值\
+		\n DB為str+con的傷害加權\
+		\n 啟動語: ccdb 數值\
 		\n \
 		\n == coc創角功能 ==\
 		\n 啟動語: coc創角\
