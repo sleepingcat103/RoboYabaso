@@ -143,6 +143,25 @@ function parseInput(rplyToken, inputStr) {
 	
 }
 
+
+function coc6(chack,text){
+    let temp = Dice(100);
+    if (text == null ) {
+        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 哈哈哈！大失敗！';
+	if (temp <= chack) {
+		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
+		else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
+	}
+	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
+    } else {
+        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 哈哈哈！大失敗！' + text;
+	if (temp <= chack) {
+		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！' + text;
+		else return 'ccb<=' + chack + ' '  + temp + ' → 成功' + text;
+	}
+	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' + text;
+    }
+}   
 ////////////////////////////////////////
 //////////////// COC6傳統創角
 ////////////////////////////////////////      
