@@ -166,18 +166,17 @@ function coc6(chack,text){
 function build6char(){
 
 	let ReStr = '六版核心創角：';
-	let str = BuildDiceCal('3d6');
-	let siz = BuildDiceCal('(2d6+6)');
-	let temp = 0;
-	temp = temp + parseInt(str) + parseInt(siz);
+	let str = BuildDiceCal('3d6',1);
+	let siz = BuildDiceCal('(2d6+6)',1);
+	let temp = str+siz;
 	ReStr = ReStr + '\nＳＴＲ：' + str;
-	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＰＯＷ：' + BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6');
-	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
+	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6',0);
+	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6',0);
+	ReStr = ReStr + '\nＰＯＷ：' + BuildDiceCal('3d6',0);
+	ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6',0);
+	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)',0);
 	ReStr = ReStr + '\nＳＩＺ：' + siz;         
-	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
+	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)',0);         
 	ReStr = ReStr + '\nＤＢ：' + db(temp, 0);
 	return ReStr;
   } 
@@ -299,7 +298,7 @@ function FunnyDice(diceSided) {
 	return Math.floor((Math.random() * diceSided)) //猜拳，從0開始
 }
 
-function BuildDiceCal(inputStr){
+function BuildDiceCal(inputStr,flag){
   
 	//首先判斷是否是誤啟動（檢查是否有符合骰子格式）
 	if (inputStr.toLowerCase().match(/\d+d\d+/) == null) return undefined;
@@ -326,8 +325,9 @@ function BuildDiceCal(inputStr){
 	//計算算式
 	let answer = eval(equation.toString());
     finalStr= equation + ' = ' + answer;
-  
-	return finalStr;
+	if(flag==0)return finalStr;
+	if(flag==1)return answer;
+	
 
 }        
 
