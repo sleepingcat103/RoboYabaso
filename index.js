@@ -116,23 +116,14 @@ function parseInput(rplyToken, inputStr) {
           
   
 	//choice 指令開始於此
-	if (trigger.match(/choice|隨機|選項|選1/)!= null && mainMsg.length >= 3) 
+	if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3) 
 	{        
 		return choice(inputStr,mainMsg);
 	}
 
 	//tarot 指令
 	if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {
-		if (trigger.match(/每日|daily/)!= null) {
-			return NomalDrawTarot(mainMsg[1], mainMsg[2]);
-		}
-		if (trigger.match(/時間|time/)!= null) {
-			return MultiDrawTarot(mainMsg[1], mainMsg[2], 1);
-		}
-		if (trigger.match(/大十字|cross/)!= null) {
-			return MultiDrawTarot(mainMsg[1], mainMsg[2], 2);
-		}
-		return MultiDrawTarot(mainMsg[1], mainMsg[2], 3); //預設抽 79 張
+		return NomalDrawTarot();
 	}
 
 
@@ -143,23 +134,25 @@ function parseInput(rplyToken, inputStr) {
 	
 }
 
-
+////////////////////////////////////////
+//////////////// COC6 CCB成功率骰
+////////////////////////////////////////
 function coc6(chack,text){
     let temp = Dice(100);
     if (text == null ) {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 哈哈哈！大失敗！';
+        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
 	if (temp <= chack) {
 		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
 		else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
 	}
 	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
     } else {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 哈哈哈！大失敗！' + text;
+        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
 	if (temp <= chack) {
-		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！' + text;
-		else return 'ccb<=' + chack + ' '  + temp + ' → 成功' + text;
+		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 大成功！';
+		else return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 成功';
 	}
-	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' + text;
+	else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
     }
 }   
 ////////////////////////////////////////
@@ -506,13 +499,10 @@ function MultiDrawTarot(CardToCal, text, type) {
 	return returnStr;
 }
 
-function NomalDrawTarot(CardToCal, text) {
+function NomalDrawTarot() {
 	let returnStr = '';
 
-	if (text == null)
-		returnStr = tarotCardReply(FunnyDice(22)) + ' ' + tarotRevReply(FunnyDice(2));
-	else
-		returnStr = tarotCardReply(FunnyDice(22)) + ' ' + tarotRevReply(FunnyDice(2)) + ' ; ' + text;
+	returnStr = tarotCardReply(FunnyDice(22)) + ' ' + tarotRevReply(FunnyDice(2));
 	return returnStr;
 }
 
@@ -631,28 +621,43 @@ function tarotCardReply(count) {
 }
 
 function Help() {
-	return '【擲骰BOT】貓咪改\
-			\n 例如輸入2d6+1　攻撃！\
-			\n 會輸出 2d6+1：攻撃  9[6+3]+1 = 10\
-			\n 如上面一樣,在骰子數字後方隔空白位打字,可以進行發言。\
-			\n 以下還有其他例子\
-			\n 5 3D6 	：分別骰出5次3d6\
-			\n \
-			\n COC創角 啟動語 coc創角\
-			\n \
-			\n Choice：啓動語choice/隨機/選項/選1\
-			\n (問題)(啓動語)(問題)  (選項1) (選項2) \
-			\n 例子 隨機收到聖誕禮物數 1 2 3 >4  \
-			\n  \
-			\n 隨機排序：啓動語　排序\
-			\n (問題)(啓動語)(問題)  (選項1) (選項2)(選項3) \
-			\n 例子 交換禮物排序 A君 C君 F君 G君\
-			\n  \
-			\n・占卜運氣功能 字句中包括運氣即可\
-			\n・塔羅牌占卜 塔羅/大十字塔羅/每日塔羅牌\
-			\n  時間tarot 等關键字可啓動\
-			\n  死亡FLAG：啓動語 立Flag/死亡flag\
-			';		
+	return '【擲骰BOT】 貓咪改\
+		\n 本BOT為COC6內部跑團工具\
+		\n 其他功能有用到再考慮寫進去\
+		\n \
+		\n == 基本擲骰功能 ==\
+		\n 支援四則運算，可以加上空白後發言\
+		\n 範例輸入:\
+		\n 1d10\
+		\n 2d6+3d4\
+		\n 3d6 鐵拳攻擊\
+		\n \
+		\n 另外還有複數擲骰功能\
+		\n 範例輸入:\
+		\n 5 3D6\
+		\n \
+		\n == coc技能骰 ==\
+		\n 輸入 ccb 成功率 (技能)\
+		\n 範例輸入:\
+		\n ccb 50\
+		\n ccb 30 抓兔子\
+		\n \
+		\n == coc創角功能 ==\
+		\n 啟動語: coc創角\
+		\n \
+		\n == 其他功能 ==\
+		\n 以下為娛樂功能\
+		\n 字句中有關鍵字就會啟動\
+		\n \
+		\n 1.選擇功能: choice/隨機/選項/幫我選\
+		\n 	範例: 隨機選顏色 紅 黃 藍\
+		\n 2.隨機排序: 排序\
+		\n 	範例: 吃東西排序 羊肉 牛肉 豬肉\
+		\n 3.占卜功能: 運氣/運勢\
+		\n 	範例: 今日運勢\
+		\n 4.塔羅牌占卜: tarot/塔羅牌/塔羅\
+		\n 5.死亡FLAG: 立Flag/死亡flag\
+		';			
 }
 
 function Meow() {
