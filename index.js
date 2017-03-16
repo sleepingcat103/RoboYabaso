@@ -168,7 +168,7 @@ function build6char(){
 	let ReStr = '六版核心創角：';
 	let str = BuildDiceCal('3d6');
 	let siz = BuildDiceCal('(2d6+6)');
-	let value = str+siz;
+	let msg = 25;//str+siz;
 	ReStr = ReStr + '\nＳＴＲ：' + str;
 	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
@@ -177,7 +177,7 @@ function build6char(){
 	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
 	ReStr = ReStr + '\nＳＩＺ：' + siz;         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
-	ReStr = ReStr + '\nＤＢ：' + db(value);
+	ReStr = ReStr + '\nＤＢ：' + db(msg);
 	return ReStr;
   } 
         
@@ -354,9 +354,9 @@ function db(value){
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
 	if (value<2 || value>40) restr = '?????';
-	return restr;	
-//if (flag == 0) return restr;
-//if (flag == 1) return 'db -> ' + restr;
+	
+	if (flag == 0) return restr;
+	if (flag == 1) return 'db -> ' + restr;
 }
 
 
