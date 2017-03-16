@@ -181,7 +181,7 @@ function build6char(){
 	let strArr = str.split(' ');
 	let sizArr = siz.split(' ');
 	
-	ReStr = ReStr + '\nＤＢ：' + db(strArr[2]+sizArr[2], 0);
+	ReStr = ReStr + '\nＤＢ：' + strArr[2];//db(strArr[2]+sizArr[2], 0);
 	return ReStr;
   } 
         
