@@ -168,7 +168,8 @@ function build6char(){
 	let ReStr = '六版核心創角：';
 	let str = BuildDiceCal('3d6');
 	let siz = BuildDiceCal('(2d6+6)');
-	let temp = 25;
+	let temp = 0;
+	temp = temp + str + siz;
 	ReStr = ReStr + '\nＳＴＲ：' + str;
 	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
