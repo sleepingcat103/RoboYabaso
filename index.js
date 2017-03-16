@@ -178,10 +178,10 @@ function build6char(){
 	ReStr = ReStr + '\nＳＩＺ：' + siz;         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)',0);         
 	
-	str = str.substring(str.indexOf('=')+2, str.length);
-	siz = siz.substring(siz.indexOf('=')+2, siz.length);
+	let strArr = str.split(' ');
+	let sizArr = siz.split(' ');
 	
-	ReStr = ReStr + '\nＤＢ：' + db(temp, 0);
+	ReStr = ReStr + '\nＤＢ：' + db(strArr[2]+sizArr[2], 0);
 	return ReStr;
   } 
         
@@ -197,7 +197,7 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 	let mutiOrNot = text0.toLowerCase();
   
 	//排除小數點
-	if (mutiOrNot.toString().match(/\./)!=null)return undefined;
+	if (mutiOrNot.toString().match(/\./)!=null)	return undefined;
 
 	//先定義要輸出的Str
 	let finalStr = '' ;  
@@ -359,9 +359,9 @@ function db(value, flag){
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
 	if (value<2 || value>40) restr = '?????';
-	return restr;	
-//if (flag == 0) return restr;
-//if (flag == 1) return 'db -> ' + restr;
+	//return restr;	
+	if (flag == 0) return restr;
+	if (flag == 1) return 'db -> ' + restr;
 }
 
 
