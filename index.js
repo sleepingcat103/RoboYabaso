@@ -169,7 +169,7 @@ function build6char(){
 	let str = BuildDiceCal('3d6');
 	let siz = BuildDiceCal('(2d6+6)');
 	let temp = 0;
-	temp = temp + str + siz;
+	temp = temp + parseInt(str) + parseInt(siz);
 	ReStr = ReStr + '\nＳＴＲ：' + str;
 	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
