@@ -178,8 +178,8 @@ function build6char(){
 	ReStr = ReStr + '\nＳＩＺ：' + siz;         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)',0);         
 	
-	str = str.substring(str.indexOf("=")+2, str.length);
-	siz = siz.substring(siz.indexOf("=")+2, siz.length);
+	str = str.substring(str.indexOf('=')+2, str.length);
+	siz = siz.substring(siz.indexOf('=')+2, siz.length);
 	
 	ReStr = ReStr + '\nＤＢ：' + db(temp, 0);
 	return ReStr;
