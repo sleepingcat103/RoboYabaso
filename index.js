@@ -177,7 +177,7 @@ function build6char(){
 	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
 	ReStr = ReStr + '\nＳＩＺ：' + siz;         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
-	ReStr = ReStr + '\nＤＢ：' + db(temp);
+	ReStr = ReStr + '\nＤＢ：' + db(temp, 0);
 	return ReStr;
   } 
         
@@ -346,7 +346,7 @@ function BuildRollDice(inputStr){
 ////////////////////////////////////////
 //////////////// DB計算
 ////////////////////////////////////////
-function db(value){
+function db(value, flag){
 	let restr ='';
 	if (value>=2 && value<=12)	restr = '-1D6';
 	if (value>=13 && value<=16)	restr = '-1D4';
@@ -354,9 +354,9 @@ function db(value){
 	if (value>=25 && value<=32)	restr = '+1D4';
 	if (value>=33 && value<=40)	restr = '+1D6';
 	if (value<2 || value>40) restr = '?????';
-	
-	if (flag == 0) return restr;
-	if (flag == 1) return 'db -> ' + restr;
+	return '123';	
+//if (flag == 0) return restr;
+//if (flag == 1) return 'db -> ' + restr;
 }
 
 
