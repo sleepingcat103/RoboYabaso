@@ -103,7 +103,7 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
 	
-	if (trigger.match(/ccdb/)!= null ) return db(mainMsg[1], 1);
+	if (trigger == 'db') return db(mainMsg[1], 1);
   
 	if (trigger.match(/貓咪/) != null) return Meow();
 	
@@ -166,14 +166,18 @@ function coc6(chack,text){
 function build6char(){
 
 	let ReStr = '六版核心創角：';
-	ReStr = ReStr + '\nＳＴＲ：' + BuildDiceCal('3d6');
+	let str = BuildDiceCal('3d6');
+	let siz = BuildDiceCal('(2d6+6)');
+	let temp = str+siz;
+	ReStr = ReStr + '\nＳＴＲ：' + str;
 	ReStr = ReStr + '\nＤＥＸ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＣＯＮ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＰＯＷ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＡＰＰ：' + BuildDiceCal('3d6');
 	ReStr = ReStr + '\nＩＮＴ：' + BuildDiceCal('(2d6+6)');
-	ReStr = ReStr + '\nＳＩＺ：' + BuildDiceCal('(2d6+6)');         
+	ReStr = ReStr + '\nＳＩＺ：' + siz;         
 	ReStr = ReStr + '\nＥＤＵ：' + BuildDiceCal('(3d6+3)');         
+	ReStr = ReStr + '\nＤＢ：' + db(temp);
 	return ReStr;
   } 
         
