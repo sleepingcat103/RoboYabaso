@@ -105,7 +105,7 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger == 'db') return db(mainMsg[1], 1);
 	
-	if (trigger == '生科') return EatPoo();
+	//if (trigger == '生科') return EatPoo();
   
 	if (trigger == '貓咪') return MeowHelp();
 	
@@ -708,10 +708,5 @@ function Meow() {
 
 function EatPoo() {
 	
-	event.reply({
-		type: 'image',
-		originalContentUrl: 'https://i.imgur.com/0mnM0f3.png',
-		previewImageUrl: 'https://i.imgur.com/0mnM0f3.png'
-	});
-	//return 'https://i.imgur.com/0mnM0f3.png';	
+	return 'https://i.imgur.com/0mnM0f3.png';	
 }
