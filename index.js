@@ -707,5 +707,11 @@ function Meow() {
 }
 
 function EatPoo() {
-	return 'https://i.imgur.com/0mnM0f3.png';	
+	
+	event.reply({
+		type: 'image',
+		originalContentUrl: 'https://i.imgur.com/0mnM0f3.png',
+		previewImageUrl: 'https://i.imgur.com/0mnM0f3.png'
+	});
+	//return 'https://i.imgur.com/0mnM0f3.png';	
 }
