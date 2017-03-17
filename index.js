@@ -105,7 +105,9 @@ function parseInput(rplyToken, inputStr) {
 	
 	if (trigger == 'db') return db(mainMsg[1], 1);
   
-	if (trigger.match(/貓咪/) != null) return Meow();
+	if (trigger == '貓咪') return MeowHelp();
+	
+	if (trigger.match(/貓/) != null) return Meow();
 	
 	if (trigger == 'help' || trigger == '幫助') return Help();
 		
@@ -693,6 +695,11 @@ function Help() {
 		';			
 }
 
+function MeowHelp() {
+	return Meow() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
+}
+
 function Meow() {
-	return '要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
+	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵'];
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
