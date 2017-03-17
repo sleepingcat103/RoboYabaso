@@ -107,7 +107,7 @@ function parseInput(rplyToken, inputStr) {
   
 	if (trigger == '貓咪') return MeowHelp();
 	
-	if (trigger.match(/貓/) != null) return Meow();
+	if (trigger.match(/貓|喵/) != null) return Meow();
 	
 	if (trigger == 'help' || trigger == '幫助') return Help();
 		
