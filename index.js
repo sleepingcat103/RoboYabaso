@@ -104,6 +104,8 @@ function parseInput(rplyToken, inputStr) {
 	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
 	
 	if (trigger == 'db') return db(mainMsg[1], 1);
+	
+	if (trigger == '生科') return EatPoo();
   
 	if (trigger == '貓咪') return MeowHelp();
 	
@@ -702,4 +704,8 @@ function MeowHelp() {
 function Meow() {
 	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵'];
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+}
+
+function EatPoo() {
+	return new Uri("http://i.imgur.com/hTubWmt.jpg");	
 }
