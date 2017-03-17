@@ -707,5 +707,5 @@ function Meow() {
 }
 
 function EatPoo() {
-	return new Uri("http://i.imgur.com/hTubWmt.jpg");	
+	return new Uri("https://i.imgur.com/0mnM0f3.png");	
 }
