@@ -109,7 +109,9 @@ function parseInput(rplyToken, inputStr) {
   
 	if (trigger == '貓咪') return MeowHelp();
 	
-	if (trigger.match(/貓|喵/) != null) return Meow();
+	if (trigger.match(/喵/) != null) return Meow();
+	
+	if (trigger.match(/貓/) != null) return Cat();
 	
 	if (trigger == 'help' || trigger == '幫助') return Help();
 		
@@ -702,7 +704,18 @@ function MeowHelp() {
 }
 
 function Meow() {
-	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵'];
+	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
+喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
+喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
+喵屁喵', '喵三小?有病?'];
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+}
+
+function Cat() {
+	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵','\
+喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
+喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
+衝三小', '87玩夠沒', '生科吃屎'];
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
 
