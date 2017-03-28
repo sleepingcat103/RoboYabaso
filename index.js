@@ -119,19 +119,23 @@ var Player = {
 		}
 		
 		player.set = function(string, value, key) {
-			var restr = lockconfirm(key);
-			if(restr.match(/unlock/)){
-				if(value.charAt(0).toString() == '+') {
-					eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-				} else if (value.charAt(0).toString() == '-') {
-					eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
-				} else {
-					eval(string + '=\'' + value + '\'');
+			try{
+				var restr = lockconfirm(key);
+				if(restr.match(/unlock/)){
+					if(value.charAt(0).toString() == '+') {
+						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
+					} else if (value.charAt(0).toString() == '-') {
+						eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
+					} else {
+						eval(string + '=\'' + value + '\'');
+					}
+					return string + '=' + eval(string);
 				}
-				return string + '=' + eval(string);
-			}
-			else {
-				return '你沒有修改權限喵';
+				else {
+					return '你沒有修改權限喵';
+				}
+			}catch(err){
+				return err;	
 			}
 		}
 		
