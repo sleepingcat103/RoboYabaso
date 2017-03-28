@@ -164,7 +164,10 @@ function parseInput(rplyToken, inputStr) {
 	}
 	else if (trigger == '角色' || trigger == 'char') {
 		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
-	}	
+	}
+	else if (trigger == '角色建立' || trigger == 'newchar') {
+		return CharacterControll();
+	}
 	else if (trigger == '貓咪') {		
 		return MeowHelp();					
 	}
@@ -202,16 +205,19 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
+function NewCharacter(str) {
+	for(i=0; i<5; i++) {
+		if(player[i].getName() == ' '){
+			//player[i].set('name', str1);
+			return '建立角色 ' + str;
+		}
+	}
+	return '角色上限已滿! (max=5)\n 請刪除不用的角色!';
+}
+
 function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++){
-		if(trigger == 'new' || trigger == '建立'){
-			if(player[i].getName() == ' ' && str1 != null){
-				//player[i].set('name', str1);
-				return '建立角色 ' + str1;
-			}
-			return '角色上限已滿! (max=5)\n 請刪除不用的角色!';
-		}
-		else if(trigger == players[i].getName()){
+		if(trigger == players[i].getName()){
 			if(str1 == 'show'){
 				return players[i].show();
 			}
