@@ -133,7 +133,6 @@ var Player = {
 		}
 		
 		player.getVal = function(string) {
-			//return name.toString().trim();
 			return eval(string+'.toString().trim()');
 		}
 		return player;
