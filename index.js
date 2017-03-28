@@ -171,9 +171,6 @@ function parseInput(rplyToken, inputStr) {
 	else if (trigger == '角色' || trigger == 'char') {
 		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
 	}
-	else if (trigger == '建立角色' || trigger == '角色建立' || trigger == 'newchar') {
-		return NewCharacter(mainMsg[1]);
-	}
 	else if (trigger == '貓咪') {		
 		return MeowHelp();					
 	}
@@ -211,32 +208,39 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function NewCharacter(str) {
-	for(i=0; i<5; i++) {
-		if(players[i].getName() == ''){
-			players[i].set('name', str);
-			return '成功建立角色 ' + str + ' 請補充他/她的能力值!';
+function CharacterControll(trigger, str1, str2){
+	//建立新角
+	if(trigger == 'new' || trigger == '建立'){
+		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
+		
+		for(i=0; i<5; i++) {
+			if(players[i].getName() == str1) return '已經有同名的角色了!';
 		}
+		
+		for(i=0; i<5; i++) {
+			if(players[i].getName() == '') {
+				players[i].set('name', str1);
+				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+			}
+		}
+		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 	}
-	return '角色上限已滿! (max=5)\n請刪除不用的角色!';
-}
-
-function CharacterControll(NAME, str1, str2){
-	var tempstr = '';
+	//角色設定 刪除 查看
 	for(i=0; i<5; i++) {
-		tempstr+=NAME + '=' + players[i].getName() + '\n';
-		if(NAME.toString() == players[i].getName()){
-			if(str1 == 'status' || str1 == '狀態' || str1 == '屬性') {
+		if(trigger == players[i].getName()){
+			if(str1 == 'status' || str1 == 'show' || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return '已刪除 ' + NAME + ' 角色資料';
+				return '已刪除 ' + trigger + ' 角色資料喵';
 			}
 			else {
 				try {
+					if(str1 == undefined || str1 == null || str1 == '') return '輸入錯誤!';
+					if(str2 == undefined || str2 == null || str2 == '') return '輸入錯誤!';
 					players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
-					return '設定 ' + NAME + ': ' + str1 + '=' + str2;			
+					return '設定 ' + trigger + ': ' + str1 + '=' + str2;			
 				}
 				catch(err) {
 					return '輸入錯誤';
@@ -244,15 +248,15 @@ function CharacterControll(NAME, str1, str2){
 			}
 		}
 	}
-	if(NAME == 'list' || NAME == '清單') {
+	//列出所有角色
+	if(trigger == 'list' || trigger == '清單') {
 		var tempstr = '角色清單: (max=5)\n';
 		for(i=0; i<5; i++){
 			tempstr += i + '. ' + players[i].getName() + '\n';
 		}
 		return tempstr;
 	}
-	return tempstr;
-	//return '查無此角色';
+	return '查無此角色';
 }
 
 
