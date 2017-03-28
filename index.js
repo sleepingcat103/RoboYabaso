@@ -84,7 +84,7 @@ function replyMsgToLine(rplyToken, rplyVal) {
 ///////////////////////////////////////
 /////////////////測試功能///////////////
 ///////////////////////////////////////
-var player = {
+var Player = {
 	createNew: function() {
 		var player = {};
 		var name;
@@ -109,7 +109,7 @@ var player = {
 		}
 		
 		player.set = function(string, value) {
-			eval(string + '=' + value);
+			//eval(string + '=' + value);
 		}
 		
 		player.delete = function() {
@@ -123,15 +123,17 @@ var player = {
 
 			rstr='';
 		}
+		
+		return player;
 	}
-};
+}
 
 var players[];
-players[0] = new player.createNew();
-players[1] = new player.createNew();
-players[2] = new player.createNew();
-players[3] = new player.createNew();
-players[4] = new player.createNew();
+players[0] = new Player.createNew();
+players[1] = new Player.createNew();
+players[2] = new Player.createNew();
+players[3] = new Player.createNew();
+players[4] = new Player.createNew();
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
