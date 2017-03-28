@@ -202,7 +202,7 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function characterController(trigger, str1, str2){
+function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++){
 		if(trigger == players[i].getName()){
 			if(str1 == 'show'){
