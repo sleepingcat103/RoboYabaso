@@ -258,8 +258,8 @@ function CharacterControll(trigger, str1, str2, str3){
 		
 		for(i=0; i<5; i++) {
 			if(players[i].getVal('name') == '') {
-				players[i].set('name', str1, '');
-				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+				return players[i].set('name', str1, '');
+				//return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 			}
 		}
 		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
