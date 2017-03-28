@@ -232,7 +232,7 @@ function CharacterControll(trigger, str1, str2){
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
-			if(str1 == 'status' || str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
@@ -241,10 +241,6 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else {
 				try {
-					if(str1 == undefined || str1 == null || str1 == '') return '輸入錯誤!';
-					if(str2 == undefined || str2 == null || str2 == '') {
-						return trigger + '.' + str1 + ' = ' + players[i].getVal(str2);
-					}
 					players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
 					return '設定 ' + trigger + ': ' + str1 + '=' + str2;			
 				}
