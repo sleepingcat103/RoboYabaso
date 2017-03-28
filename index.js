@@ -120,7 +120,7 @@ var Player = {
 		
 		player.set = function(string, value, key) {
 			try{
-				var restr = lockconfirm(key);
+				var restr = this.lockconfirm(key);
 				if(restr.match(/unlock/)){
 					if(value.charAt(0).toString() == '+') {
 						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
@@ -149,7 +149,7 @@ var Player = {
 		
 		player.unlock = function(key) {
 			var restr;
-			restr = lockconfirm(key);
+			restr = this.lockconfirm(key);
 			if(restr == 'unlocked!'){ password = ''; restr = 'key deleted';}
 			else if (restr == 'locked!') restr = 'wrong password~';
 			else restr = 'no password~';
