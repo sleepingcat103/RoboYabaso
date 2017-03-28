@@ -117,13 +117,15 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
+			var restr;
 			if(value.charAt(0).toString() == '+') {
-				eval(string + ' += ' + parseInt(value.substr(1,value.length-1)));
+				eval(string + ' = ' + parsrInt(string) + parseInt(value.substr(1,value.length-1)));
 			} else if (value.charAt(0).toString() == '-') {
-				eval(string + ' -= ' + parseInt(value.substr(1,value.length-1)));
+				eval(string + ' = ' + parsrInt(string) - parseInt(value.substr(1,value.length-1)));
 			} else {
 				eval(string + ' =\' ' + value + ' \' ');
 			}
+			return string + ' = ' + eval(string);
 		}
 		
 		player.delete = function() {
@@ -246,8 +248,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else {
 				try {
-					players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
-					return '設定 ' + trigger + ': ' + str1 + '=' + str2;			
+					return players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());			
 				}
 				catch(err) {
 					return '輸入錯誤';
