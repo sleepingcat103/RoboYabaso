@@ -119,7 +119,7 @@ var Player = {
 		player.set = function(string, value) {
 			var restr;
 			if(value.charAt(0).toString() == '+') {
-				eval(string + '=' + parseInt(string.trim()) + '+' + parseInt(value.substr(1,value.length-1)));
+				eval(string + '=' + parseInt(string.trim()) ); //+ '+' + parseInt(value.substr(1,value.length-1)));
 			} else if (value.charAt(0).toString() == '-') {
 				eval(string + '=' + parseInt(string.trim()) + '-' + parseInt(value.substr(1,value.length-1)));
 			} else {
