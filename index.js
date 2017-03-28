@@ -98,15 +98,17 @@ var Player = {
 		var rstr;
 		
 		player.show = function() {
-			rstr = name + '\n';
-			rstr += 'STR:' + str + ' DEX: ' + dex + 'CON: ' + con + '\n';
-			rstr += 'POW:' + pow + ' APP: ' + app + 'INT: ' + int + '\n';
-			rstr += 'SIZ:' + siz + ' EDU: ' + edu + 'DB: ' + db + '\n';
-			rstr += '+------------------------------+\n';
-			rstr += 'HP:' + hp + ' MP: ' + mp + 'SAN: ' + san + '\n';
-			rstr += 'STATUS:' + status + '\n';
-			rstr += 'ITEM:' + item + '\n';
-			rstr += 'SKILL:' + skill + '\n';
+			rstr = '+==========================+\n';
+			rstr += name + '\n';
+			rstr += 'STR: ' + str + ' DEX: ' + dex + ' CON: ' + con + '\n';
+			rstr += 'POW: ' + pow + ' APP: ' + app + ' INT: ' + int + '\n';
+			rstr += 'SIZ: ' + siz + ' EDU: ' + edu + ' DB: ' + db + '\n';
+			rstr += '+--------------------------+\n';
+			rstr += 'HP: ' + hp + ' MP: ' + mp + ' SAN: ' + san + '\n';
+			rstr += 'STATUS: ' + status + '\n';
+			rstr += 'ITEM: ' + item + '\n';
+			rstr += 'SKILL: ' + skill + '\n';
+			rstr += '+==========================+\n';
 			return rstr;
 		}
 		
@@ -212,8 +214,8 @@ function parseInput(rplyToken, inputStr) {
 function NewCharacter(str) {
 	for(i=0; i<5; i++) {
 		if(players[i].getName() == ''){
-			//player[i].set('name', str);
-			players[i].new(str);
+			players[i].set('name', str);
+			//players[i].new(str);
 			return '建立角色 ' + str;
 		}
 	}
@@ -228,7 +230,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return '已刪除 ' + player[i] + ' 角色資料';
+				return '已刪除 ' + trigger + ' 角色資料';
 			}
 			else {
 				players[i].set(trigger, str1.toString().toLowerCase() ,str2.toString().toLowerCase());
