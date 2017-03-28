@@ -212,7 +212,8 @@ function parseInput(rplyToken, inputStr) {
 function NewCharacter(str) {
 	for(i=0; i<5; i++) {
 		if(players[i].getName() == ''){
-			player[i].set('name', str);
+			//player[i].set('name', str);
+			player[i].new(str);
 			return '建立角色 ' + str;
 		}
 	}
