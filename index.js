@@ -81,6 +81,45 @@ function replyMsgToLine(rplyToken, rplyVal) {
   })
   request.end(rplyJson);
 }
+///////////////////////////////////////
+/////////////////測試功能///////////////
+///////////////////////////////////////
+var player = {
+	createNew: function() {
+		var player = {};
+		var name;
+		var str, dex, con, pow, app, int, siz, edu;
+		var db;
+		var hp, mp, san;
+		var item, status, skill;
+		
+		var rstr;
+		
+		player.show = function() {
+			rstr += name + '\n';
+			rstr += 'STR:' + str + ' DEX: ' + dex + 'CON: ' + con + '\n';
+			rstr += 'POW:' + pow + ' APP: ' + app + 'INT: ' + int + '\n';
+			rstr += 'SIZ:' + siz + ' EDU: ' + edu + 'DB: ' + db + '\n';
+			rstr += '+------------------------------+\n';
+			rstr += 'HP:' + hp + ' MP: ' + mp + 'SAN: ' + san + '\n';
+			rstr += 'STATUS:' + status + '\n';
+			rstr += 'ITEM:' + item + '\n';
+			rstr += 'SKILL:' + skill + '\n';
+			return rstr;
+		}
+		
+		player.setVal = function(string, value) {
+			eval(string + '=' + value);
+		}
+	}
+};
+
+var players[];
+players[0] = new player.createNew();
+players[1] = new player.createNew();
+players[2] = new player.createNew();
+players[3] = new player.createNew();
+players[4] = new player.createNew();
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
@@ -90,56 +129,75 @@ function parseInput(rplyToken, inputStr) {
 	console.log('InputStr: ' + inputStr);
 	_isNaN = function(obj) {
 		return isNaN(parseInt(obj));
-    }                   
-    let msgSplitor = (/\S+/ig);	
+    	}                   
+    	let msgSplitor = (/\S+/ig);	
 	let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
                        
-    //指令開始於此   
-    if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
+    	//指令開始於此   
+    	if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
         
 	//FLAG指令開始於此
-    if (trigger.match(/立flag|死亡flag/) != null) return BStyleFlagSCRIPTS() ;        
+    	else if (trigger.match(/立flag|死亡flag/) != null) 
+	    	return BStyleFlagSCRIPTS() ;        
 	
-	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
+	else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 
+		return build6char(mainMsg[1]);
 	
-	if (trigger == 'db') return db(mainMsg[1], 1);
+	else if (trigger == 'db') 
+		return db(mainMsg[1], 1);
 	
-	//if (trigger == '生科') return EatPoo();
+	else if (trigger == '角色' || trigger == 'char') 
+		return CharacterControll(mainMsg[1].toString().toLowerCase(), mainMsg[2], mainMsg[3]);
   
-	if (trigger == '貓咪') return MeowHelp();
+	else if (trigger == '貓咪') return 
+		MeowHelp();
 	
-	if (trigger.match(/喵/) != null) return Meow();
+	else if (trigger.match(/喵/) != null) return 
+		Meow();
 	
-	if (trigger.match(/貓/) != null) return Cat();
+	else if (trigger.match(/貓/) != null) 
+		return Cat();
 	
-	if (trigger == 'help' || trigger == '幫助') return Help();
+	else if (trigger == 'help' || trigger == '幫助') 
+		return Help();
 		
- 	if (trigger.match(/排序/)!= null && mainMsg.length >= 3) {        
-			return SortIt(inputStr,mainMsg);
-	}		
+ 	else if (trigger.match(/排序/)!= null && mainMsg.length >= 3)  
+		return SortIt(inputStr,mainMsg);
 
-    //ccb指令開始於此
-	if (trigger == 'ccb'&& mainMsg[1]<=99) return coc6(mainMsg[1],mainMsg[2]);
+    	//ccb指令開始於此
+	else if (trigger == 'ccb'&& mainMsg[1]<=99) 
+		return coc6(mainMsg[1],mainMsg[2]);
           
-  
 	//choice 指令開始於此
-	if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3) 
-	{        
+	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  	
 		return choice(inputStr,mainMsg);
-	}
 
 	//tarot 指令
-	if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {
+	else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) 	
 		return NomalDrawTarot();
-	}
 
+	//普通ROLL擲骰判定
+	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) 
+        	return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
+}
 
-    //普通ROLL擲骰判定
-	if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {
-        return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);
-    }
-	
+////////////////////////////////////////
+//////////////// 角色卡 測試功能
+////////////////////////////////////////
+
+function CharacterControll(trigger, str1, str2){
+	for(i=0; i<5; i++){
+		if(str1 == players[i].name){
+			if(str1 == 'show'){
+				return players[i].show();
+			}
+			else if (str1 == 'delete' || str1 == '刪除') {
+				players[i].delete();
+				return players[i].show();
+			}
+							
+return '查無此角色';
 }
 
 ////////////////////////////////////////
@@ -255,7 +313,7 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 			if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>1000000) return undefined;
 			equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
 		}
-	  
+	 
 		//計算算式
 		let aaa = equation;
 		aaa = aaa.replace(/\d+[[]/ig, '(' );
@@ -265,7 +323,7 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 		if(text1 != null){
 			finalStr= text0 + '：' + text1 + '\n' + equation + ' = ' + answer;
 		} else {
-				finalStr= text0 + '：\n' + equation + ' = ' + answer;
+			finalStr= text0 + '：\n' + equation + ' = ' + answer;
 		}
 	
 	}
@@ -298,7 +356,7 @@ function RollDice(inputStr){
 		temp = Dice(comStr.split('d')[1]);
 		totally +=temp;
 		finalStr = finalStr + temp + '+';
-    }
+	}
 
 	finalStr = finalStr.substring(0, finalStr.length - 1) + ']';
 	finalStr = finalStr.replace('[', totally +'[');
@@ -700,7 +758,7 @@ function Help() {
 }
 
 function MeowHelp() {
-	return Meow() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
+	return Cat() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
 }
 
 function Meow() {
