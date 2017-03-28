@@ -117,7 +117,13 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
-			eval(string + ' =\' ' + value + ' \' ');
+			if(value.charAt(0).toString() == '+') {
+				eval(string + ' += ' + parseInt(value.substr(1,value.length-1)));
+			} else if (value.charAt(0).toString() == '-') {
+				eval(string + ' -= ' + parseInt(value.substr(1,value.length-1)));
+			} else {
+				eval(string + ' =\' ' + value + ' \' ');
+			}
 		}
 		
 		player.delete = function() {
