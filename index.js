@@ -248,7 +248,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else {
 				try {
-					return players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());			
+					return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
 				}
 				catch(err) {
 					return '輸入錯誤';
