@@ -149,54 +149,54 @@ function parseInput(rplyToken, inputStr) {
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
                        
     	//指令開始於此   
-    	if (trigger.match(/運氣|運勢/) != null) 
+    	if (trigger.match(/運氣|運勢/) != null) {
 		return randomLuck(mainMsg) ; //占卜運氣        
-        
+	}
 	//FLAG指令開始於此
-    	else if (trigger.match(/立flag|死亡flag/) != null) 
+    	else if (trigger.match(/立flag|死亡flag/) != null) {
 	    	return BStyleFlagSCRIPTS() ;        
-	
-	else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 
+	}
+	else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 {
 		return build6char(mainMsg[1]);
-	
-	else if (trigger == 'db') 
+	}
+	else if (trigger == 'db') {
 		return db(mainMsg[1], 1);
-	
-	else if (trigger == '角色' || trigger == 'char') 
+	}
+	else if (trigger == '角色' || trigger == 'char') {
 		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
-  
-	else if (trigger == '貓咪') 
-		return MeowHelp();
-	
-	else if (trigger.match(/喵/) != null) 
+	}	
+	else if (trigger == '貓咪') {		
+		return MeowHelp();					
+	}
+	else if (trigger.match(/喵/) != null) {		
 		return Meow();
-	
-	else if (trigger.match(/貓/) != null) 
-		return Cat();
-	
-	else if (trigger == 'help' || trigger == '幫助') 
+	}	
+	else if (trigger.match(/貓/) != null) {		
+		return Cat();	
+	}
+	else if (trigger == 'help' || trigger == '幫助') {		
 		return Help();
-		
- 	else if (trigger.match(/排序/)!= null && mainMsg.length >= 3)  
+	}
+ 	else if (trigger.match(/排序/)!= null && mainMsg.length >= 3)  {		
 		return SortIt(inputStr,mainMsg);
-
+	}
     	//ccb指令開始於此
-	else if (trigger == 'ccb'&& mainMsg[1]<=99) 
+	else if (trigger == 'ccb'&& mainMsg[1]<=99) {		
 		return coc6(mainMsg[1],mainMsg[2]);
-          
+	}
 	//choice 指令開始於此
-	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  	
+	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
 		return choice(inputStr,mainMsg);
-
+	}
 	//tarot 指令
-	else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) 	
+	else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {	
 		return NomalDrawTarot();
-
+	}	
 	//普通ROLL擲骰判定
-	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) 
-        	return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
+	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {		
+		return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
+	}
 }
-
 ////////////////////////////////////////
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
