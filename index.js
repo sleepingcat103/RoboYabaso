@@ -123,8 +123,9 @@ var Player = {
 			var restr = this.lockconfirm(key);
 			if(restr.match(/unlock/) != null){
 				try{
-					return value.charAt(0).toString();
+					
 					if(value.charAt(0).toString() == '+') {
+						return value.charAt(0).toString();
 						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
 					} else if (value.charAt(0).toString() == '-') {
 						eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
