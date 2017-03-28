@@ -221,33 +221,33 @@ function NewCharacter(str) {
 	return '角色上限已滿! (max=5)\n請刪除不用的角色!';
 }
 
-function CharacterControll(trigger, str1, str2){
+function CharacterControll(NAME, str1, str2){
 	for(i=0; i<5; i++) {
-		if(trigger == players[i].getName()){
-			if(str1 == '') {
+		if(NAME == players[i].getName()){
+			if(str1 == 'status' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return '已刪除 ' + trigger + ' 角色資料';
+				return '已刪除 ' + NAME + ' 角色資料';
 			}
 			else {
 				try {
-					players[i].set(trigger, str1.toString().toLowerCase() ,str2.toString().toLowerCase());
-					return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
+					players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
+					return '設定 ' + NAME + ': ' + str1 + '=' + str2;			
 				}
 				catch(err) {
 					return '輸入錯誤';
 				}
 			}
 		}
-		else if(trigger == 'list' || trigger == '清單'){
-			var tempstr = '角色清單: (max=5)\n';
-			for(i=0; i<5; i++){
-				tempstr += i + '. ' + players[i].getName() + '\n';
-			}
-			return tempstr;
+	}
+	if(NAME == 'list' || NAME == '清單') {
+		var tempstr = '角色清單: (max=5)\n';
+		for(i=0; i<5; i++){
+			tempstr += i + '. ' + players[i].getName() + '\n';
 		}
+		return tempstr;
 	}
 	return '查無此角色';
 }
