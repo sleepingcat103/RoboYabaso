@@ -123,6 +123,7 @@ var Player = {
 			var restr = this.lockconfirm(key);
 			if(restr.match(/unlock/) != null){
 				try{
+					return value.charAt(0).toString();
 					if(value.charAt(0).toString() == '+') {
 						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
 					} else if (value.charAt(0).toString() == '-') {
@@ -281,7 +282,7 @@ function CharacterControll(trigger, str1, str2, str3){
 			}
 			else {
 				try {
-					return players[i].set(str1.toString().toLowerCase() , str2.toString(), str3.toString());			
+					return players[i].set(str1.toString().toLowerCase().trim(), str2.toString().trim(), str3.toString().trim());			
 				}
 				catch(err) {
 					return err.toString();
