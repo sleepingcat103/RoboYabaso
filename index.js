@@ -104,7 +104,22 @@ var Player = {
 			rstr += 'SKILL:' + skill + '\n';
 			return rstr;
 		}
+		
+		player.set = function(string, value) {
+			//eval(string + '=' + value);
+		}
+		
+		player.delete = function() {
+			name='';
+			str=''; dex=''; con='';
+			pow=''; app=''; int='';
+			siz=''; edu=''; 
+			db='';
+			hp=''; mp=''; san='';
+			item=''; status=''; skill='';
 
+			rstr='';
+		}
 		return player;
 	}
 }
