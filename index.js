@@ -108,8 +108,20 @@ var player = {
 			return rstr;
 		}
 		
-		player.setVal = function(string, value) {
+		player.set = function(string, value) {
 			eval(string + '=' + value);
+		}
+		
+		player.delete = function() {
+			name='';
+			str=''; dex=''; con='';
+			pow=''; app=''; int='';
+			siz=''; edu=''; 
+			db='';
+			hp=''; mp=''; san='';
+			item=''; status=''; skill='';
+
+			rstr='';
 		}
 	}
 };
@@ -135,7 +147,8 @@ function parseInput(rplyToken, inputStr) {
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
                        
     	//指令開始於此   
-    	if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
+    	if (trigger.match(/運氣|運勢/) != null) 
+		return randomLuck(mainMsg) ; //占卜運氣        
         
 	//FLAG指令開始於此
     	else if (trigger.match(/立flag|死亡flag/) != null) 
@@ -148,13 +161,13 @@ function parseInput(rplyToken, inputStr) {
 		return db(mainMsg[1], 1);
 	
 	else if (trigger == '角色' || trigger == 'char') 
-		return CharacterControll(mainMsg[1].toString().toLowerCase(), mainMsg[2], mainMsg[3]);
+		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
   
-	else if (trigger == '貓咪') return 
-		MeowHelp();
+	else if (trigger == '貓咪') 
+		return MeowHelp();
 	
-	else if (trigger.match(/喵/) != null) return 
-		Meow();
+	else if (trigger.match(/喵/) != null) 
+		return Meow();
 	
 	else if (trigger.match(/貓/) != null) 
 		return Cat();
@@ -188,16 +201,20 @@ function parseInput(rplyToken, inputStr) {
 
 function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++){
-		if(str1 == players[i].name){
+		if(trigger == players[i].name){
 			if(str1 == 'show'){
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return players[i].show();
+				return '已刪除 ' + player[i] + ' 角色資料';
 			}
-							
-return '查無此角色';
+			else {
+				players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
+				return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
+			}
+		}									
+	return '查無此角色';
 }
 
 ////////////////////////////////////////
