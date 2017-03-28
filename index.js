@@ -81,59 +81,6 @@ function replyMsgToLine(rplyToken, rplyVal) {
   })
   request.end(rplyJson);
 }
-///////////////////////////////////////
-/////////////////測試功能///////////////
-///////////////////////////////////////
-var Player = {
-	createNew: function() {
-		var player = {};
-		var name;
-		var str, dex, con, pow, app, int, siz, edu;
-		var db;
-		var hp, mp, san;
-		var item, status, skill;
-		
-		var rstr;
-		
-		player.show = function() {
-			rstr += name + '\n';
-			rstr += 'STR:' + str + ' DEX: ' + dex + 'CON: ' + con + '\n';
-			rstr += 'POW:' + pow + ' APP: ' + app + 'INT: ' + int + '\n';
-			rstr += 'SIZ:' + siz + ' EDU: ' + edu + 'DB: ' + db + '\n';
-			rstr += '+------------------------------+\n';
-			rstr += 'HP:' + hp + ' MP: ' + mp + 'SAN: ' + san + '\n';
-			rstr += 'STATUS:' + status + '\n';
-			rstr += 'ITEM:' + item + '\n';
-			rstr += 'SKILL:' + skill + '\n';
-			return rstr;
-		}
-		
-		player.set = function(string, value) {
-			//eval(string + '=' + value);
-		}
-		
-		player.delete = function() {
-			name='';
-			str=''; dex=''; con='';
-			pow=''; app=''; int='';
-			siz=''; edu=''; 
-			db='';
-			hp=''; mp=''; san='';
-			item=''; status=''; skill='';
-
-			rstr='';
-		}
-		
-		return player;
-	}
-};
-
-var players[];
-players[0] = Player.createNew();
-players[1] = Player.createNew();
-players[2] = Player.createNew();
-players[3] = Player.createNew();
-players[4] = Player.createNew();
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
@@ -143,82 +90,58 @@ function parseInput(rplyToken, inputStr) {
 	console.log('InputStr: ' + inputStr);
 	_isNaN = function(obj) {
 		return isNaN(parseInt(obj));
-    	}                   
-    	let msgSplitor = (/\S+/ig);	
+    }                   
+    let msgSplitor = (/\S+/ig);	
 	let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
                        
-    	//指令開始於此   
-    	if (trigger.match(/運氣|運勢/) != null) {
-		return randomLuck(mainMsg) ; //占卜運氣        
-	}
+    //指令開始於此   
+    if (trigger.match(/運氣|運勢/) != null) return randomLuck(mainMsg) ; //占卜運氣        
+        
 	//FLAG指令開始於此
-    	else if (trigger.match(/立flag|死亡flag/) != null) {
-	    	return BStyleFlagSCRIPTS() ;        
-	}
-	else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 {
-		return build6char(mainMsg[1]);
-	}
-	else if (trigger == 'db') {
-		return db(mainMsg[1], 1);
-	}
-	else if (trigger == '角色' || trigger == 'char') {
-		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
-	}	
-	else if (trigger == '貓咪') {		
-		return MeowHelp();					
-	}
-	else if (trigger.match(/喵/) != null) {		
-		return Meow();
-	}	
-	else if (trigger.match(/貓/) != null) {		
-		return Cat();	
-	}
-	else if (trigger == 'help' || trigger == '幫助') {		
-		return Help();
-	}
- 	else if (trigger.match(/排序/)!= null && mainMsg.length >= 3)  {		
-		return SortIt(inputStr,mainMsg);
-	}
-    	//ccb指令開始於此
-	else if (trigger == 'ccb'&& mainMsg[1]<=99) {		
-		return coc6(mainMsg[1],mainMsg[2]);
-	}
+    if (trigger.match(/立flag|死亡flag/) != null) return BStyleFlagSCRIPTS() ;        
+	
+	if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN )	 return build6char(mainMsg[1]);
+	
+	if (trigger == 'db') return db(mainMsg[1], 1);
+	
+	//if (trigger == '生科') return EatPoo();
+  
+	if (trigger == '貓咪') return MeowHelp();
+	
+	if (trigger.match(/喵/) != null) return Meow();
+	
+	if (trigger.match(/貓/) != null) return Cat();
+	
+	if (trigger == 'help' || trigger == '幫助') return Help();
+		
+ 	if (trigger.match(/排序/)!= null && mainMsg.length >= 3) {        
+			return SortIt(inputStr,mainMsg);
+	}		
+
+    //ccb指令開始於此
+	if (trigger == 'ccb'&& mainMsg[1]<=99) return coc6(mainMsg[1],mainMsg[2]);
+          
+  
 	//choice 指令開始於此
-	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
+	if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3) 
+	{        
 		return choice(inputStr,mainMsg);
 	}
+
 	//tarot 指令
-	else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {	
+	if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {
 		return NomalDrawTarot();
-	}	
-	//普通ROLL擲骰判定
-	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {		
-		return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
 	}
+
+
+    //普通ROLL擲骰判定
+	if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {
+        return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);
+    }
+	
 }
-////////////////////////////////////////
-//////////////// 角色卡 測試功能
-////////////////////////////////////////
-/*
-function CharacterControll(trigger, str1, str2){
-	for(i=0; i<5; i++){
-		if(trigger == players[i].name){
-			if(str1 == 'show'){
-				return players[i].show();
-			}
-			else if (str1 == 'delete' || str1 == '刪除') {
-				players[i].delete();
-				return '已刪除 ' + player[i] + ' 角色資料';
-			}
-			else {
-				players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
-				return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
-			}
-		}									
-	return '查無此角色';
-}
-*/
+
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
@@ -332,7 +255,7 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 			if (tempMatch.toString().split('d')[1]==1 || tempMatch.toString().split('d')[1]>1000000) return undefined;
 			equation = equation.replace(/\d+d\d+/, RollDice(tempMatch));
 		}
-	 
+	  
 		//計算算式
 		let aaa = equation;
 		aaa = aaa.replace(/\d+[[]/ig, '(' );
@@ -342,7 +265,7 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 		if(text1 != null){
 			finalStr= text0 + '：' + text1 + '\n' + equation + ' = ' + answer;
 		} else {
-			finalStr= text0 + '：\n' + equation + ' = ' + answer;
+				finalStr= text0 + '：\n' + equation + ' = ' + answer;
 		}
 	
 	}
@@ -375,7 +298,7 @@ function RollDice(inputStr){
 		temp = Dice(comStr.split('d')[1]);
 		totally +=temp;
 		finalStr = finalStr + temp + '+';
-	}
+    }
 
 	finalStr = finalStr.substring(0, finalStr.length - 1) + ']';
 	finalStr = finalStr.replace('[', totally +'[');
@@ -456,14 +379,14 @@ function db(value, flag){
 
 function BStyleFlagSCRIPTS() {
         let rplyArr = ['\
-「打完這仗我就回老家結婚（この戦いが終わったら、故郷に帰って結婚するんだ）」', '\
+「打完這仗我就回老家結婚」', '\
 「打完這一仗後我請你喝酒」', '\
 「你、你要錢嗎！要什麼我都能給你！/我可以給你更多的錢！」', '\
 「做完這次任務，我就要結婚了。」', '\
 「幹完這一票我就金盆洗手了。」', '\
 「好想再XXX啊……」', '\
-「已經沒什麼好害怕的了（もう何も恐くない）」', '\
-「我一定會回來的（必ず帰る！）」', '\
+「已經沒什麼好害怕的了」', '\
+「我一定會回來的」', '\
 「差不多該走了」', '\
 「我只是希望你永遠不要忘記我。」', '\
 「我只是希望能永遠和你在一起。」', '\
@@ -477,27 +400,27 @@ function BStyleFlagSCRIPTS() {
 「我們三個人要永永遠遠在一起！」', '\
 「這是我女兒的照片，很可愛吧？」', '\
 「請告訴他/她，我永遠愛他/她」', '\
-「聽好，在我回來之前絕不要亂走動哦（いいか、俺が帰ってくるまでここを動くんじゃないぞ）」', '\
+「聽好，在我回來之前絕不要亂走動哦」', '\
 「要像一個乖孩子一樣等著我回來」', '\
-「我去去就來（先に行って、すぐ戻るから）」', '\
-「快逃！(逃げろう！/早く逃げろう！)」', '\
+「我去去就來」', '\
+「快逃！」', '\
 「對方只有一個人，大家一起上啊」', '\
 「我就不信，這麼多人還殺不了他一個！」', '\
-「幹，幹掉了嗎？（やったのか？）」', '\
+「幹，幹掉了嗎？」', '\
 「身體好輕」', '\
 「可惡！你給我看著！（逃跑）」', '\
 「躲在這裡就應該不會被發現了吧。」', '\
 「我不會讓任何人死的。」', '\
 「可惡！原來是這麼回事！」', '\
 「跑這麼遠應該就行了。」', '\
-「我已經甚麼都不怕了（もう何も恐くない）」', '\
-「這XXX是什麼，怎麼之前沒見過（なんだこのXXX、見たことないな）」', '\
-「什麽聲音……？就去看一下吧（:「何の音だ？ちょっと見てくる」', '\
+「我已經甚麼都不怕了」', '\
+「這XXX是什麼，怎麼之前沒見過」', '\
+「什麼聲音……？就去看一下吧」', '\
 「是我的錯覺嗎？/果然是錯覺/錯覺吧/可能是我（看/聽）錯了」', '\
 「二十年後又是一條好漢！」', '\
 「大人/將軍武運昌隆」', '\
-「這次工作的報酬是以前無法比較的（:「今度の仕事でまとまったカネが入るんだ」', '\）」', '\
-「我才不要和罪犯呆在一起，我回自己的房間去了！（この中に殺人者がいるかもしれないのに、一緒に居られるか!俺は自分の部屋に戻るぞ!）」', '\
+「這次工作的報酬是以前無法比較的」', '\
+「我才不要和罪犯呆在一起，我回自己的房間去了！」', '\
 「其實我知道事情的真相…（各種廢話）…犯人就是……」', '\
 「我已經天下無敵了~~」', '\
 「大人！這邊就交給小的吧，請快離開這邊吧」', '\
@@ -777,7 +700,7 @@ function Help() {
 }
 
 function MeowHelp() {
-	return Cat() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
+	return Meow() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
 }
 
 function Meow() {
@@ -794,9 +717,4 @@ function Cat() {
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 衝三小', '87玩夠沒', '生科吃屎'];
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-}
-
-function EatPoo() {
-	
-	return 'https://i.imgur.com/0mnM0f3.png';	
 }
