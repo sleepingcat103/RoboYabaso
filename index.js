@@ -135,7 +135,7 @@ var Player = {
 					return '你沒有修改權限喵';
 				}
 			}catch(err){
-				return err.toString();	
+				return err;	
 			}
 		}
 		
