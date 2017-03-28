@@ -90,7 +90,7 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
-		var name = '';
+		var name = ' ';
 		var str, dex, con, pow, app, int, siz, edu;
 		var db;
 		var hp, mp, san;
@@ -115,7 +115,7 @@ var Player = {
 		}
 		
 		player.delete = function() {
-			name='';
+			name=' ';
 			str=''; dex=''; con='';
 			pow=''; app=''; int='';
 			siz=''; edu=''; 
@@ -205,7 +205,7 @@ function parseInput(rplyToken, inputStr) {
 function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++){
 		if(trigger == 'new' || trigger == '建立'){
-			if(player[i].getName() == null || player[i].getName() == undefined || player[i].getName() == ''){
+			if(player[i].getName() == ' ' && str1 != null){
 				//player[i].set('name', str1);
 				return '建立角色 ' + str1;
 			}
