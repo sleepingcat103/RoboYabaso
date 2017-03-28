@@ -81,7 +81,22 @@ function replyMsgToLine(rplyToken, rplyVal) {
   })
   request.end(rplyJson);
 }
+var Player = {
+	createNew: function() {
+		var player = {};
+		
+		var name;
+		var str, dex, con, pow, app, int, siz, edu;
+		var db;
+		var hp, mp, san;
+		var item, status, skill;
+		
+		var rstr;
+		
 
+		return player;
+	}
+}
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
