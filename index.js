@@ -111,7 +111,7 @@ var Player = {
 		}
 		
 		player.new = function(value) {
-			name = value;
+			this.name = value;
 		}
 		
 		player.set = function(string, value) {
