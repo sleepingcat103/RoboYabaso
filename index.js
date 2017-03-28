@@ -119,9 +119,9 @@ var Player = {
 		player.set = function(string, value) {
 			var restr;
 			if(value.charAt(0).toString() == '+') {
-				eval(string + ' = ' + parseInt(string) + '+' + parseInt(value.substr(1,value.length-1)));
+				eval(string + ' = ' + string + '+' + parseInt(value.substr(1,value.length-1)));
 			} else if (value.charAt(0).toString() == '-') {
-				eval(string + ' = ' + parseInt(string) + '-' + parseInt(value.substr(1,value.length-1)));
+				eval(string + ' = ' + string + '-' + parseInt(value.substr(1,value.length-1)));
 			} else {
 				eval(string + ' =\' ' + value + ' \' ');
 			}
