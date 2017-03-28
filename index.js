@@ -128,9 +128,7 @@ var Player = {
 		return player;
 	}
 }
-var players[];
-players[0] = Player.createNew();
-players[1] = Player.createNew();
+var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
