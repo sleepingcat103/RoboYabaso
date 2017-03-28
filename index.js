@@ -120,20 +120,20 @@ var Player = {
 		
 		player.set = function(string, value, key) {
 			
-			var restr = this.lockconfirm(key);
-			if(restr.match(/unlock/) != null){
-				if(value.charAt(0) == '+') {
+			//var restr = this.lockconfirm(key);
+			//if(restr.match(/unlock/) != null){
+				if(value.charAt(0).toString() == '+') {
 					eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-				} else if (value.charAt(0) == '-') {
+				} else if (value.charAt(0).toString() == '-') {
 					eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
 				} else {
 					eval(string + '=\'' + value + '\'');
 				}
 				return string + '=' + eval(string);
-			}
-			else {
-				return '你沒有修改權限喵';
-			}
+			//}
+			//else {
+			//	return '你沒有修改權限喵';
+			//}
 			
 		}
 		
