@@ -227,7 +227,7 @@ function CharacterControll(trigger, str1, str2){
 		else if(trigger == 'new' || trigger == '建立'){
 			for(i=0; i<5; i++){
 				if(player[i].getName() == ''){
-					player[i].set('name', str1);
+					//player[i].set('name', str1);
 					return '建立角色 ' + str1;
 				}
 			}
