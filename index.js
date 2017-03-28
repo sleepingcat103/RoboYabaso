@@ -81,6 +81,11 @@ function replyMsgToLine(rplyToken, rplyVal) {
   })
   request.end(rplyJson);
 }
+
+///////////////////////////////////////
+/////////////////測試功能///////////////
+///////////////////////////////////////
+
 var Player = {
 	createNew: function() {
 		var player = {};
@@ -123,6 +128,9 @@ var Player = {
 		return player;
 	}
 }
+var players[];
+players[0] = Player.createNew();
+players[1] = Player.createNew();
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
