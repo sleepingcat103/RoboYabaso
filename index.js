@@ -111,7 +111,7 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
-			eval(string + '=' + value);
+			eval(string + ' =\' ' + value + ' \' ');
 		}
 		
 		player.delete = function() {
