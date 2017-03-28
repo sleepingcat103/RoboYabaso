@@ -248,7 +248,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else {
 				try {
-					return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
+					return players[i].set(str1.toString().toLowerCase().trim() ,str2.toString().trim());			
 				}
 				catch(err) {
 					return err.toString();
