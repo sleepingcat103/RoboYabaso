@@ -90,9 +90,20 @@ var Player = {
 		var db;
 		var hp, mp, san;
 		var item, status, skill;
-		
 		var rstr;
 		
+		player.show = function() {
+			rstr = name + '\n';
+			rstr += 'STR:' + str + ' DEX: ' + dex + 'CON: ' + con + '\n';
+			rstr += 'POW:' + pow + ' APP: ' + app + 'INT: ' + int + '\n';
+			rstr += 'SIZ:' + siz + ' EDU: ' + edu + 'DB: ' + db + '\n';
+			rstr += '+------------------------------+\n';
+			rstr += 'HP:' + hp + ' MP: ' + mp + 'SAN: ' + san + '\n';
+			rstr += 'STATUS:' + status + '\n';
+			rstr += 'ITEM:' + item + '\n';
+			rstr += 'SKILL:' + skill + '\n';
+			return rstr;
+		}
 
 		return player;
 	}
