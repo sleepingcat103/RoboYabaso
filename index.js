@@ -132,8 +132,9 @@ var Player = {
 			rstr='';
 		}
 		
-		player.getName = function() {
-			return name.toString().trim();
+		player.getVal = function(string) {
+			//return name.toString().trim();
+			return eval(string+'.toString().trim()');
 		}
 		return player;
 	}
@@ -217,20 +218,20 @@ function CharacterControll(trigger, str1, str2){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
 		
 		for(i=0; i<5; i++) {
-			if(players[i].getName() == str1) return '已經有同名的角色了!';
+			if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
 		}
 		
 		for(i=0; i<5; i++) {
-			if(players[i].getName() == '') {
+			if(players[i].getVal('name') == '') {
 				players[i].set('name', str1);
 				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 			}
 		}
 		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 	}
-	//角色設定 刪除 查看
+	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
-		if(trigger == players[i].getName()){
+		if(trigger == players[i].getVal('name')){
 			if(str1 == 'status' || str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
@@ -241,7 +242,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str1 == undefined || str1 == null || str1 == '') return '輸入錯誤!';
-					if(str2 == undefined || str2 == null || str2 == '') return '輸入錯誤!';
+					if(str2 == undefined || str2 == null || str2 == '') {
+						return trigger + '.' + str1 + ' = ' + players[i].getVal(str2);
+					}
 					players[i].set(str1.toString().toLowerCase() ,str2.toString().toLowerCase());
 					return '設定 ' + trigger + ': ' + str1 + '=' + str2;			
 				}
