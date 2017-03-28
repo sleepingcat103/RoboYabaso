@@ -119,9 +119,10 @@ var Player = {
 		}
 		
 		player.set = function(string, value, key) {
-			try{
-				var restr = this.lockconfirm(key);
-				if(restr.match(/unlock/)){
+			
+			var restr = this.lockconfirm(key);
+			if(restr.match(/unlock/) != null){
+				try{
 					if(value.charAt(0).toString() == '+') {
 						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
 					} else if (value.charAt(0).toString() == '-') {
@@ -130,20 +131,21 @@ var Player = {
 						eval(string + '=\'' + value + '\'');
 					}
 					return string + '=' + eval(string);
+				}catch(err){
+					return err;	
 				}
-				else {
-					return '你沒有修改權限喵';
-				}
-			}catch(err){
-				return err;	
 			}
+			else {
+				return '你沒有修改權限喵';
+			}
+			
 		}
 		
 		player.lockconfirm = function(key) {
 			var restr;
 			if(password == '') restr = 'unlock!';
-			if(password != '' && password != key) restr = 'locked!';
-			if(password == key) {restr = 'unlocked!'; unlock+=1;}
+			else if(password != '' && password != key) restr = 'locked!';
+			else if(password == key ) {restr = 'unlocked!'; unlock+=1;}
 			return restr;
 		}
 		
