@@ -271,7 +271,7 @@ function CharacterControll(trigger, str1, str2, str3){
 				return '已刪除 ' + trigger + ' 角色資料喵';
 			}
 			else if (str1 == 'unlock') {
-				return player[i].unlock()
+				return player[i].unlock();
 			}
 			else {
 				try {
