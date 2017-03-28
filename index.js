@@ -166,7 +166,7 @@ function parseInput(rplyToken, inputStr) {
 		return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
 	}
 	else if (trigger == '建立角色' || trigger == '角色建立' || trigger == 'newchar') {
-		return NewCharacter();
+		return NewCharacter(mainMsg[1]);
 	}
 	else if (trigger == '貓咪') {		
 		return MeowHelp();					
