@@ -222,7 +222,9 @@ function NewCharacter(str) {
 }
 
 function CharacterControll(NAME, str1, str2){
+	var tempstr = '';
 	for(i=0; i<5; i++) {
+		tempstr+=NAME + '=' + players[i].getName() + '\n';
 		if(NAME.toString() == players[i].getName()){
 			if(str1 == 'status' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
@@ -249,7 +251,8 @@ function CharacterControll(NAME, str1, str2){
 		}
 		return tempstr;
 	}
-	return '查無此角色';
+	return tempstr;
+	//return '查無此角色';
 }
 
 
