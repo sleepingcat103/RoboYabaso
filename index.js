@@ -122,20 +122,14 @@ var Player = {
 			
 			var restr = this.lockconfirm(key);
 			if(restr.match(/unlock/) != null){
-				try{
-					
-					if(value.charAt(0).toString() == '+') {
-						return value.charAt(0).toString();
-						eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-					} else if (value.charAt(0).toString() == '-') {
-						eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
-					} else {
-						eval(string + '=\'' + value + '\'');
-					}
-					return string + '=' + eval(string);
-				}catch(err){
-					return err;	
+				if(value.charAt(0) == '+') {
+					eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
+				} else if (value.charAt(0) == '-') {
+					eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
+				} else {
+					eval(string + '=\'' + value + '\'');
 				}
+				return string + '=' + eval(string);
 			}
 			else {
 				return '你沒有修改權限喵';
