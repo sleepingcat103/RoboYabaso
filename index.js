@@ -254,7 +254,7 @@ function CharacterControll(trigger, str1, str2){
 	if(trigger == 'list' || trigger == '清單') {
 		var tempstr = '角色清單: (max=5)\n';
 		for(i=0; i<5; i++){
-			tempstr += i + '. ' + players[i].getName() + '\n';
+			tempstr += i + '. ' + players[i].getVal('name') + '\n';
 		}
 		return tempstr;
 	}
