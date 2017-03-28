@@ -126,14 +126,14 @@ var Player = {
 		
 		return player;
 	}
-}
+};
 
 var players[];
-players[0] = new Player.createNew();
-players[1] = new Player.createNew();
-players[2] = new Player.createNew();
-players[3] = new Player.createNew();
-players[4] = new Player.createNew();
+players[0] = Player.createNew();
+players[1] = Player.createNew();
+players[2] = Player.createNew();
+players[3] = Player.createNew();
+players[4] = Player.createNew();
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
@@ -200,7 +200,7 @@ function parseInput(rplyToken, inputStr) {
 ////////////////////////////////////////
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
-
+/*
 function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++){
 		if(trigger == players[i].name){
@@ -218,7 +218,7 @@ function CharacterControll(trigger, str1, str2){
 		}									
 	return '查無此角色';
 }
-
+*/
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
