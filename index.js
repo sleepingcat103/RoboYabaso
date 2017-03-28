@@ -111,7 +111,7 @@ var Player = {
 		}
 		
 		player.new = function(value) {
-			player.name = value;
+			name = value;
 		}
 		
 		player.set = function(string, value) {
@@ -213,7 +213,7 @@ function NewCharacter(str) {
 	for(i=0; i<5; i++) {
 		if(players[i].getName() == ''){
 			//player[i].set('name', str);
-			player[i].new(str);
+			players[i].new(str);
 			return '建立角色 ' + str;
 		}
 	}
