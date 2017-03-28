@@ -133,7 +133,7 @@ var Player = {
 		}
 		
 		player.getName = function() {
-			return name.toString();
+			return name.toString().trim();
 		}
 		return player;
 	}
