@@ -125,10 +125,16 @@ var Player = {
 
 			rstr='';
 		}
+		
+		player.getName = function() {
+			return name;
+		}
 		return player;
 	}
 }
+
 var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
+
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
@@ -192,6 +198,29 @@ function parseInput(rplyToken, inputStr) {
 	}
 	
 }
+////////////////////////////////////////
+//////////////// 角色卡 測試功能
+////////////////////////////////////////
+
+function characterController(trigger, str1, str2){
+	for(i=0; i<5; i++){
+		if(trigger == players[i].getName()){
+			if(str1 == 'show'){
+				return players[i].show();
+			}
+			else if (str1 == 'delete' || str1 == '刪除') {
+				players[i].delete();
+				return '已刪除 ' + player[i] + ' 角色資料';
+			}
+			else {
+				players[i].set(trigger, str1.toString().toLowerCase() ,str2.toString().toLowerCase());
+				return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
+			}
+		}									
+	return '查無此角色';
+	}
+}
+
 
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
@@ -214,29 +243,6 @@ function coc6(chack,text){
 	else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
     }
 }  
-
-////////////////////////////////////////
-//////////////// 角色卡 測試功能
-////////////////////////////////////////
-
-function CharacterControll(trigger, str1, str2){
-	for(i=0; i<5; i++){
-		if(trigger == players[i].name){
-			if(str1 == 'show'){
-				return players[i].show();
-			}
-			else if (str1 == 'delete' || str1 == '刪除') {
-				players[i].delete();
-				return '已刪除 ' + player[i] + ' 角色資料';
-			}
-			else {
-				players[i].set(trigger, str1.toString().toLowerCase() ,str2.toString().toLowerCase());
-				return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
-			}
-		}									
-	return '查無此角色';
-}
-
 
 ////////////////////////////////////////
 //////////////// COC6傳統創角
