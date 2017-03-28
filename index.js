@@ -90,12 +90,13 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
-		var name = '';
-		var str, dex, con, pow, app, int, siz, edu;
-		var db;
-		var hp, mp, san;
-		var item, status, skill;
-		var rstr;
+		var name='';
+		var str='', dex='', con='', pow='', app='', int='', siz='', edu='';
+		var db='';
+		var hp='', mp='', san='';
+		var item='', status='', skill='';
+		var rstr='', password='';
+		var unlock=0;
 		
 		player.show = function() {
 			rstr = '+==========================+\n';
@@ -109,6 +110,7 @@ var Player = {
 			rstr += 'ITEM: ' + item + '\n';
 			rstr += 'SKILL: ' + skill + '\n';
 			rstr += '+==========================+\n';
+			rstr += 'unlocked: ' + unlock + '\n';
 			return rstr;
 		}
 		
@@ -116,16 +118,38 @@ var Player = {
 			name = value;
 		}
 		
-		player.set = function(string, value) {
-			var restr;
-			if(value.charAt(0).toString() == '+') {
-				eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-			} else if (value.charAt(0).toString() == '-') {
-				eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
-			} else {
-				eval(string + '=\'' + value + '\'');
+		player.set = function(string, value, key) {
+			var restr = lockconfirm(key);
+			if(restr.match(/unlock/)){
+				if(value.charAt(0).toString() == '+') {
+					eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
+				} else if (value.charAt(0).toString() == '-') {
+					eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
+				} else {
+					eval(string + '=\'' + value + '\'');
+				}
+				return string + '=' + eval(string);
 			}
-			return string + '=' + eval(string);
+			else {
+				return '你沒有修改權限喵';
+			}
+		}
+		
+		player.lockconfirm = function(key) {
+			var restr;
+			if(password == '') restr = 'unlock!';
+			if(password != '' && password != key) restr = 'locked!';
+			if(password == key) {restr = 'unlocked!'; unlock+=1;}
+			return restr;
+		}
+		
+		player.unlock = function(key) {
+			var restr;
+			restr = lockconfirm(key);
+			if(restr == 'unlocked!'){ password = ''; restr = 'key deleted';}
+			else if (restr == 'locked!') restr = 'wrong password~';
+			else restr = 'no password~';
+			return restr;
 		}
 		
 		player.delete = function() {
@@ -216,7 +240,7 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function CharacterControll(trigger, str1, str2){
+function CharacterControll(trigger, str1, str2, str3){
 	if(trigger == undefined || trigger == null || trigger == '') {
 		return Meow() + '請輸入更多資訊';
 	}
@@ -246,9 +270,12 @@ function CharacterControll(trigger, str1, str2){
 				players[i].delete();
 				return '已刪除 ' + trigger + ' 角色資料喵';
 			}
+			else if (str1 == 'unlock') {
+				return player[i].unlock()
+			}
 			else {
 				try {
-					return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
+					return players[i].set(str1.toString().toLowerCase() , str2.toString(), str3.toString());			
 				}
 				catch(err) {
 					return err.toString();
