@@ -223,7 +223,7 @@ function NewCharacter(str) {
 
 function CharacterControll(NAME, str1, str2){
 	for(i=0; i<5; i++) {
-		if(NAME == players[i].getName()){
+		if(NAME.toString() == players[i].getName().toString()){
 			if(str1 == 'status' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
