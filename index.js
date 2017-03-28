@@ -90,7 +90,7 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
-		var name;
+		var name = '';
 		var str, dex, con, pow, app, int, siz, edu;
 		var db;
 		var hp, mp, san;
@@ -216,7 +216,23 @@ function CharacterControll(trigger, str1, str2){
 				players[i].set(trigger, str1.toString().toLowerCase() ,str2.toString().toLowerCase());
 				return '設定 ' + trigger + ' 角色資料: ' + str1 + '=' + str2;			
 			}
-		}									
+		}
+		else if(trigger == 'list' || trigger == '清單'){
+			var tempstr = '角色清單: (max=5)\n';
+			for(i=0; i<5; i++){
+				tempstr += i + '. ' + players[i].getName() + '\n';
+			}
+			return tempstr;
+		}
+		else if(trigger == 'new' || trigger == '建立'){
+			for(i=0; i<5; i++){
+				if(player[i].getName() == ''){
+					player[i].set('name', str1);
+					return '建立角色 ' + str1;
+				}
+			}
+			return '角色上限已滿! (max=5)\n 請刪除不用的角色!';
+		}
 	return '查無此角色';
 	}
 }
