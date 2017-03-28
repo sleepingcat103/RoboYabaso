@@ -119,13 +119,13 @@ var Player = {
 		player.set = function(string, value) {
 			var restr;
 			if(value.charAt(0).toString() == '+') {
-				eval(string + ' = ' + string + '+' + parseInt(value.substr(1,value.length-1)));
+				eval(string + '=' + parseInt(string.trim()) + '+' + parseInt(value.substr(1,value.length-1)));
 			} else if (value.charAt(0).toString() == '-') {
-				eval(string + ' = ' + string + '-' + parseInt(value.substr(1,value.length-1)));
+				eval(string + '=' + parseInt(string.trim()) + '-' + parseInt(value.substr(1,value.length-1)));
 			} else {
-				eval(string + ' =\' ' + value + ' \' ');
+				eval(string + '=\'' + value + '\'');
 			}
-			return string + ' = ' + eval(string);
+			return string + '=' + eval(string);
 		}
 		
 		player.delete = function() {
@@ -248,7 +248,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else {
 				try {
-					return players[i].set(str1.toString().toLowerCase().trim() ,str2.toString().trim());			
+					return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
 				}
 				catch(err) {
 					return err.toString();
