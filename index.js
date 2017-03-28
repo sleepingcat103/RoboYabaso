@@ -251,7 +251,8 @@ function CharacterControll(trigger, str1, str2){
 					return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
 				}
 				catch(err) {
-					return '輸入錯誤';
+					return err.toString();
+					//return '輸入錯誤';
 				}
 			}
 		}
