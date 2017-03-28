@@ -209,6 +209,9 @@ function parseInput(rplyToken, inputStr) {
 ////////////////////////////////////////
 
 function CharacterControll(trigger, str1, str2){
+	if(trigger == undefined || trigger == null || trigger == '') {
+		return Meow() + '請輸入更多資訊';
+	}
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
@@ -228,7 +231,7 @@ function CharacterControll(trigger, str1, str2){
 	//角色設定 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getName()){
-			if(str1 == 'status' || str1 == 'show' || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+			if(str1 == 'status' || str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
