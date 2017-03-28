@@ -111,7 +111,7 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
-			//eval(string + '=' + value);
+			eval(string + '=' + value);
 		}
 		
 		player.delete = function() {
@@ -208,7 +208,7 @@ function parseInput(rplyToken, inputStr) {
 function NewCharacter(str) {
 	for(i=0; i<5; i++) {
 		if(players[i].getName() == ''){
-			//player[i].set('name', str1);
+			player[i].set('name', str);
 			return '建立角色 ' + str;
 		}
 	}
