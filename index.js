@@ -110,6 +110,10 @@ var Player = {
 			return rstr;
 		}
 		
+		player.new = function(value) {
+			name = value;
+		}
+		
 		player.set = function(string, value) {
 			eval(string + ' =\' ' + value + ' \' ');
 		}
