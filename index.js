@@ -131,11 +131,13 @@ var Player = {
 			} else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
+					if(value>99) value=99; 
 				} else if(value.charAt(0).toString() == '-'){
 					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
-				} else {
-					if(value.length == 1){value = '0' + value;}
+					if(value<0 || value == NaN || value==undefined) value=0;
 				}
+				if(value.length == 1){value = '0' + value;}
+				
 				skill_10 = skill_10.substr(0, pos) + value/10 + skill_10.substr(pos+1, skill_10.length-1);
 				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
 				
