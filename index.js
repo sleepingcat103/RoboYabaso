@@ -418,29 +418,33 @@ function CharacterControll(trigger, str1, str2){
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
+function ccb(check,text){
+	
+	return coc6(check,text);
+}	
 function coc6(chack,text){
 	for(i=0;i<5;i++){
 		if(check == players[i].getVal('name')){
-			return players.ccb(text);
+			return players[i].ccb(text);
 		}
 	}
 	
-    let temp = Dice(100);
-    if (text == null ) {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
-	if (temp <= chack) {
-		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
-		else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
+    	let temp = Dice(100);
+    	if (text == null ) {
+		if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
+		if (temp <= chack) {
+			if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
+			else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
+		}
+		else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
+	} else {
+		if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
+		if (temp <= chack) {
+			if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 大成功！';
+			else return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 成功';
+		}
+		else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
 	}
-	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
-    } else {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
-	if (temp <= chack) {
-		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 大成功！';
-		else return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 成功';
-	}
-	else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
-    }
 }  
 
 ////////////////////////////////////////
