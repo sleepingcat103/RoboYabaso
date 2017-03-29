@@ -359,6 +359,7 @@ function CharacterControll(trigger, str1, str2){
 	}
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
+		try(
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
 		
 		for(i=0; i<5; i++) {
@@ -371,6 +372,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 		}
 		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
+		)catch (err) {return err}
 	}
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
@@ -399,7 +401,7 @@ function CharacterControll(trigger, str1, str2){
 	if(trigger == 'list' || trigger == '清單') {
 		var tempstr = '角色清單: (max=5)\n';
 		for(i=0; i<5; i++){
-			tempstr += i + '. ' + players[i].getVal('name') + '\n';
+			tempstr += i + '. ' + players[i].skill_search('name') + '\n';
 		}
 		return tempstr;
 	}
