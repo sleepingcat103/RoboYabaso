@@ -154,9 +154,9 @@ var Player = {
 		}
 		
 		player.status_search = function(string) {
-			var tempstr = player.status_getposition(string);
-			if(tempstr == '-1') return string + '是什麼喵?';
-			else return string + ': ' + player.getVal(tempstr);
+			var temp = player.status_getposition(string);
+			if(temp == '-1') return string + '是什麼喵?';
+			else return string + ': ' + player.getVal(string);
 		}
 		
 		player.status_getposition = function(string) {
@@ -273,7 +273,7 @@ var Player = {
 			else if(temp == '13') { tempstr = status;} 
 			else if(temp == '14') { tempstr = item;} 
 			else {
-				tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
+				tempstr = skill_10.charAt(temp)*10 + skill_01.charAt(temp)*1;
 			}
 			return tempstr;
 		}
