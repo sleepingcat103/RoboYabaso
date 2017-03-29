@@ -230,7 +230,7 @@ var Player = {
 			} else if (string =='克蘇魯神話') { tempstr = 72;
 			} else {
 				for(i=0;i<10;i++) {
-					if(string == other_skill[i]){
+					if(string == other_skills[i]){
 						tempstr = 73+i;
 						break;
 					}
