@@ -336,7 +336,7 @@ function parseInput(rplyToken, inputStr) {
 		return SortIt(inputStr,mainMsg);
 	}
     	//ccb指令開始於此
-	else if (trigger == 'ccb'&& mainMsg[1]<=99) {		
+	else if (trigger == 'ccb') {		
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//choice 指令開始於此
@@ -424,7 +424,11 @@ function ccb(chack,text){
 			return players[i].ccb(text.toString().toLowerCase().trim());
 		}
 	}
-	return coc6(chack,text);
+	if(chack<=99){
+		return coc6(chack,text);
+	}else{
+		return '成功率太高了吧喵~';	
+	}
 }	
 
 function coc6(chack,text){
