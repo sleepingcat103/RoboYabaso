@@ -387,9 +387,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return players[i].status_search(str1.toString().toLowerCase());					
+						return trigger + str1 + players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						return str1 + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
@@ -775,8 +775,7 @@ function Help() {
 		\n 	範例: 吃東西排序 羊肉 牛肉 豬肉\
 		\n 3.占卜功能: 運氣/運勢\
 		\n 	範例: 今日運勢\
-		\n 4.塔羅牌占卜: tarot/塔羅牌/塔羅\
-		\n 5.死亡FLAG: 立Flag/死亡flag\
+		\n 4.死亡FLAG: 立Flag/死亡flag\
 		';			
 }
 
