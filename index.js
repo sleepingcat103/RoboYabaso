@@ -262,7 +262,7 @@ var Player = {
 		
 		player.getVal = function(string) {
 			var tempstr;
-			var temp = player.status_getposition(string.toLowerCase());
+			var temp = player.status_getposition(string);
 			if(temp == '0') {	tempstr = name;}
 			else if(temp == '12') { tempstr = db;} 
 			else if(temp == '13') { tempstr = status;} 
