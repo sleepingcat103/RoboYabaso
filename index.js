@@ -71,6 +71,7 @@ let rplyObj;
 	      }
 	    ]
 	  }
+	  outType = 'text';
   }else{
 	   rplyObj= {
 	    replyToken: rplyToken,
