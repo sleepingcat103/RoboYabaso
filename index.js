@@ -387,8 +387,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return trigger + ': '+ str1 + ' ' + players[i].status_search(str1.toString().toLowerCase());					
+						return trigger + ': '+ str1 + '[' + players[i].status_search(str1.toString().toLowerCase())+ ']';					
 					} else { 
+						let tempstr = players[i].status_search(str1.toString().toLowerCase());
 						return str1 + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
