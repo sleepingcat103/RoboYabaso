@@ -34,6 +34,9 @@ app.post('/', jsonParser, function(req, res) {
   let rplyToken = event.replyToken;
 	
   let rplyVal = null;
+
+  outType = 'text';
+	
   console.log(msg);
   if (type == 'message' && msgType == 'text') {
     try {
@@ -71,7 +74,6 @@ let rplyObj;
 	      }
 	    ]
 	  }
-	  outType = 'text';
   }else{
 	   rplyObj= {
 	    replyToken: rplyToken,
