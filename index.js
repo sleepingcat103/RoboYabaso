@@ -423,7 +423,7 @@ function ccb(chack,text){
 	for(i=0; i<5; i++) {
 		if(chack == players[i].getVal('name')){
 			//return players[i].ccb(text.toString().toLowerCase().trim());
-			val_status = player[i].get(text);
+			val_status = player[i].getVal(text);
 			break;
 		}
 	}
