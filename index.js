@@ -100,14 +100,13 @@ var Player = {
 		player.show = function() {
 			rstr = '+==========================+\n';
 			rstr += name + '\n';
-			rstr += 'STR: ' + str + ' DEX: ' + dex + ' CON: ' + con + '\n';
-			rstr += 'POW: ' + pow + ' APP: ' + app + ' INT: ' + int + '\n';
-			rstr += 'SIZ: ' + siz + ' EDU: ' + edu + ' DB: ' + db + '\n';
+			rstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
+			rstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
+			rstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
 			rstr += '+--------------------------+\n';
-			rstr += 'HP: ' + hp + ' MP: ' + mp + ' SAN: ' + san + '\n';
-			rstr += 'STATUS: ' + status + '\n';
-			rstr += 'ITEM: ' + item + '\n';
-			rstr += 'SKILL: ' + skill + '\n';
+			rstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
+			rstr += 'STATUS: ' + player.getVal('status') + '\n';
+			rstr += 'ITEM: ' + player.getVal('item') + '\n';
 			rstr += '+==========================+\n';
 			return rstr;
 		}
@@ -138,7 +137,7 @@ var Player = {
 		}
 		
 		player.status_search = function(string) {
-			var tempstr = player.skill_getposition(string);
+			var tempstr = player.status_getposition(string);
 			if(tempstr == '-1') return string + '是什麼喵?';
 			else return string + ': ' + player.getVal(tempstr);
 		}
@@ -374,7 +373,6 @@ function CharacterControll(trigger, str1, str2){
 					}					
 				} catch(err) {
 					return err.toString();
-					//return '輸入錯誤';
 				}
 			}
 		}
@@ -382,8 +380,8 @@ function CharacterControll(trigger, str1, str2){
 	//列出所有角色
 	if(trigger == 'list' || trigger == '清單') {
 		var tempstr = '角色清單: (max=5)\n';
-		for(i=0; i<5; i++){
-			tempstr += i + '. ' + players[i].getVal('name') + '\n';
+		for(i=1; i<6; i++){
+			tempstr += i + '. ' + players[i-1].getVal('name') + '\n';
 		}
 		return tempstr;
 	}
