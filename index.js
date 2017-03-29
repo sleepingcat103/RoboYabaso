@@ -97,6 +97,11 @@ var Player = {
 		var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
 		var rstr='';
 		
+		player.debug = function(string){
+			var tempstr = 'san';
+			return player.getVal('san')+' '+player.getVal(tempstr);
+		}
+		
 		player.show = function() {
 			rstr = '+==========================+\n';
 			rstr += name + '\n';
@@ -270,7 +275,7 @@ var Player = {
 			else {
 				tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
 			}
-			return temp;
+			return tempstr;
 		}
 		
 		return player;
@@ -369,6 +374,7 @@ function CharacterControll(trigger, str1, str2){
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
+			if(str1 == 'debug') return players[i].debug();
 			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
