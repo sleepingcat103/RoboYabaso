@@ -117,7 +117,7 @@ var Player = {
 		
 		player.set = function(string, value) {
 			var tempstr;
-			var pos = status_getposition(string);
+			var pos = player.status_getposition(string);
 			if(pos =='-1'){
 				tempstr = string + '是什麼喵?';
 			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
