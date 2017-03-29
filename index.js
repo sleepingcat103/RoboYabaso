@@ -419,6 +419,12 @@ function CharacterControll(trigger, str1, str2){
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
 function coc6(chack,text){
+	for(i=0;i<5;i++){
+		if(check == players[i].getVal('name')){
+			return players.ccb(text);
+		}
+	}
+	
     let temp = Dice(100);
     if (text == null ) {
         if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
