@@ -337,7 +337,7 @@ function parseInput(rplyToken, inputStr) {
 	}
     	//ccb指令開始於此
 	else if (trigger == 'ccb'&& mainMsg[1]<=99) {		
-		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+		return cccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//choice 指令開始於此
 	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
@@ -418,15 +418,14 @@ function CharacterControll(trigger, str1, str2){
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
-function ccb(check,text){
-	try{
-	for(i=0;i<5;i++){
+function cccb(check,text){
+	for(i=0; i<5; i++) {
+		return check;
 		if(check == players[i].getVal('name')){
 			return players[i].getVal('name');
 			//return players[i].ccb(text.toString().toLowerCase().trim());
 		}
 	}
-	}catch(err){return err;}
 	return coc6(check,text);
 }	
 
