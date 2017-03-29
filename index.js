@@ -419,13 +419,16 @@ function CharacterControll(trigger, str1, str2){
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
 function ccb(chack,text){
+	var val_status = chack;
 	for(i=0; i<5; i++) {
 		if(chack == players[i].getVal('name')){
-			return players[i].ccb(text.toString().toLowerCase().trim());
+			//return players[i].ccb(text.toString().toLowerCase().trim());
+			val_status = player[i].get(text);
+			break;
 		}
 	}
-	if(chack<=99){
-		return coc6(chack,text);
+	if(val_status<=99){
+		return coc6(val_status,text);
 	}else{
 		return '成功率太高了吧喵~';	
 	}
