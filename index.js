@@ -124,10 +124,10 @@ var Player = {
 			var tempstr;
 			var pos = player.status_getposition(string);
 			if(pos =='-1'){
-				tempstr = string + '是什麼喵?';
+				tempstr = '是什麼喵?';
 			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
 				eval(string + '=\'' + value + '\'');
-				tempstr = string + '=' + eval(string);
+				tempstr = eval(string);
 			} else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
@@ -141,7 +141,7 @@ var Player = {
 				skill_10 = skill_10.substr(0, pos) + (value-value%10)/10 + skill_10.substr(pos+1, skill_10.length-1);
 				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
 				
-				tempstr = string + '=' + player.getVal(string);
+				tempstr = player.getVal(string);
 			}			
 			return tempstr;
 		}
@@ -157,8 +157,8 @@ var Player = {
 		
 		player.status_search = function(string) {
 			var temp = player.status_getposition(string);
-			if(temp == '-1') return string + '是什麼喵?';
-			else return string + ': ' + player.getVal(string);
+			if(temp == '-1') return '是什麼喵?';
+			else return player.getVal(string);
 		}
 		
 		player.status_getposition = function(string) {
@@ -383,9 +383,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return players[i].status_search(str1.toString().toLowerCase());					
+						return trigger+': '+str1+'['+ players[i].status_search(str1.toString().toLowerCase())+']';					
 					} else { 
-						return trigger + ':' + players[i].status_search(str1.toString().toLowerCase()) + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						return trigger+': '+str1+'['+ players[i].status_search(str1.toString().toLowerCase()) + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString())+'];	
 					}					
 				} catch(err) {
 					return err.toString();
@@ -478,9 +478,9 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 	if(mutiOrNot.toString().match(/\D/)==null ) {
 		if(text2 != null){
 			finalStr= text0 + '次擲骰：\n' + text1 +' ' + text2 + '\n';
-    		} else {
+    	} else {
 			finalStr= text0 + '次擲骰：\n' + text1 +'\n';
-    		}
+    	}
 		if(mutiOrNot>30) return '不支援30次以上的複數擲骰。';
     
 		for (i=1 ; i<=mutiOrNot ;i++){
