@@ -373,7 +373,7 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') return players[i].status_search(str1.toString().toLowerCase());
-					else return players[i].set(str1.toString().toLowerCase() ,str2.toString());			
+					else return trigger + ": " +players[i].set(str1.toString().toLowerCase() ,str2.toString());			
 				}
 				catch(err) {
 					return err.toString();
