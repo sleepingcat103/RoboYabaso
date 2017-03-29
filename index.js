@@ -116,15 +116,27 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
-			var restr;
-			if(value.charAt(0).toString() == '+') {
-				eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-			} else if (value.charAt(0).toString() == '-') {
-				eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
-			} else {
+			var tempstr;
+			var pos = status_getposition(string);
+			if(pos =='-1'){
+				tempstr = string + '是什麼喵?';
+			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
 				eval(string + '=\'' + value + '\'');
-			}
-			return '設定: ' + string + '=' + eval(string);
+				tempstr = string + '=' + eval(string);
+			} else {
+				if(value.charAt(0).toString() == '+'){
+					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
+				} else if(value.charAt(0).toString() == '-'){
+					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
+				} else {
+					if(value.length == 1){value = '0' + value;}
+				}
+				skill_10 = skill_10.substr(0, pos) + value.charAt(0).toString() + skill_10.substr(pos+1, skill_10.length-1);
+				skill_01 = skill_01.substr(0, pos) + value.charAt(1).toString() + skill_01.substr(pos+1, skill_01.length-1);
+				
+				tempstr = string + '=' + player.getVal(string);
+			}			
+			return tempstr;
 		}
 		
 		player.delete = function() {
@@ -250,7 +262,7 @@ var Player = {
 		
 		player.getVal = function(string) {
 			var tempstr;
-			var temp = player.status_getposition(string);
+			var temp = player.status_getposition(string.toLowerCase());
 			if(temp == '0') {	tempstr = name;}
 			else if(temp == '12') { tempstr = db;} 
 			else if(temp == '13') { tempstr = status;} 
@@ -369,7 +381,7 @@ function CharacterControll(trigger, str1, str2){
 					if(str2 == undefined || str2 == null || str2 == '') {						
 						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						//return players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
