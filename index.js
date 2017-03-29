@@ -91,14 +91,11 @@ var Player = {
 		var player = {};
 		
 		var name = '';
-		var str, dex, con, pow, app, int, siz, edu;
-		var db;
-		var hp, mp, san;
-		var item, status, skill;
+		var db='', item='', status='';
 		var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
 		var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
 		var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-		var rstr;
+		var rstr='';
 		
 		player.show = function() {
 			rstr = '+==========================+\n';
@@ -117,53 +114,36 @@ var Player = {
 		
 		player.new = function(value) {
 			name = value;
-			return '成功建立角色 ' + value + ' 請補充他/她的能力值!';
 		}
 		
 		player.set = function(string, value) {
-			var tempstr;
-			var pos = player.skill_getposition(string);
-			if(pos =='-1'){
-				tempstr = string + '是什麼喵?';
-			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
-				eval(string + '=\'' + value + '\'');
-				tempstr = string + '=' + eval(string);
+			var restr;
+			if(value.charAt(0).toString() == '+') {
+				eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
+			} else if (value.charAt(0).toString() == '-') {
+				eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
 			} else {
-				if(value.charAt(0).toString() == '+'){
-					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
-				} else if(value.charAt(0).toString() == '-'){
-					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
-				} else {
-					if(value.length == 1){value = '0' + value;}
-				}
-				skill_10 = skill_10.substr(0, pos) + value.charAt(0).toString() + skill_10.substr(pos+1, skill_10.length-1);
-				skill_01 = skill_01.substr(0, pos) + value.charAt(1).toString() + skill_01.substr(pos+1, skill_01.length-1);
-				
-				tempstr = string + '=' + player.getVal(string);
-			}			
-			return tempstr;
+				eval(string + '=\'' + value + '\'');
+			}
+			return '設定: ' + string + '=' + eval(string);
 		}
 		
 		player.delete = function() {
-			name='';
-			str=''; dex=''; con='';
-			pow=''; app=''; int='';
-			siz=''; edu=''; 
-			db='';
-			hp=''; mp=''; san='';
-			item=''; status=''; skill='';
-
-			rstr='';
-			return '已刪除角色資料喵';
+			var name = '';
+			var db='', item='', status='';
+			var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
+			var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
+			var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
+			var rstr='';
 		}
 		
-		player.skill_search = function(string) {
+		player.status_search = function(string) {
 			var tempstr = player.skill_getposition(string);
 			if(tempstr == '-1') return string + '是什麼喵?';
-			else return player.skill_getVal(tempstr);
+			else return string + ': ' + player.getVal(tempstr);
 		}
 		
-		player.skill_getposition = function(string) {
+		player.status_getposition = function(string) {
 					//name=0
 					//db=12
 					//status=13
@@ -268,12 +248,14 @@ var Player = {
 			return tempstr;
 		}
 		
+		
 		player.getVal = function(string) {
 			var tempstr;
-			if(string == '0') {	tempstr = name;}
-			else if(string == '12') { tempstr = db;} 
-			else if(string == '13') { tempstr = status;} 
-			else if(string == '14') { tempstr = item;} 
+			var temp = player.status_getposition(string);
+			if(temp == '0') {	tempstr = name;}
+			else if(temp == '12') { tempstr = db;} 
+			else if(temp == '13') { tempstr = status;} 
+			else if(temp == '14') { tempstr = item;} 
 			else {
 				tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
 			}
@@ -359,36 +341,36 @@ function CharacterControll(trigger, str1, str2){
 	}
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
-		try(
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
 		
 		for(i=0; i<5; i++) {
-			if(players[i].skill_search('name') == str1) return '已經有同名的角色了!';
+			if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
 		}
 		
 		for(i=0; i<5; i++) {
-			if(players[i].skill_search('name') == '') {
-				return players[i].new(str1);
+			if(players[i].getVal('name') == '') {
+				players[i].set('name', str1);
+				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 			}
 		}
 		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
-		)catch (err) {return err}
 	}
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
-		if(trigger == players[i].skill_search('name')){
+		if(trigger == players[i].getVal('name')){
 			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
-				return players[i].delete();
+				players[i].delete();
+				return '已刪除 ' + trigger + ' 角色資料喵';
 			}
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return players[i].skill_search(str1.toString().toLowerCase());					
+						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						//return players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
@@ -401,7 +383,7 @@ function CharacterControll(trigger, str1, str2){
 	if(trigger == 'list' || trigger == '清單') {
 		var tempstr = '角色清單: (max=5)\n';
 		for(i=0; i<5; i++){
-			tempstr += i + '. ' + players[i].skill_search('name') + '\n';
+			tempstr += i + '. ' + players[i].getVal('name') + '\n';
 		}
 		return tempstr;
 	}
