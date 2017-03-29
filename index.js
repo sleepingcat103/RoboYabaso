@@ -420,8 +420,8 @@ function CharacterControll(trigger, str1, str2){
 ////////////////////////////////////////
 function ccb(check,text){
 	for(i=0;i<5;i++){
-		if(check == players[i].getVal('name')){
-			return players[i].ccb(text);
+		if(check.toString() == players[i].getVal('name')){
+			return players[i].ccb(text.toString().toLowerCase());
 		}
 	}
 	
