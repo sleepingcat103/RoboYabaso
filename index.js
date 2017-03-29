@@ -339,6 +339,10 @@ function parseInput(rplyToken, inputStr) {
 	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
 		return choice(inputStr,mainMsg);
 	}
+	//tarot 指令
+	else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {	
+		return NomalDrawTarot();
+	}	
 	//普通ROLL擲骰判定
 	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {		
 		return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
@@ -383,9 +387,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return trigger+': '+str1+'['+ players[i].status_search(str1.toString().toLowerCase())+']';					
+						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						return trigger+': '+str1+'['+ players[i].status_search(str1.toString().toLowerCase()) + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString())+'];	
+						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
@@ -701,10 +705,14 @@ function BStyleFlagSCRIPTS() {
         }
 	
 	
-function randomLuck(TEXT) {
-	let rplyArr = ['超大吉','大吉','大吉','中吉','中吉','中吉','小吉','小吉','小吉','小吉','凶','凶','凶','大凶','大凶','你還是，不要知道比較好','這應該不關我的事'];
-	return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-}
+       function randomLuck(TEXT) {
+           let rplyArr = ['超大吉','大吉','大吉','中吉','中吉','中吉','小吉','小吉','小吉','小吉','凶','凶','凶','大凶','大凶','你還是，不要知道比較好','這應該不關我的事'];
+	       return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        }
+
+////////////////////////////////////////
+//////////////// Others
+////////////////////////////////////////
 
 function SortIt(input,mainMsg) {   
  
@@ -716,13 +724,17 @@ function SortIt(input,mainMsg) {
         a[randomIndex] = a[i];
         a[i] = itemAtIndex;
     }
-     return mainMsg[0] + ' → ['+ a + ']' ;
+     	return mainMsg[0] + ' → ['+ a + ']' ;
  }
 
 function choice(input,str) {
 	let a = input.replace(str[0], '').match(/\S+/ig);
 	return str[0] + '['+ a + '] → ' + a[Dice(a.length)-1];
 }
+
+////////////////////////////////////////
+//////////////// Help
+////////////////////////////////////////
 
 function Help() {
 	return '【擲骰BOT】 貓咪改\
