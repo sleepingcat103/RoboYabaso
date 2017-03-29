@@ -120,15 +120,27 @@ var Player = {
 		}
 		
 		player.set = function(string, value) {
-			var restr;
-			if(value.charAt(0).toString() == '+') {
-				eval(string + '=parseInt(' + string + ')+parseInt(' + value.substr(1,value.length-1) + ')');
-			} else if (value.charAt(0).toString() == '-') {
-				eval(string + '=parseInt(' + string + ')-parseInt(' + value.substr(1,value.length-1) + ')');
-			} else {
+			var tempstr;
+			var pos = player.getposition(string);
+			if(pos =='-1'){
+				tempstr = string + '是什麼喵?';
+			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
 				eval(string + '=\'' + value + '\'');
-			}
-			return '設定: ' + string + '=' + eval(string);
+				tempstr = string + '=' + eval(string);
+			} else {
+				if(value.charAt(0).toString() == '+'){
+					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
+				} else if(value.charAt(0).toString() == '-'){
+					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
+				} else {
+					if(value.length == 1){value = '0' + value;}
+				}
+				skill_10 = skill_10.substr(0, pos) + value.charAt(0).toString() + skill_10.substr(pos+1, skill_10.length-1);
+				skill_01 = skill_01.substr(0, pos) + value.charAt(1).toString() + skill_01.substr(pos+1, skill_01.length-1);
+				
+				tempstr = string + '=' + player.status_getVal(string);
+			}			
+			return tempstr;
 		}
 		
 		player.delete = function() {
@@ -143,11 +155,7 @@ var Player = {
 			rstr='';
 		}
 		
-		player.getVal = function(string) {
-			return eval(string+'.trim()');
-		}
-		
-				player.skill_search = function(string) {
+		player.skill_search = function(string) {
 			var tempstr = player.skill_getposition(string);
 			if(tempstr == '-1') return string + '是什麼喵?';
 			else return string + ': ' + player.skill_getVal(tempstr);
@@ -258,7 +266,7 @@ var Player = {
 			return tempstr;
 		}
 		
-		player.skill_getVal = function(string) {
+		player.getVal = function(string) {
 			var tempstr;
 			if(string == '0') {	tempstr = name;}
 			else if(string == '12') { tempstr = db;} 
