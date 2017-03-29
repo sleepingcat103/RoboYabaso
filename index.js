@@ -341,6 +341,7 @@ function parseInput(rplyToken, inputStr) {
 ////////////////////////////////////////
 
 function CharacterControll(trigger, str1, str2){
+	try {
 	if(trigger == undefined || trigger == null || trigger == '') {
 		return Meow() + '請輸入更多資訊';
 	}
@@ -391,6 +392,9 @@ function CharacterControll(trigger, str1, str2){
 		return tempstr;
 	}
 	return '查無此角色';
+	}catch(err){
+		return err;
+	}
 }
 
 
