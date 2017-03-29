@@ -418,15 +418,15 @@ function CharacterControll(trigger, str1, str2){
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
-function cccb(check,text){
+function cccb(str1,str2){
 	for(i=0; i<5; i++) {
-		return check;
-		if(check == players[i].getVal('name')){
+
+		if(str1 == players[i].getVal('name')){
 			return players[i].getVal('name');
 			//return players[i].ccb(text.toString().toLowerCase().trim());
 		}
 	}
-	return coc6(check,text);
+	return coc6(str1,str2);
 }	
 
 function coc6(chack,text){
