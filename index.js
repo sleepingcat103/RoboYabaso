@@ -146,6 +146,10 @@ var Player = {
 			return tempstr;
 		}
 		
+		player.ccb = function(string) {
+			return coc6(player.getVal(string), string);
+		}
+		
 		player.delete = function() {
 			var name = '';
 			var db='', item='', status='';
@@ -377,6 +381,7 @@ function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
 			if(str1 == 'debug') return players[i].debug();
+			if(str1 == 'ccb') return players[i].ccb(str1);
 			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
