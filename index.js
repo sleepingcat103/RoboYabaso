@@ -385,7 +385,7 @@ function CharacterControll(trigger, str1, str2){
 					if(str2 == undefined || str2 == null || str2 == '') {						
 						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						return trigger + ':' + tempstr + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						return trigger + ':' + players[i].status_search(str1.toString().toLowerCase()) + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
@@ -478,9 +478,9 @@ function nomalDiceRoller(inputStr,text0,text1,text2){
 	if(mutiOrNot.toString().match(/\D/)==null ) {
 		if(text2 != null){
 			finalStr= text0 + '次擲骰：\n' + text1 +' ' + text2 + '\n';
-    	} else {
+    		} else {
 			finalStr= text0 + '次擲骰：\n' + text1 +'\n';
-    	}
+    		}
 		if(mutiOrNot>30) return '不支援30次以上的複數擲骰。';
     
 		for (i=1 ; i<=mutiOrNot ;i++){
