@@ -5,6 +5,8 @@ var app = express();
 
 var jsonParser = bodyParser.json();
 
+var outType = 'text';
+
 var options = {
   host: 'api.line.me',
   port: 443,
@@ -30,7 +32,7 @@ app.post('/', jsonParser, function(req, res) {
   let msgType = event.message.type;
   let msg = event.message.text;
   let rplyToken = event.replyToken;
-
+	
   let rplyVal = null;
   console.log(msg);
   if (type == 'message' && msgType == 'text') {
@@ -43,7 +45,7 @@ app.post('/', jsonParser, function(req, res) {
   }
 
   if (rplyVal) {
-    replyMsgToLine(rplyToken, rplyVal); 
+    replyMsgToLine(outType,rplyToken, rplyVal); 
   } else {
     console.log('Do not trigger'); 
   }
@@ -55,15 +57,30 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-function replyMsgToLine(rplyToken, rplyVal) {
-	let rplyObj = {
-    replyToken: rplyToken,
-    messages: [
-      {
-        type: "text",
-        text: rplyVal
-      }
-    ]
+function replyMsgToLine(outType,rplyToken, rplyVal) {
+	
+let rplyObj;
+  if(outType == 'image'){
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "image",
+		originalContentUrl: rplyVal,
+		previewImageUrl: rplyVal
+	      }
+	    ]
+	  }
+  }else{
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "text",
+		text: rplyVal
+	      }
+	    ]
+	  }
   }
 
   let rplyJson = JSON.stringify(rplyObj); 
@@ -338,6 +355,11 @@ function parseInput(rplyToken, inputStr) {
     	//ccb指令開始於此
 	else if (trigger == 'ccb') {		
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+	}
+    	//生科火大圖指令開始於此
+	else if (trigger == '生科') {		
+		outType = 'image';
+		return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//choice 指令開始於此
 	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
