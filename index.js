@@ -160,7 +160,7 @@ var Player = {
 		player.skill_search = function(string) {
 			var tempstr = player.skill_getposition(string);
 			if(tempstr == '-1') return string + '是什麼喵?';
-			else return string + ': ' + player.skill_getVal(tempstr);
+			else return player.skill_getVal(tempstr);
 		}
 		
 		player.skill_getposition = function(string) {
@@ -362,11 +362,11 @@ function CharacterControll(trigger, str1, str2){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
 		
 		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
+			if(players[i].skill_search('name') == str1) return '已經有同名的角色了!';
 		}
 		
 		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == '') {
+			if(players[i].skill_search('name') == '') {
 				return players[i].new(str1);
 			}
 		}
@@ -374,7 +374,7 @@ function CharacterControll(trigger, str1, str2){
 	}
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
-		if(trigger == players[i].getVal('name')){
+		if(trigger == players[i].skill_search('name')){
 			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
