@@ -95,8 +95,8 @@ var Player = {
 		var db;
 		var hp, mp, san;
 		var item, status, skill;
-		var skill_10 = '8601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-		var skill_01 = '5505505015000011000000005055555550010111111111111110500550055055000555500000000000';
+		var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
+		var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
 		var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
 		var rstr;
 		
@@ -154,84 +154,103 @@ var Player = {
 		}
 		
 		player.skill_getposition = function(string) {
+					//name=0
+					//db=12
+					//status=13
+					//item=14
 			var tempstr = '-1';
-			if (string =='靈感') { tempstr = 0;
-			} else if (string =='知識') { tempstr = 1;
-			} else if (string =='信用') { tempstr = 2;
-			} else if (string =='魅惑') { tempstr = 3;
-			} else if (string =='恐嚇') { tempstr = 4;
-			} else if (string =='說服') { tempstr = 5;
-			} else if (string =='話術') { tempstr = 6;
-			} else if (string =='心理學') { tempstr = 7;
-			} else if (string =='心理分析') { tempstr = 8;
-			} else if (string =='調查') { tempstr = 9;
-			} else if (string =='聆聽') { tempstr = 10;
-			} else if (string =='圖書館使用') { tempstr = 11;
-			} else if (string =='追蹤') { tempstr = 12;
-			} else if (string =='急救') { tempstr = 13;
-			} else if (string =='醫學') { tempstr = 14;
-			} else if (string =='鎖匠') { tempstr = 15;
-			} else if (string =='手上功夫') { tempstr = 16;
-			} else if (string =='隱密行動') { tempstr = 17;
-			} else if (string =='生存') { tempstr = 18;
-			} else if (string =='閃避') { tempstr = 19;
-			} else if (string =='攀爬') { tempstr = 20;
-			} else if (string =='跳躍') { tempstr = 21;
-			} else if (string =='游泳') { tempstr = 22;
-			} else if (string =='駕駛') { tempstr = 23;
-			} else if (string =='領航') { tempstr = 24;
-			} else if (string =='騎術') { tempstr = 25;
-			} else if (string =='自然學') { tempstr = 26;
-			} else if (string =='神秘學') { tempstr = 27;
-			} else if (string =='歷史') { tempstr = 28;
-			} else if (string =='會計') { tempstr = 29;
-			} else if (string =='估價') { tempstr = 30;
-			} else if (string =='法律') { tempstr = 31;
-			} else if (string =='喬裝') { tempstr = 32;
-			} else if (string =='電腦使用') { tempstr = 33;
-			} else if (string =='電器維修') { tempstr = 34;
-			} else if (string =='機械維修') { tempstr = 35;
-			} else if (string =='重機械操作') { tempstr = 36;
-			} else if (string =='數學') { tempstr = 37;
-			} else if (string =='化學') { tempstr = 38;
-			} else if (string =='藥學') { tempstr = 39;
-			} else if (string =='人類學') { tempstr = 40;
-			} else if (string =='考古學') { tempstr = 41;
-			} else if (string =='電子學') { tempstr = 42;
-			} else if (string =='物理學') { tempstr = 43;
-			} else if (string =='工程學') { tempstr = 44;
-			} else if (string =='密碼學') { tempstr = 45;
-			} else if (string =='天文學') { tempstr = 46;
-			} else if (string =='地質學') { tempstr = 47;
-			} else if (string =='生物學') { tempstr = 48;
-			} else if (string =='動物學') { tempstr = 49;
-			} else if (string =='植物學') { tempstr = 50;
-			} else if (string =='物證學') { tempstr = 51;
-			} else if (string =='投擲') { tempstr = 52;
-			} else if (string =='鬥毆') { tempstr = 53;
-			} else if (string =='劍') { tempstr = 54;
-			} else if (string =='矛') { tempstr = 55;
-			} else if (string =='斧頭') { tempstr = 56;
-			} else if (string =='絞殺') { tempstr = 57;
-			} else if (string =='電鋸') { tempstr = 58;
-			} else if (string =='連枷') { tempstr = 59;
-			} else if (string =='鞭子') { tempstr = 60;
-			} else if (string =='弓箭') { tempstr = 61;
-			} else if (string =='手槍') { tempstr = 62;
-			} else if (string =='步槍') { tempstr = 63;
-			} else if (string =='衝鋒槍') { tempstr = 64;
-			} else if (string =='機關槍') { tempstr = 65;
-			} else if (string =='重武器') { tempstr = 66;
-			} else if (string =='火焰噴射器') { tempstr = 67;
-			} else if (string =='美術') { tempstr = 68;
-			} else if (string =='演技') { tempstr = 69;
-			} else if (string =='偽造') { tempstr = 70;
-			} else if (string =='攝影') { tempstr = 71;
-			} else if (string =='克蘇魯神話') { tempstr = 72;
+			if (string =='name') { tempstr = 0;
+			} else if (string =='str') { tempstr = 1;
+			} else if (string =='dex') { tempstr = 2;
+			} else if (string =='con') { tempstr = 3;
+			} else if (string =='pow') { tempstr = 4;
+			} else if (string =='app') { tempstr = 5;
+			} else if (string =='int') { tempstr = 6;
+			} else if (string =='siz') { tempstr = 7;
+			} else if (string =='edu') { tempstr = 8;
+			} else if (string =='hp') { tempstr = 9;
+			} else if (string =='mp') { tempstr = 10;
+			} else if (string =='san') { tempstr = 11;
+			} else if (string =='db') { tempstr = 12;
+			} else if (string =='status') { tempstr = 13;
+			} else if (string =='item') { tempstr = 14;
+			} else if (string =='靈感') { tempstr = 15;
+			} else if (string =='知識') { tempstr = 16;
+			} else if (string =='信用') { tempstr = 17;
+			} else if (string =='魅惑') { tempstr = 18;
+			} else if (string =='恐嚇') { tempstr = 19;
+			} else if (string =='說服') { tempstr = 20;
+			} else if (string =='話術') { tempstr = 21;
+			} else if (string =='心理學') { tempstr = 22;
+			} else if (string =='心理分析') { tempstr = 23;
+			} else if (string =='調查') { tempstr = 24;
+			} else if (string =='聆聽') { tempstr = 25;
+			} else if (string =='圖書館使用') { tempstr = 26;
+			} else if (string =='追蹤') { tempstr = 27;
+			} else if (string =='急救') { tempstr = 28;
+			} else if (string =='醫學') { tempstr = 29;
+			} else if (string =='鎖匠') { tempstr = 30;
+			} else if (string =='手上功夫') { tempstr = 31;
+			} else if (string =='隱密行動') { tempstr = 32;
+			} else if (string =='生存') { tempstr = 33;
+			} else if (string =='閃避') { tempstr = 34;
+			} else if (string =='攀爬') { tempstr = 35;
+			} else if (string =='跳躍') { tempstr = 36;
+			} else if (string =='游泳') { tempstr = 37;
+			} else if (string =='駕駛') { tempstr = 38;
+			} else if (string =='領航') { tempstr = 39;
+			} else if (string =='騎術') { tempstr = 40;
+			} else if (string =='自然學') { tempstr = 41;
+			} else if (string =='神秘學') { tempstr = 42;
+			} else if (string =='歷史') { tempstr = 43;
+			} else if (string =='會計') { tempstr = 44;
+			} else if (string =='估價') { tempstr = 45;
+			} else if (string =='法律') { tempstr = 46;
+			} else if (string =='喬裝') { tempstr = 47;
+			} else if (string =='電腦使用') { tempstr = 48;
+			} else if (string =='電器維修') { tempstr = 49;
+			} else if (string =='機械維修') { tempstr = 50;
+			} else if (string =='重機械操作') { tempstr = 51;
+			} else if (string =='數學') { tempstr = 52;
+			} else if (string =='化學') { tempstr = 53;
+			} else if (string =='藥學') { tempstr = 54;
+			} else if (string =='人類學') { tempstr = 55;
+			} else if (string =='考古學') { tempstr = 56;
+			} else if (string =='電子學') { tempstr = 57;
+			} else if (string =='物理學') { tempstr = 58;
+			} else if (string =='工程學') { tempstr = 59;
+			} else if (string =='密碼學') { tempstr = 60;
+			} else if (string =='天文學') { tempstr = 61;
+			} else if (string =='地質學') { tempstr = 62;
+			} else if (string =='生物學') { tempstr = 63;
+			} else if (string =='動物學') { tempstr = 64;
+			} else if (string =='植物學') { tempstr = 65;
+			} else if (string =='物證學') { tempstr = 66;
+			} else if (string =='投擲') { tempstr = 67;
+			} else if (string =='鬥毆') { tempstr = 68;
+			} else if (string =='劍') { tempstr = 69;
+			} else if (string =='矛') { tempstr = 70;
+			} else if (string =='斧頭') { tempstr = 71;
+			} else if (string =='絞殺') { tempstr = 72;
+			} else if (string =='電鋸') { tempstr = 73;
+			} else if (string =='連枷') { tempstr = 74;
+			} else if (string =='鞭子') { tempstr = 75;
+			} else if (string =='弓箭') { tempstr = 76;
+			} else if (string =='手槍') { tempstr = 77;
+			} else if (string =='步槍') { tempstr = 78;
+			} else if (string =='衝鋒槍') { tempstr = 79;
+			} else if (string =='機關槍') { tempstr = 80;
+			} else if (string =='重武器') { tempstr = 81;
+			} else if (string =='火焰噴射器') { tempstr = 82;
+			} else if (string =='美術') { tempstr = 83;
+			} else if (string =='演技') { tempstr = 84;
+			} else if (string =='偽造') { tempstr = 85;
+			} else if (string =='攝影') { tempstr = 86;
+			} else if (string =='克蘇魯神話') { tempstr = 87;
 			} else {
 				for(i=0;i<10;i++) {
 					if(string == other_skills[i]){
-						tempstr = 73+i;
+						tempstr = 88+i;
 						break;
 					}
 				}
@@ -241,7 +260,13 @@ var Player = {
 		
 		player.skill_getVal = function(string) {
 			var tempstr;
-			tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
+			if(string == '0') {	tempstr = name;}
+			else if(string == '12') { tempstr = db;} 
+			else if(string == '13') { tempstr = status;} 
+			else if(string == '14') { tempstr = item;} 
+			else {
+				tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
+			}
 			return tempstr;
 		}
 		
@@ -353,7 +378,7 @@ function CharacterControll(trigger, str1, str2){
 					if(str2 == undefined || str2 == null || str2 == '') {						
 						return players[i].skill_search(str1.toString().toLowerCase());					
 					} else { 
-						return players[i].set(str1.toString().toLowerCase() ,str2.toString());	
+						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
