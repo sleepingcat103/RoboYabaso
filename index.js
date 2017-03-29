@@ -270,7 +270,7 @@ var Player = {
 			else {
 				tempstr = skill_10.charAt(string)*10 + skill_01.charAt(string)*1;
 			}
-			return tempstr;
+			return temp;
 		}
 		
 		return player;
