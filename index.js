@@ -350,7 +350,6 @@ function parseInput(rplyToken, inputStr) {
 ////////////////////////////////////////
 
 function CharacterControll(trigger, str1, str2){
-	var tempstr;
 	if(trigger == undefined || trigger == null || trigger == '') {
 		return Meow() + '請輸入更多資訊';
 	}
@@ -386,7 +385,6 @@ function CharacterControll(trigger, str1, str2){
 					if(str2 == undefined || str2 == null || str2 == '') {						
 						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						tempstr = players[i].status_search(str1.toString().toLowerCase();
 						return trigger + ':' + tempstr + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
