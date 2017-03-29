@@ -419,15 +419,17 @@ function CharacterControll(trigger, str1, str2){
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
 function ccb(check,text){
+	try{
 	for(i=0;i<5;i++){
 		if(check == players[i].getVal('name')){
 			return players[i].getVal('name');
 			//return players[i].ccb(text.toString().toLowerCase().trim());
 		}
 	}
-	
+	}catch(err){return err;}
 	return coc6(check,text);
 }	
+
 function coc6(chack,text){
 
     	let temp = Dice(100);
