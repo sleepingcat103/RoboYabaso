@@ -381,7 +381,7 @@ function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
 			if(str1 == 'debug') return players[i].debug();
-			if(str1 == 'ccb') return players[i].ccb(str2);
+			if(str1 == 'ccb') return players[i].ccb(str2.toString().toLowerCase());
 			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
