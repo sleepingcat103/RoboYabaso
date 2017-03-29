@@ -131,8 +131,8 @@ var Player = {
 				} else {
 					if(value.length == 1){value = '0' + value;}
 				}
-				skill_10 = skill_10.substr(0, pos) + value%10 + skill_10.substr(pos+1, skill_10.length-1);
-				skill_01 = skill_01.substr(0, pos) + value/10 + skill_01.substr(pos+1, skill_01.length-1);
+				skill_10 = skill_10.substr(0, pos) + value/10 + skill_10.substr(pos+1, skill_10.length-1);
+				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
 				
 				tempstr = string + '=' + player.getVal(string);
 			}			
