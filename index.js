@@ -98,8 +98,8 @@ var Player = {
 		var rstr='';
 		
 		player.debug = function(string){
-			var tempstr ;
-			return skill_10 + '\n ' + skill_01;
+			//var tempstr = 'san';
+			return skill_10 + '\n' + skill_01;
 		}
 		
 		player.show = function() {
@@ -124,10 +124,10 @@ var Player = {
 			var tempstr;
 			var pos = player.status_getposition(string);
 			if(pos =='-1'){
-				tempstr = '是什麼喵?';
+				tempstr = string + '是什麼喵?';
 			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
 				eval(string + '=\'' + value + '\'');
-				tempstr = eval(string);
+				tempstr = string + '=' + eval(string);
 			} else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
@@ -141,7 +141,7 @@ var Player = {
 				skill_10 = skill_10.substr(0, pos) + value/10 + skill_10.substr(pos+1, skill_10.length-1);
 				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
 				
-				tempstr = player.getVal(string);
+				tempstr = string + '=' + player.getVal(string);
 			}			
 			return tempstr;
 		}
@@ -354,7 +354,6 @@ function parseInput(rplyToken, inputStr) {
 ////////////////////////////////////////
 
 function CharacterControll(trigger, str1, str2){
-	var tempstr;
 	if(trigger == undefined || trigger == null || trigger == '') {
 		return Meow() + '請輸入更多資訊';
 	}
@@ -388,10 +387,9 @@ function CharacterControll(trigger, str1, str2){
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return trigger + ': ' + str1 + '[' + players[i].status_search(str1.toString().toLowerCase()) + ']';					
+						return players[i].status_search(str1.toString().toLowerCase());					
 					} else { 
-						tempstr = players[i].status_search(str1.toString().toLowerCase();
-						return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString()) + ']';	
+						return trigger + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString());	
 					}					
 				} catch(err) {
 					return err.toString();
