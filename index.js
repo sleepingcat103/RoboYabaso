@@ -421,9 +421,9 @@ function CharacterControll(trigger, str1, str2){
 function ccb(chack,text){
 	var val_status = chack;
 	for(i=0; i<5; i++) {
-		if(chack == players[i].getVal('name')){
+		if(val_status.toString() == players[i].getVal('name')){
 			//return players[i].ccb(text.toString().toLowerCase().trim());
-			val_status = player[i].getVal(text);
+			val_status = player[i].getVal(text.toString().toLowerCase().trim());
 			break;
 		}
 	}
