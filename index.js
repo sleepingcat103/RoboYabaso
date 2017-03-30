@@ -171,12 +171,12 @@ var Player = {
 		}
 		
 		player.delete = function() {
-			var name = '';
-			var db='', item='', status='';
-			var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-			var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
-			var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-			var rstr='';
+			name = '';
+			db='', item='', status='';
+			skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
+			skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
+			other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
+			rstr='';
 		}
 		
 		player.output = function() {
@@ -201,6 +201,7 @@ var Player = {
 			tempstr[4] = skill_10;
 			tempstr[5] = skill_01;
 			for(i=0; i<10; i++) { tempstr[6+i] = other_skills[i]; }
+			return name;
 		}
 		
 		player.status_search = function(string) {
@@ -413,39 +414,39 @@ function CharacterControll(trigger, str1, str2){
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
-		
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
-		}
-		
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == '') {
-				players[i].new(str1);
-				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+		if(str2 == undefined || str2 == null || str2 == '') {
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
 			}
-		}
-		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
-	}
-	
-	if(trigger == 'input') {
-		var newName;
-		newName = str1.substr(0,str1.indexOf(';'));
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == newName) return '已經有同名的角色了!';
-		}
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == '') {
-				players[i].input(str1.trim());
-				return '成功建立角色 ' + str1;
+
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == '') {
+					players[i].new(str1);
+					return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+				}
 			}
+			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
+		} else {
+			var newName;
+			newName = str1.substr(0,str1.indexOf(';'));
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == newName) return '已經有同名的角色了!';
+			}
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == '') {
+					//players[i].input(str1.trim());
+					return '成功建立角色 ' + players[i].input(str1.trim());
+				}
+			}
+			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 		}
-		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 	}
+
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
 			if(str1 == 'debug'){ 
-				return players[i].debug();
+				return players[1].show();
 			}
 			else if(str1 == 'output'){ 
 				return players[i].output();
