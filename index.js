@@ -231,7 +231,18 @@ san'+': '+player_status[14]+'\n'+'\
 演技'+': '+player_status[84]+'\n'+'\
 偽造'+': '+player_status[85]+'\n'+'\
 攝影'+': '+player_status[86]+'\n'+'\
-克蘇魯神話'+': '+player_status[87];
+克蘇魯神話'+': '+player_status[87]+'\n';
+tempstr = tempstr + player_status[98]+': '+player_status[88]+'\n';
+tempstr = tempstr + player_status[99]+': '+player_status[89]+'\n';
+tempstr = tempstr + player_status[100]+': '+player_status[90]+'\n';
+tempstr = tempstr + player_status[101]+': '+player_status[91]+'\n';
+tempstr = tempstr + player_status[102]+': '+player_status[92]+'\n';
+tempstr = tempstr + player_status[103]+': '+player_status[93]+'\n';
+tempstr = tempstr + player_status[104]+': '+player_status[94]+'\n';
+tempstr = tempstr + player_status[105]+': '+player_status[95]+'\n';
+tempstr = tempstr + player_status[106]+': '+player_status[96]+'\n';
+tempstr = tempstr + player_status[107]+': '+player_status[97];
+			
 			return tempstr;
 		}
 		
