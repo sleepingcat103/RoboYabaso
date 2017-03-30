@@ -120,8 +120,8 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
 20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
 10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
-0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'undefined',	'undefined','\
-undefined',	'undefined',	'undefined',	'undefined',	'undefined', 	'undefined',	'undefined',	'undefined'];
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'無',	'無','\
+無',	'無',	'無',	'無',	'無', 	'無',	'無',	'無'];
 			
 		player.debug = function(string){
 			//var tempstr = 'san';
@@ -274,7 +274,7 @@ tempstr = tempstr + player_status[107]+': '+player_status[97];
 		
 		player.addskill = function(string) {
 			for(i=0;i<10;i++){
-				if(player_status[98+i] == 'undefined') {
+				if(player_status[98+i] == '無') {
 					player.player_status[98+i]=string; 
 					return string + ' 新增成功!';
 				}
@@ -286,7 +286,7 @@ tempstr = tempstr + player_status[107]+': '+player_status[97];
 			for(i=0;i<10;i++){
 				if(player_status[98+i] == string) {
 					player.set(string,0);
-					player.player_status[98+i]='undefined'; 
+					player.player_status[98+i]='無'; 
 					return string + ' 技能已刪除!';
 				}
 			}
@@ -308,8 +308,8 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
 20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
 10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
-0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'undefined',	'undefined','\
-undefined',	'undefined',	'undefined',	'undefined',	'undefined', 	'undefined',	'undefined',	'undefined'];
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'無',	'無','\
+無',	'無',	'無',	'無',	'無', 	'無',	'無',	'無'];
 		}
 		
 		player.output = function() {
