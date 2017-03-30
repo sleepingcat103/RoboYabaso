@@ -504,7 +504,7 @@ function parseInput(rplyToken, inputStr) {
 	//ccd指令開始於此
 	else if (trigger == 'ccd') {
 		outType = 'ccd';
-		let re_msg = event.source.userId;
+		let re_msg = event.source.userId + '\n' + event.replyToken;
 		return re_msg;//ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
     	//生科火大圖指令開始於此
