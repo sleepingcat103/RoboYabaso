@@ -5,6 +5,8 @@ var app = express();
 
 var jsonParser = bodyParser.json();
 
+var outType = 'text';
+
 var options = {
   host: 'api.line.me',
   port: 443,
@@ -30,8 +32,11 @@ app.post('/', jsonParser, function(req, res) {
   let msgType = event.message.type;
   let msg = event.message.text;
   let rplyToken = event.replyToken;
-
+	
   let rplyVal = null;
+
+  outType = 'text';
+	
   console.log(msg);
   if (type == 'message' && msgType == 'text') {
     try {
@@ -43,7 +48,7 @@ app.post('/', jsonParser, function(req, res) {
   }
 
   if (rplyVal) {
-    replyMsgToLine(rplyToken, rplyVal); 
+    replyMsgToLine(outType,rplyToken, rplyVal); 
   } else {
     console.log('Do not trigger'); 
   }
@@ -55,15 +60,30 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-function replyMsgToLine(rplyToken, rplyVal) {
-	let rplyObj = {
-    replyToken: rplyToken,
-    messages: [
-      {
-        type: "text",
-        text: rplyVal
-      }
-    ]
+function replyMsgToLine(outType,rplyToken, rplyVal) {
+	
+let rplyObj;
+  if(outType == 'image'){
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "image",
+		originalContentUrl: rplyVal,
+		previewImageUrl: rplyVal
+	      }
+	    ]
+	  }
+  }else{
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "text",
+		text: rplyVal
+	      }
+	    ]
+	  }
   }
 
   let rplyJson = JSON.stringify(rplyObj); 
@@ -159,6 +179,30 @@ var Player = {
 			var rstr='';
 		}
 		
+		player.output = function() {
+			var tempstr;
+			tempstr = name + ';';
+			tempstr += db + ';';
+			tempstr += item + ';';
+			tempstr += status + ';';
+			tempstr += skill_10 + ';';
+			tempstr += skill_01 + ';';
+			for(i=0; i<10; i++) { tempstr += other_skills[i] + ';'; }
+			
+			return tempstr;
+		}
+		
+		player.input = function(string) {
+			var tempstr = string.split(';');
+			tempstr[0] = name;
+			tempstr[1] = db;
+			tempstr[2] = item;
+			tempstr[3] = status;
+			tempstr[4] = skill_10;
+			tempstr[5] = skill_01;
+			for(i=0; i<10; i++) { tempstr[6+i] = other_skills[i]; }
+		}
+		
 		player.status_search = function(string) {
 			var temp = player.status_getposition(string);
 			if(temp == '-1') return '是什麼喵?';
@@ -197,15 +241,15 @@ var Player = {
 			} else if (string =='心理分析') { tempstr = 23;
 			} else if (string =='調查') { tempstr = 24;
 			} else if (string =='聆聽') { tempstr = 25;
-			} else if (string =='圖書館使用') { tempstr = 26;
+			} else if (string =='圖書館使用' || string =='圖書館') { tempstr = 26;
 			} else if (string =='追蹤') { tempstr = 27;
 			} else if (string =='急救') { tempstr = 28;
 			} else if (string =='醫學') { tempstr = 29;
-			} else if (string =='鎖匠') { tempstr = 30;
+			} else if (string =='鎖匠' || string =='開鎖') { tempstr = 30;
 			} else if (string =='手上功夫') { tempstr = 31;
 			} else if (string =='隱密行動') { tempstr = 32;
 			} else if (string =='生存') { tempstr = 33;
-			} else if (string =='閃避') { tempstr = 34;
+			} else if (string =='閃避' || string =='迴避') { tempstr = 34;
 			} else if (string =='攀爬') { tempstr = 35;
 			} else if (string =='跳躍') { tempstr = 36;
 			} else if (string =='游泳') { tempstr = 37;
@@ -258,7 +302,7 @@ var Player = {
 			} else if (string =='演技') { tempstr = 84;
 			} else if (string =='偽造') { tempstr = 85;
 			} else if (string =='攝影') { tempstr = 86;
-			} else if (string =='克蘇魯神話') { tempstr = 87;
+			} else if (string =='克蘇魯神話' || string =='克蘇魯') { tempstr = 87;
 			} else {
 				for(i=0;i<10;i++) {
 					if(string == other_skills[i]){
@@ -336,8 +380,13 @@ function parseInput(rplyToken, inputStr) {
 		return SortIt(inputStr,mainMsg);
 	}
     	//ccb指令開始於此
-	else if (trigger == 'ccb'&& mainMsg[1]<=99) {		
-		return coc6(mainMsg[1],mainMsg[2]);
+	else if (trigger == 'ccb') {		
+		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+	}
+    	//生科火大圖指令開始於此
+	else if (trigger == '生科') {		
+		outType = 'image';
+		return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//choice 指令開始於此
 	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
@@ -377,12 +426,34 @@ function CharacterControll(trigger, str1, str2){
 		}
 		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 	}
+	
+	if(trigger == 'input') {
+		var newName;
+		newName = str1.substr(0,str1.indexOf(';'));
+		for(i=0; i<5; i++) {
+			if(players[i].getVal('name') == newName) return '已經有同名的角色了!';
+		}
+		for(i=0; i<5; i++) {
+			if(players[i].getVal('name') == '') {
+				players[i].input(str1.trim());
+				return '成功建立角色 ' + str1;
+			}
+		}
+		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
+	}
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
-			if(str1 == 'debug') return players[i].debug();
-			if(str1 == 'ccb') return players[i].ccb(str2.toString().toLowerCase());
-			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+			if(str1 == 'debug'){ 
+				return players[i].debug();
+			}
+			else if(str1 == 'output'){ 
+				return players[i].output();
+			}
+			else if(str1 == 'ccb') {
+				return players[i].ccb(str2.toString().toLowerCase());
+			} 
+			else if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
@@ -418,23 +489,40 @@ function CharacterControll(trigger, str1, str2){
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
+function ccb(chack,text){
+	var val_status = chack;
+	for(i=0; i<5; i++) {
+		if(val_status.toString() == players[i].getVal('name')){
+			//return players[i].ccb(text.toString().toLowerCase().trim());
+			val_status = players[i].getVal(text.toString().toLowerCase().trim());
+			break;
+		}
+	}
+	if(val_status<=99){
+		return coc6(val_status,text);
+	}else{
+		return '成功率太高了吧喵~';	
+	}
+}	
+
 function coc6(chack,text){
-    let temp = Dice(100);
-    if (text == null ) {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
-	if (temp <= chack) {
-		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
-		else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
+
+    	let temp = Dice(100);
+    	if (text == null ) {
+		if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → 大失敗！哈哈哈！';
+		if (temp <= chack) {
+			if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → 喔喔！大成功！';
+			else return 'ccb<=' + chack + ' '  + temp + ' → 成功';
+		}
+		else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
+	} else {
+		if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
+		if (temp <= chack) {
+			if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 大成功！';
+			else return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 成功';
+		}
+		else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
 	}
-	else return 'ccb<=' + chack  + ' ' + temp + ' → 失敗' ;
-    } else {
-        if (temp > 95) return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
-	if (temp <= chack) {
-		if(temp <= 5) return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 大成功！';
-		else return 'ccb<=' + chack + ' '  + temp + ' → ' + text + ' 成功';
-	}
-	else return 'ccb<=' + chack  + ' ' + temp + ' → ' + text + ' 失敗';
-    }
 }  
 
 ////////////////////////////////////////
@@ -801,6 +889,6 @@ function Cat() {
 	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵','\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
-衝三小', '87玩夠沒', '生科吃屎'];
+衝三小', '87玩夠沒', '生科ㄎㄎ'];
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
