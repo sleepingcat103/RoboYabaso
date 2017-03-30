@@ -143,7 +143,7 @@ undefined',	'undefined',	'undefined',	'undefined',	'undefined', 	'undefined',	'u
 			return tempstr;
 		}
 		
-		player.showall() {
+		player.showall = function() {
 var tempstr='name'+': '+player_status[0]+'\n'+'\
 db'+': '+player_status[1]+'\n'+'\
 item'+': '+player_status[2]+'\n'+'\
