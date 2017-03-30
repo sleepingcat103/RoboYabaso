@@ -74,7 +74,7 @@ let rplyObj;
 	      }
 	    ]
 	  }
-  }else if(outType = 'ccd'){
+  }else if(outType == 'ccd'){
 	  rplyObj= {
 	    replyToken: req.body.events[0].source.userId,
 	    messages: [
