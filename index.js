@@ -110,6 +110,12 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
+		//新板存儲資訊 方便輸入輸出		
+		var player_status = ['', '', '', '', '\
+000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000','\
+000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000','\
+', '', '' ,'' , '', '', '', '', '', ''];
+		
 		var name = '';
 		var db='', item='', status='';
 		var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
@@ -119,12 +125,12 @@ var Player = {
 		
 		player.debug = function(string){
 			//var tempstr = 'san';
-			return skill_10 + '\n' + skill_01;
+			return ;//skill_10 + '\n' + skill_01;
 		}
 		
 		player.show = function() {
 			rstr = '+==========================+\n';
-			rstr += name + '\n';
+			rstr += player.getVal('name') + '\n';
 			rstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
 			rstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
 			rstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
@@ -137,7 +143,7 @@ var Player = {
 		}
 		
 		player.new = function(value) {
-			name = value;
+			player_status[0] = value;
 		}
 		
 		player.set = function(string, value) {
@@ -145,9 +151,9 @@ var Player = {
 			var pos = player.status_getposition(string);
 			if(pos =='-1'){
 				tempstr = '是什麼喵?';
-			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
-				eval(string + '=\'' + value + '\'');
-				tempstr = eval(string);
+			//} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
+			//	eval(string + '=\'' + value + '\'');
+			//	tempstr = eval(string);
 			} else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
@@ -158,8 +164,8 @@ var Player = {
 				}
 				if(value.length == 1){value = '0' + value;}
 				
-				skill_10 = skill_10.substr(0, pos) + (value-value%10)/10 + skill_10.substr(pos+1, skill_10.length-1);
-				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
+				player_status[4] = player_status[4].substr(0, pos) + (value-value%10)/10 + player_status[4].substr(pos+1, player_status[4].length-1);
+				player_status[5] = player_status[5].substr(0, pos) + value%10 + player_status[5].substr(pos+1, player_status[5].length-1);
 				
 				tempstr = player.getVal(string);
 			}			
@@ -180,20 +186,15 @@ var Player = {
 		}
 		
 		player.output = function() {
-			var tempstr;
-			tempstr = name + ';';
-			tempstr += db + ';';
-			tempstr += item + ';';
-			tempstr += status + ';';
-			tempstr += skill_10 + ';';
-			tempstr += skill_01 + ';';
-			for(i=0; i<10; i++) { tempstr += other_skills[i] + ';'; }
-			
-			return tempstr;
+			return player_status.join(';') + ';';
 		}
 		
 		player.input = function(string) {
-			var tempstr = string.split(';');
+			/*
+			var temp = 0;
+			for(i=0; temp>=0; i++){
+				if(i=0){ name = string.substr(temp, string.indexOf(';')); }
+			}
 			tempstr[0] = name;
 			tempstr[1] = db;
 			tempstr[2] = item;
@@ -202,6 +203,7 @@ var Player = {
 			tempstr[5] = skill_01;
 			for(i=0; i<10; i++) { tempstr[6+i] = other_skills[i]; }
 			return name;
+			*/
 		}
 		
 		player.status_search = function(string) {
@@ -217,20 +219,20 @@ var Player = {
 					//item=14
 			var tempstr = '-1';
 			if (string =='name') { tempstr = 0;
-			} else if (string =='str') { tempstr = 1;
-			} else if (string =='dex') { tempstr = 2;
-			} else if (string =='con') { tempstr = 3;
-			} else if (string =='pow') { tempstr = 4;
-			} else if (string =='app') { tempstr = 5;
-			} else if (string =='int') { tempstr = 6;
-			} else if (string =='siz') { tempstr = 7;
-			} else if (string =='edu') { tempstr = 8;
-			} else if (string =='hp') { tempstr = 9;
-			} else if (string =='mp') { tempstr = 10;
-			} else if (string =='san') { tempstr = 11;
-			} else if (string =='db') { tempstr = 12;
-			} else if (string =='status') { tempstr = 13;
-			} else if (string =='item') { tempstr = 14;
+			} else if (string =='db') { tempstr = 1;
+			} else if (string =='item') { tempstr = 2;
+			} else if (string =='status') { tempstr = 3;
+			} else if (string =='str') { tempstr = 4;
+			} else if (string =='dex') { tempstr = 5;
+			} else if (string =='con') { tempstr = 6;
+			} else if (string =='pow') { tempstr = 7;
+			} else if (string =='app') { tempstr = 8;
+			} else if (string =='int') { tempstr = 9;
+			} else if (string =='siz') { tempstr = 10;
+			} else if (string =='edu') { tempstr = 11;
+			} else if (string =='hp') { tempstr = 12;
+			} else if (string =='mp') { tempstr = 13;
+			} else if (string =='san') { tempstr = 14;
 			} else if (string =='靈感') { tempstr = 15;
 			} else if (string =='知識') { tempstr = 16;
 			} else if (string =='信用') { tempstr = 17;
@@ -319,12 +321,10 @@ var Player = {
 		player.getVal = function(string) {
 			var tempstr;
 			var temp = player.status_getposition(string);
-			if(temp == '0') {	tempstr = name;}
-			else if(temp == '12') { tempstr = db;} 
-			else if(temp == '13') { tempstr = status;} 
-			else if(temp == '14') { tempstr = item;} 
-			else {
-				tempstr = skill_10.charAt(temp)*10 + skill_01.charAt(temp)*1;
+			if(temp < 4){
+				tempstr = player_status[temp];
+			} else {
+				tempstr = player_status[4].charAt(temp)*10 + player_status[5].charAt(temp)*1;
 			}
 			return tempstr;
 		}
