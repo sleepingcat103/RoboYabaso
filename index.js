@@ -263,7 +263,7 @@ san'+': '+player_status[14]+'\n'+'\
 		
 		player.addskill = function(string) {
 			for(i=0;i<10;i++){
-				if(player.player_status[98+i] == 'undefined') {
+				if(player_status[98+i] == 'undefined') {
 					player.player_status[98+i]=string; 
 					return string + ' 新增成功!';
 				}
@@ -273,7 +273,7 @@ san'+': '+player_status[14]+'\n'+'\
 		
 		player.deleteskill = function(string) {
 			for(i=0;i<10;i++){
-				if(player.player_status[98+i] == string) {
+				if(player_status[98+i] == string) {
 					player.set(string,0);
 					player.player_status[98+i]='undefined'; 
 					return string + ' 技能已刪除!';
