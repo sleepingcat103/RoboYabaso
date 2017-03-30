@@ -324,12 +324,15 @@ function parseInput(rplyToken, inputStr) {
     let msgSplitor = (/\S+/ig);	
 	let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
-                       
-    //指令開始於此   
+	
+	//角卡功能快速入口//	
+	for(i=0; i<5; i++){
+		if(mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
+	}
+	   
     	if (trigger.match(/運氣|運勢/) != null) {
 		return randomLuck(mainMsg) ; //占卜運氣        
 	}
-	//FLAG指令開始於此
     	else if (trigger.match(/立flag|死亡flag/) != null) {
 	    	return BStyleFlagSCRIPTS() ;        
 	}
@@ -378,8 +381,8 @@ function parseInput(rplyToken, inputStr) {
 	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {		
 		return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
 	}
-	
 }
+
 ////////////////////////////////////////
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
@@ -410,7 +413,7 @@ function CharacterControll(trigger, str1, str2){
 				if(players[i].getVal('name') == newName) return '已經有同名的角色了!';
 			}
 			for(i=0; i<5; i++) {
-				if(players[i].getVal('name') == '') {
+				if(players[i].getVal('name') == 'undefined') {
 					//players[i].input(str1.trim());
 					return '成功建立角色 ' + players[i].input(str1.trim()) + '喵!';
 				}
@@ -423,7 +426,10 @@ function CharacterControll(trigger, str1, str2){
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
 			if(str1 == 'debug'){ 
-				return players[1].show();
+				return Meow();//players[i].show();
+			}
+			else if(str1 == 'ccb'){ 
+				return coc6(players[i].getVal(str2), str2);
 			}
 			else if(str1 == 'output'){ 
 				return players[i].output();
