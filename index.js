@@ -157,10 +157,10 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 					if(value>99) value=99; 
 				} else if(value.charAt(0).toString() == '-'){
 					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
-					if(value<0 || value == NaN || value==undefined) value=0;
+					if(value<0 || value == NaN || value==undefined || value == null || value == '') value=0;
 				}
 				
-				if(value == undefined || value == null || value == '') value = 'erroy';
+				if(value == undefined || value == null || value == '') value = 'error';
 				player_status[pos] = value;
 				tempstr = player.getVal(string);
 			}			
