@@ -110,36 +110,36 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
-		//新板存儲資訊 方便輸入輸出		
-		var player_status = ['', '', '', '', '\
-00000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000','\
-00000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000','\
-', '', '' ,'' , '', '', '', '', '', ''];
-		
-		var name = '';
-		var db='', item='', status='';
-		var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-		var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
-		var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-		var rstr='';
-		
+		var player_status = ['\
+undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0',	'75',	'75',	'0',	'15',	'15','\
+10',	'5',	'10',	'1',	'25', 	'20',	'20',	'10',	'30',	'30','\
+1',	'10',	'10',	'10',	'0',	'20',	'20',	'20',	'20',	'10','\
+5',	'10',	'5',	'5',	'5', 	'5',	'5',	'5',	'5',	'10','\
+10',	'1',	'10',	'1',	'1', 	'1',	'1',	'1',	'1',	'1','\
+1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
+20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
+10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0'];
+			
 		player.debug = function(string){
 			//var tempstr = 'san';
 			return ;//skill_10 + '\n' + skill_01;
 		}
 		
 		player.show = function() {
-			rstr = '+==========================+\n';
-			rstr += player.getVal('name') + '\n';
-			rstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
-			rstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
-			rstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
-			rstr += '+--------------------------+\n';
-			rstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
-			rstr += 'STATUS: ' + player.getVal('status') + '\n';
-			rstr += 'ITEM: ' + player.getVal('item') + '\n';
-			rstr += '+==========================+\n';
-			return rstr;
+			var tempstr='';
+			tempstr = '+==========================+\n';
+			tempstr += player.getVal('name') + '\n';
+			tempstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
+			tempstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
+			tempstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
+			tempstr += '+--------------------------+\n';
+			tempstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
+			tempstr += 'STATUS: ' + player.getVal('status') + '\n';
+			tempstr += 'ITEM: ' + player.getVal('item') + '\n';
+			tempstr += '+==========================+\n';
+			return tempstr;
 		}
 		
 		player.new = function(value) {
@@ -149,12 +149,9 @@ var Player = {
 		player.set = function(string, value) {
 			var tempstr;
 			var pos = player.status_getposition(string);
-			if(pos =='-1'){
+			if(pos =='-1') {
 				tempstr = '是什麼喵?';
-			//} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
-			//	eval(string + '=\'' + value + '\'');
-			//	tempstr = eval(string);
-			} else {
+			}else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
 					if(value>99) value=99; 
@@ -162,11 +159,9 @@ var Player = {
 					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
 					if(value<0 || value == NaN || value==undefined) value=0;
 				}
-				if(value.length == 1){value = '0' + value;}
 				
-				player_status[4] = player_status[4].substr(0, pos) + (value-value%10)/10 + player_status[4].substr(pos+1, player_status[4].length-1);
-				player_status[5] = player_status[5].substr(0, pos) + value%10 + player_status[5].substr(pos+1, player_status[5].length-1);
-				
+				if(value == undefined || value == null || value == '') value = 'erroy';
+				player_status[pos] = value;
 				tempstr = player.getVal(string);
 			}			
 			return tempstr;
@@ -177,12 +172,17 @@ var Player = {
 		}
 		
 		player.delete = function() {
-			name = '';
-			db='', item='', status='';
-			skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-			skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
-			other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-			rstr='';
+			player_status = ['\
+undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0',	'75',	'75',	'0',	'15',	'15','\
+10',	'5',	'10',	'1',	'25', 	'20',	'20',	'10',	'30',	'30','\
+1',	'10',	'10',	'10',	'0',	'20',	'20',	'20',	'20',	'10','\
+5',	'10',	'5',	'5',	'5', 	'5',	'5',	'5',	'5',	'10','\
+10',	'1',	'10',	'1',	'1', 	'1',	'1',	'1',	'1',	'1','\
+1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
+20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
+10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0'];
 		}
 		
 		player.output = function() {
@@ -190,34 +190,16 @@ var Player = {
 		}
 		
 		player.input = function(string) {
-			/*
 			var temp = 0;
-			for(i=0; temp>=0; i++){
-				if(i=0){ name = string.substr(temp, string.indexOf(';')); }
+			for(i=0; string.indexOf(';')>0; i++) {
+				player_status[i] = string.substr(temp,string.indexOf(';'));
+				temp = string.indexOf(';')+1;
 			}
-			tempstr[0] = name;
-			tempstr[1] = db;
-			tempstr[2] = item;
-			tempstr[3] = status;
-			tempstr[4] = skill_10;
-			tempstr[5] = skill_01;
-			for(i=0; i<10; i++) { tempstr[6+i] = other_skills[i]; }
-			return name;
-			*/
-		}
-		
-		player.status_search = function(string) {
-			var temp = player.status_getposition(string);
-			if(temp == '-1') return '是什麼喵?';
-			else return player.getVal(string);
 		}
 		
 		player.status_getposition = function(string) {
-					//name=0
-					//db=12
-					//status=13
-					//item=14
 			var tempstr = '-1';
+			
 			if (string =='name') { tempstr = 0;
 			} else if (string =='db') { tempstr = 1;
 			} else if (string =='item') { tempstr = 2;
@@ -319,14 +301,9 @@ var Player = {
 		
 		
 		player.getVal = function(string) {
-			var tempstr;
 			var temp = player.status_getposition(string);
-			if(temp < 4){
-				tempstr = player_status[temp];
-			} else {
-				tempstr = player_status[4].charAt(temp)*10 + player_status[5].charAt(temp)*1;
-			}
-			return tempstr;
+			if(temp=='-1')	return '是什麼喵?';
+			else	return player_status[temp];
 		}
 		
 		return player;
@@ -420,7 +397,7 @@ function CharacterControll(trigger, str1, str2){
 			}
 
 			for(i=0; i<5; i++) {
-				if(players[i].getVal('name') == '') {
+				if(players[i].getVal('name') == 'undefined') {
 					players[i].new(str1);
 					return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 				}
@@ -435,7 +412,7 @@ function CharacterControll(trigger, str1, str2){
 			for(i=0; i<5; i++) {
 				if(players[i].getVal('name') == '') {
 					//players[i].input(str1.trim());
-					return '成功建立角色 ' + players[i].input(str1.trim());
+					return '成功建立角色 ' + players[i].input(str1.trim()) + '喵!';
 				}
 			}
 			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
@@ -451,22 +428,19 @@ function CharacterControll(trigger, str1, str2){
 			else if(str1 == 'output'){ 
 				return players[i].output();
 			}
-			else if(str1 == 'ccb') {
-				return players[i].ccb(str2.toString().toLowerCase());
-			} 
-			else if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+			else if(str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return '已刪除 ' + trigger + ' 角色資料喵';
+				return '已刪除 ' + trigger + ' 角色資料喵~';
 			}
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return trigger + ': '+ str1 + '[' + players[i].status_search(str1.toString().toLowerCase()) + ']';					
+						return trigger + ': '+ str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';					
 					} else { 
-						let tempstr = players[i].status_search(str1.toString().toLowerCase());
+						let tempstr = players[i].getVal(str1.toString().toLowerCase());
 						return trigger + ': '+ str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString()) + ']';	
 					}					
 				} catch(err) {
@@ -483,7 +457,7 @@ function CharacterControll(trigger, str1, str2){
 		}
 		return tempstr;
 	}
-	return '查無此角色';
+	return '沒有這個角色喵~';
 }
 
 
@@ -502,7 +476,7 @@ function ccb(chack,text){
 	if(val_status<=99){
 		return coc6(val_status,text);
 	}else{
-		return '成功率太高了吧喵~';	
+		return 'error';	
 	}
 }	
 
