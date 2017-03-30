@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');  
 var app = express();
+var event;
 
 var jsonParser = bodyParser.json();
 
@@ -27,7 +28,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', jsonParser, function(req, res) {
-  let event = req.body.events[0];
+  event = req.body.events[0];
   let type = event.type;
   let msgType = event.message.type;
   let msg = event.message.text;
@@ -76,7 +77,7 @@ let rplyObj;
 	  }
   }else if(outType == 'ccd'){
 	  rplyObj= {
-	    replyToken: req.body.events[0].source.userId,
+	    replyToken: event.source.userId,
 	    messages: [
 	      {
 		type: "text",
