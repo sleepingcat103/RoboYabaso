@@ -120,7 +120,8 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
 20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
 10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
-0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0'];
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'undefined',	'undefined','\
+undefined',	'undefined',	'undefined',	'undefined',	'undefined', 	'undefined',	'undefined',	'undefined'];
 			
 		player.debug = function(string){
 			//var tempstr = 'san';
@@ -128,7 +129,7 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 		}
 		
 		player.show = function() {
-			var tempstr='';
+			var tempstr;
 			tempstr = '+==========================+\n';
 			tempstr += player.getVal('name') + '\n';
 			tempstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
@@ -139,6 +140,98 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 			tempstr += 'STATUS: ' + player.getVal('status') + '\n';
 			tempstr += 'ITEM: ' + player.getVal('item') + '\n';
 			tempstr += '+==========================+\n';
+			return tempstr;
+		}
+		
+		player.showall() {
+var tempstr='name'+': '+player_status[0]+'\n'+'\
+db'+': '+player_status[1]+'\n'+'\
+item'+': '+player_status[2]+'\n'+'\
+status'+': '+player_status[3]+'\n'+'\
+str'+': '+player_status[4]+'\n'+'\
+dex'+': '+player_status[5]+'\n'+'\
+con'+': '+player_status[6]+'\n'+'\
+pow'+': '+player_status[7]+'\n'+'\
+app'+': '+player_status[8]+'\n'+'\
+int'+': '+player_status[9]+'\n'+'\
+siz'+': '+player_status[10]+'\n'+'\
+edu'+': '+player_status[11]+'\n'+'\
+hp'+': '+player_status[12]+'\n'+'\
+mp'+': '+player_status[13]+'\n'+'\
+san'+': '+player_status[14]+'\n'+'\
+靈感'+': '+player_status[15]+'\n'+'\
+知識'+': '+player_status[16]+'\n'+'\
+信用'+': '+player_status[17]+'\n'+'\
+魅惑'+': '+player_status[18]+'\n'+'\
+恐嚇'+': '+player_status[19]+'\n'+'\
+說服'+': '+player_status[20]+'\n'+'\
+話術'+': '+player_status[21]+'\n'+'\
+心理學'+': '+player_status[22]+'\n'+'\
+心理分析'+': '+player_status[23]+'\n'+'\
+調查'+': '+player_status[24]+'\n'+'\
+聆聽'+': '+player_status[25]+'\n'+'\
+圖書館使用'+': '+player_status[26]+'\n'+'\
+追蹤'+': '+player_status[27]+'\n'+'\
+急救'+': '+player_status[28]+'\n'+'\
+醫學'+': '+player_status[29]+'\n'+'\
+鎖匠'+': '+player_status[30]+'\n'+'\
+手上功夫'+': '+player_status[31]+'\n'+'\
+隱密行動'+': '+player_status[32]+'\n'+'\
+生存'+': '+player_status[33]+'\n'+'\
+閃避'+': '+player_status[34]+'\n'+'\
+攀爬'+': '+player_status[35]+'\n'+'\
+跳躍'+': '+player_status[36]+'\n'+'\
+游泳'+': '+player_status[37]+'\n'+'\
+駕駛'+': '+player_status[38]+'\n'+'\
+領航'+': '+player_status[39]+'\n'+'\
+騎術'+': '+player_status[40]+'\n'+'\
+自然學'+': '+player_status[41]+'\n'+'\
+神秘學'+': '+player_status[42]+'\n'+'\
+歷史'+': '+player_status[43]+'\n'+'\
+會計'+': '+player_status[44]+'\n'+'\
+估價'+': '+player_status[45]+'\n'+'\
+法律'+': '+player_status[46]+'\n'+'\
+喬裝'+': '+player_status[47]+'\n'+'\
+電腦使用'+': '+player_status[48]+'\n'+'\
+電器維修'+': '+player_status[49]+'\n'+'\
+機械維修'+': '+player_status[50]+'\n'+'\
+重機械操作'+': '+player_status[51]+'\n'+'\
+數學'+': '+player_status[52]+'\n'+'\
+化學'+': '+player_status[53]+'\n'+'\
+藥學'+': '+player_status[54]+'\n'+'\
+人類學'+': '+player_status[55]+'\n'+'\
+考古學'+': '+player_status[56]+'\n'+'\
+電子學'+': '+player_status[57]+'\n'+'\
+物理學'+': '+player_status[58]+'\n'+'\
+工程學'+': '+player_status[59]+'\n'+'\
+密碼學'+': '+player_status[60]+'\n'+'\
+天文學'+': '+player_status[61]+'\n'+'\
+地質學'+': '+player_status[62]+'\n'+'\
+生物學'+': '+player_status[63]+'\n'+'\
+動物學'+': '+player_status[64]+'\n'+'\
+植物學'+': '+player_status[65]+'\n'+'\
+物證學'+': '+player_status[66]+'\n'+'\
+投擲'+': '+player_status[67]+'\n'+'\
+鬥毆'+': '+player_status[68]+'\n'+'\
+劍'+': '+player_status[69]+'\n'+'\
+矛'+': '+player_status[70]+'\n'+'\
+斧頭'+': '+player_status[71]+'\n'+'\
+絞殺'+': '+player_status[72]+'\n'+'\
+電鋸'+': '+player_status[73]+'\n'+'\
+連枷'+': '+player_status[74]+'\n'+'\
+鞭子'+': '+player_status[75]+'\n'+'\
+弓箭'+': '+player_status[76]+'\n'+'\
+手槍'+': '+player_status[77]+'\n'+'\
+步槍'+': '+player_status[78]+'\n'+'\
+衝鋒槍'+': '+player_status[79]+'\n'+'\
+機關槍'+': '+player_status[80]+'\n'+'\
+重武器'+': '+player_status[81]+'\n'+'\
+火焰噴射器'+': '+player_status[82]+'\n'+'\
+美術'+': '+player_status[83]+'\n'+'\
+演技'+': '+player_status[84]+'\n'+'\
+偽造'+': '+player_status[85]+'\n'+'\
+攝影'+': '+player_status[86]+'\n'+'\
+克蘇魯神話'+': '+player_status[87];
 			return tempstr;
 		}
 		
@@ -161,10 +254,32 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 				}
 				
 				if(value == undefined || value == null || value == '') value = 'error';
+				
 				player_status[pos] = value;
 				tempstr = player.getVal(string);
 			}			
 			return tempstr;
+		}
+		
+		player.addskill = function(string) {
+			for(i=0;i<10;i++){
+				if(player.player_status[98+i] == 'undefined') {
+					player.player_status[98+i]=string; 
+					return string + ' 新增成功!';
+				}
+			}
+			return '技能欄已滿!';
+		}
+		
+		player.deleteskill = function(string) {
+			for(i=0;i<10;i++){
+				if(player.player_status[98+i] == string) {
+					player.set(string,0);
+					player.player_status[98+i]='undefined'; 
+					return string + ' 技能已刪除!';
+				}
+			}
+			return '沒有該技能!';
 		}
 		
 		player.ccb = function(string) {
@@ -182,7 +297,8 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
 20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
 10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
-0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0'];
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'undefined',	'undefined','\
+undefined',	'undefined',	'undefined',	'undefined',	'undefined', 	'undefined',	'undefined',	'undefined'];
 		}
 		
 		player.output = function() {
@@ -290,7 +406,7 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 			} else if (string =='克蘇魯神話' || string =='克蘇魯') { tempstr = 87;
 			} else {
 				for(i=0;i<10;i++) {
-					if(string == other_skills[i]){
+					if(string == player_status[98+i]){	//額外技能 //
 						tempstr = 88+i;
 						break;
 					}
@@ -298,7 +414,6 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 			}
 			return tempstr;
 		}
-		
 		
 		player.getVal = function(string) {
 			var temp = player.status_getposition(string);
@@ -430,6 +545,15 @@ function CharacterControll(trigger, str1, str2){
 			}
 			else if(str1 == 'ccb'){ 
 				return coc6(players[i].getVal(str2), str2);
+			}
+			else if(str1 == 'skills'){ 
+				return players[i].showall();
+			}
+			else if(str1 == 'addskill'){ 
+				return players[i].addskill(str2);
+			}
+			else if(str1 == 'deleteskill'){ 
+				return players[i].deleteskill(str2);
 			}
 			else if(str1 == 'output'){ 
 				return players[i].output();
