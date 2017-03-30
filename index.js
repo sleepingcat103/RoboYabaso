@@ -414,7 +414,7 @@ function CharacterControll(trigger, str1, str2){
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
-		if(str2 == undefined || str2 == null || str2 == '') {
+		if(str1.indexOf(';')<0) {
 			for(i=0; i<5; i++) {
 				if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
 			}
