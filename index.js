@@ -2,11 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');  
 var app = express();
-var event;
 
 var jsonParser = bodyParser.json();
 
 var outType = 'text';
+var event = '';
 
 var options = {
   host: 'api.line.me',
@@ -77,7 +77,7 @@ let rplyObj;
 	  }
   }else if(outType == 'ccd'){
 	  rplyObj= {
-	    replyToken: event.source.userId,
+	    replyToken: rplyToken,
 	    messages: [
 	      {
 		type: "text",
@@ -504,7 +504,8 @@ function parseInput(rplyToken, inputStr) {
 	//ccd指令開始於此
 	else if (trigger == 'ccd') {
 		outType = 'ccd';
-		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+		let re_msg = event.source.userId;
+		return re_msg;//ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
     	//生科火大圖指令開始於此
 	else if (trigger == '生科') {		
