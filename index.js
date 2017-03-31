@@ -508,7 +508,10 @@ function parseInput(rplyToken, inputStr) {
 		//outType = 'ccd';
 		//v_path = '/v2/bot/message/push';
 		//rplyToken = event.source[0].userId;
-		let re_msg = event.source.type + '\n' + event.replyToken;
+		let re_msg = 'type:'+ event.source.type + 
+		    	'\nreplyToken:' + event.replyToken + 
+		    	'\nuserId:' + event.source.userId + 
+		    	'\ngroupId:' + event.source.groupId;
 		return re_msg;//ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
     	//生科火大圖指令開始於此
