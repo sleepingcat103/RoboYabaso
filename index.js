@@ -82,7 +82,7 @@ let rplyObj;
   }else if(outType == 'ccd' && KP_MID != ''){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
-	    to: KP_MID.toString(),
+	    to: "U0f5433c7c56ff91a52d91e8ee2b9f069",
 	    messages: [
 	      {
 		type: "text",
