@@ -79,10 +79,10 @@ let rplyObj;
 	      }
 	    ]
 	  }
-  }else if(outType == 'ccd' && KP_MID != ''){
+  }else if(outType == 'ccd'){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
-	    to: "U0f5433c7c56ff91a52d91e8ee2b9f069",
+	    to: KP_MID,
 	    messages: [
 	      {
 		type: "text",
