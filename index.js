@@ -7,11 +7,12 @@ var jsonParser = bodyParser.json();
 
 var outType = 'text';
 var event = '';
+var v_path = '/v2/bot/message/reply';
 
 var options = {
   host: 'api.line.me',
   port: 443,
-  path: '/v2/bot/message/reply',
+  path: v_path,
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -29,6 +30,7 @@ app.get('/', function(req, res) {
 
 app.post('/', jsonParser, function(req, res) {
   event = req.body.events[0];
+  v_path = '/v2/bot/message/reply';
   let type = event.type;
   let msgType = event.message.type;
   let msg = event.message.text;
@@ -77,7 +79,7 @@ let rplyObj;
 	  }
   }else if(outType == 'ccd'){
 	  rplyObj= {
-	    replyToken: rplyToken,
+	    to: rplyToken,
 	    messages: [
 	      {
 		type: "text",
@@ -503,8 +505,10 @@ function parseInput(rplyToken, inputStr) {
 	}
 	//ccd指令開始於此
 	else if (trigger == 'ccd') {
-		outType = 'ccd';
-		let re_msg = event.source.userId + '\n' + event.replyToken;
+		//outType = 'ccd';
+		//v_path = '/v2/bot/message/push';
+		//rplyToken = event.source[0].userId;
+		let re_msg = event.source[0].userId + '\n' + event.replyToken;
 		return re_msg;//ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
     	//生科火大圖指令開始於此
