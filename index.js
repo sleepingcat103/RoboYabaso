@@ -5,6 +5,8 @@ var app = express();
 
 var jsonParser = bodyParser.json();
 
+var outType = 'text';
+
 var options = {
   host: 'api.line.me',
   port: 443,
@@ -30,8 +32,11 @@ app.post('/', jsonParser, function(req, res) {
   let msgType = event.message.type;
   let msg = event.message.text;
   let rplyToken = event.replyToken;
-
+	
   let rplyVal = null;
+
+  outType = 'text';
+	
   console.log(msg);
   if (type == 'message' && msgType == 'text') {
     try {
@@ -43,7 +48,7 @@ app.post('/', jsonParser, function(req, res) {
   }
 
   if (rplyVal) {
-    replyMsgToLine(rplyToken, rplyVal); 
+    replyMsgToLine(outType,rplyToken, rplyVal); 
   } else {
     console.log('Do not trigger'); 
   }
@@ -55,15 +60,30 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-function replyMsgToLine(rplyToken, rplyVal) {
-	let rplyObj = {
-    replyToken: rplyToken,
-    messages: [
-      {
-        type: "text",
-        text: rplyVal
-      }
-    ]
+function replyMsgToLine(outType,rplyToken, rplyVal) {
+	
+let rplyObj;
+  if(outType == 'image'){
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "image",
+		originalContentUrl: rplyVal,
+		previewImageUrl: rplyVal
+	      }
+	    ]
+	  }
+  }else{
+	   rplyObj= {
+	    replyToken: rplyToken,
+	    messages: [
+	      {
+		type: "text",
+		text: rplyVal
+	      }
+	    ]
+	  }
   }
 
   let rplyJson = JSON.stringify(rplyObj); 
@@ -90,60 +110,187 @@ var Player = {
 	createNew: function() {
 		var player = {};
 		
-		var name = '';
-		var db='', item='', status='';
-		var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-		var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
-		var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-		var rstr='';
-		
+		var player_status = ['\
+undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0',	'75',	'75',	'0',	'15',	'15','\
+10',	'5',	'10',	'1',	'25', 	'20',	'20',	'10',	'30',	'30','\
+1',	'10',	'10',	'10',	'0',	'20',	'20',	'20',	'20',	'10','\
+5',	'10',	'5',	'5',	'5', 	'5',	'5',	'5',	'5',	'10','\
+10',	'1',	'10',	'1',	'1', 	'1',	'1',	'1',	'1',	'1','\
+1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
+20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
+10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'無',	'無','\
+無',	'無',	'無',	'無',	'無', 	'無',	'無',	'無'];
+			
 		player.debug = function(string){
 			//var tempstr = 'san';
-			return skill_10 + '\n' + skill_01;
+			return ;//skill_10 + '\n' + skill_01;
 		}
 		
 		player.show = function() {
-			rstr = '+==========================+\n';
-			rstr += name + '\n';
-			rstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
-			rstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
-			rstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
-			rstr += '+--------------------------+\n';
-			rstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
-			rstr += 'STATUS: ' + player.getVal('status') + '\n';
-			rstr += 'ITEM: ' + player.getVal('item') + '\n';
-			rstr += '+==========================+\n';
-			return rstr;
+			var tempstr;
+			tempstr = '+==========================+\n';
+			tempstr += player.getVal('name') + '\n';
+			tempstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
+			tempstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
+			tempstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
+			tempstr += '+--------------------------+\n';
+			tempstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
+			tempstr += 'STATUS: ' + player.getVal('status') + '\n';
+			tempstr += 'ITEM: ' + player.getVal('item') + '\n';
+			tempstr += '+==========================+\n';
+			return tempstr;
+		}
+		
+		player.showall = function() {
+var tempstr='name'+': '+player_status[0]+'\n'+'\
+db'+': '+player_status[1]+'\n'+'\
+item'+': '+player_status[2]+'\n'+'\
+status'+': '+player_status[3]+'\n'+'\
+str'+': '+player_status[4]+'\n'+'\
+dex'+': '+player_status[5]+'\n'+'\
+con'+': '+player_status[6]+'\n'+'\
+pow'+': '+player_status[7]+'\n'+'\
+app'+': '+player_status[8]+'\n'+'\
+int'+': '+player_status[9]+'\n'+'\
+siz'+': '+player_status[10]+'\n'+'\
+edu'+': '+player_status[11]+'\n'+'\
+hp'+': '+player_status[12]+'\n'+'\
+mp'+': '+player_status[13]+'\n'+'\
+san'+': '+player_status[14]+'\n'+'\
+靈感'+': '+player_status[15]+'\n'+'\
+知識'+': '+player_status[16]+'\n'+'\
+信用'+': '+player_status[17]+'\n'+'\
+魅惑'+': '+player_status[18]+'\n'+'\
+恐嚇'+': '+player_status[19]+'\n'+'\
+說服'+': '+player_status[20]+'\n'+'\
+話術'+': '+player_status[21]+'\n'+'\
+心理學'+': '+player_status[22]+'\n'+'\
+心理分析'+': '+player_status[23]+'\n'+'\
+調查'+': '+player_status[24]+'\n'+'\
+聆聽'+': '+player_status[25]+'\n'+'\
+圖書館使用'+': '+player_status[26]+'\n'+'\
+追蹤'+': '+player_status[27]+'\n'+'\
+急救'+': '+player_status[28]+'\n'+'\
+醫學'+': '+player_status[29]+'\n'+'\
+鎖匠'+': '+player_status[30]+'\n'+'\
+手上功夫'+': '+player_status[31]+'\n'+'\
+隱密行動'+': '+player_status[32]+'\n'+'\
+生存'+': '+player_status[33]+'\n'+'\
+閃避'+': '+player_status[34]+'\n'+'\
+攀爬'+': '+player_status[35]+'\n'+'\
+跳躍'+': '+player_status[36]+'\n'+'\
+游泳'+': '+player_status[37]+'\n'+'\
+駕駛'+': '+player_status[38]+'\n'+'\
+領航'+': '+player_status[39]+'\n'+'\
+騎術'+': '+player_status[40]+'\n'+'\
+自然學'+': '+player_status[41]+'\n'+'\
+神秘學'+': '+player_status[42]+'\n'+'\
+歷史'+': '+player_status[43]+'\n'+'\
+會計'+': '+player_status[44]+'\n'+'\
+估價'+': '+player_status[45]+'\n'+'\
+法律'+': '+player_status[46]+'\n'+'\
+喬裝'+': '+player_status[47]+'\n'+'\
+電腦使用'+': '+player_status[48]+'\n'+'\
+電器維修'+': '+player_status[49]+'\n'+'\
+機械維修'+': '+player_status[50]+'\n'+'\
+重機械操作'+': '+player_status[51]+'\n'+'\
+數學'+': '+player_status[52]+'\n'+'\
+化學'+': '+player_status[53]+'\n'+'\
+藥學'+': '+player_status[54]+'\n'+'\
+人類學'+': '+player_status[55]+'\n'+'\
+考古學'+': '+player_status[56]+'\n'+'\
+電子學'+': '+player_status[57]+'\n'+'\
+物理學'+': '+player_status[58]+'\n'+'\
+工程學'+': '+player_status[59]+'\n'+'\
+密碼學'+': '+player_status[60]+'\n'+'\
+天文學'+': '+player_status[61]+'\n'+'\
+地質學'+': '+player_status[62]+'\n'+'\
+生物學'+': '+player_status[63]+'\n'+'\
+動物學'+': '+player_status[64]+'\n'+'\
+植物學'+': '+player_status[65]+'\n'+'\
+物證學'+': '+player_status[66]+'\n'+'\
+投擲'+': '+player_status[67]+'\n'+'\
+鬥毆'+': '+player_status[68]+'\n'+'\
+劍'+': '+player_status[69]+'\n'+'\
+矛'+': '+player_status[70]+'\n'+'\
+斧頭'+': '+player_status[71]+'\n'+'\
+絞殺'+': '+player_status[72]+'\n'+'\
+電鋸'+': '+player_status[73]+'\n'+'\
+連枷'+': '+player_status[74]+'\n'+'\
+鞭子'+': '+player_status[75]+'\n'+'\
+弓箭'+': '+player_status[76]+'\n'+'\
+手槍'+': '+player_status[77]+'\n'+'\
+步槍'+': '+player_status[78]+'\n'+'\
+衝鋒槍'+': '+player_status[79]+'\n'+'\
+機關槍'+': '+player_status[80]+'\n'+'\
+重武器'+': '+player_status[81]+'\n'+'\
+火焰噴射器'+': '+player_status[82]+'\n'+'\
+美術'+': '+player_status[83]+'\n'+'\
+演技'+': '+player_status[84]+'\n'+'\
+偽造'+': '+player_status[85]+'\n'+'\
+攝影'+': '+player_status[86]+'\n'+'\
+克蘇魯神話'+': '+player_status[87]+'\n';
+tempstr = tempstr + player_status[98]+': '+player_status[88]+'\n';
+tempstr = tempstr + player_status[99]+': '+player_status[89]+'\n';
+tempstr = tempstr + player_status[100]+': '+player_status[90]+'\n';
+tempstr = tempstr + player_status[101]+': '+player_status[91]+'\n';
+tempstr = tempstr + player_status[102]+': '+player_status[92]+'\n';
+tempstr = tempstr + player_status[103]+': '+player_status[93]+'\n';
+tempstr = tempstr + player_status[104]+': '+player_status[94]+'\n';
+tempstr = tempstr + player_status[105]+': '+player_status[95]+'\n';
+tempstr = tempstr + player_status[106]+': '+player_status[96]+'\n';
+tempstr = tempstr + player_status[107]+': '+player_status[97];
+			
+			return tempstr;
 		}
 		
 		player.new = function(value) {
-			name = value;
+			player_status[0] = value;
 		}
 		
 		player.set = function(string, value) {
 			var tempstr;
 			var pos = player.status_getposition(string);
-			if(pos =='-1'){
+			if(pos =='-1') {
 				tempstr = '是什麼喵?';
-			} else if(pos == '0' || pos == '12'|| pos == '13'|| pos == '14'){
-				eval(string + '=\'' + value + '\'');
-				tempstr = eval(string);
-			} else {
+			}else {
 				if(value.charAt(0).toString() == '+'){
 					value = player.getVal(string)*1 + value.substr(1,value.length-1)*1;
 					if(value>99) value=99; 
 				} else if(value.charAt(0).toString() == '-'){
 					value = player.getVal(string)*1 - value.substr(1,value.length-1)*1;
-					if(value<0 || value == NaN || value==undefined) value=0;
+					if(value<0 || value == NaN || value==undefined || value == null || value == '') value=0;
 				}
-				if(value.length == 1){value = '0' + value;}
 				
-				skill_10 = skill_10.substr(0, pos) + (value-value%10)/10 + skill_10.substr(pos+1, skill_10.length-1);
-				skill_01 = skill_01.substr(0, pos) + value%10 + skill_01.substr(pos+1, skill_01.length-1);
+				if(value == undefined || value == null || value == '') value = 'error';
 				
+				player_status[pos] = value;
 				tempstr = player.getVal(string);
 			}			
 			return tempstr;
+		}
+		
+		player.addskill = function(string) {
+			for(i=0;i<10;i++){
+				if(player_status[98+i] == '無') {
+					player.player_status[98+i]=string; 
+					return string + ' 新增成功!';
+				}
+			}
+			return '技能欄已滿!';
+		}
+		
+		player.deleteskill = function(string) {
+			for(i=0;i<10;i++){
+				if(player_status[98+i] == string) {
+					player.set(string,0);
+					player.player_status[98+i]='無'; 
+					return string + ' 技能已刪除!';
+				}
+			}
+			return '沒有該技能!';
 		}
 		
 		player.ccb = function(string) {
@@ -151,41 +298,46 @@ var Player = {
 		}
 		
 		player.delete = function() {
-			var name = '';
-			var db='', item='', status='';
-			var skill_10 = '000000000000008601110102221300110222210100000001101000000000000002222111101221111000000000000000';
-			var skill_01 = '000000000000005505505015000011000000005055555550010111111111111110500550055055000555500000000000';
-			var other_skills = ['', '', '', '', '', '' ,'' ,'' ,'' ,''];
-			var rstr='';
+			player_status = ['\
+undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0',	'75',	'75',	'0',	'15',	'15','\
+10',	'5',	'10',	'1',	'25', 	'20',	'20',	'10',	'30',	'30','\
+1',	'10',	'10',	'10',	'0',	'20',	'20',	'20',	'20',	'10','\
+5',	'10',	'5',	'5',	'5', 	'5',	'5',	'5',	'5',	'10','\
+10',	'1',	'10',	'1',	'1', 	'1',	'1',	'1',	'1',	'1','\
+1',	'1',	'1',	'1',	'1', 	'1',	'1',	'20',	'25',	'20','\
+20',	'15',	'15',	'10',	'10', 	'5',	'15',	'20',	'25',	'15','\
+10',	'10',	'10',	'5',	'5', 	'5',	'5',	'0',	'0',	'0','\
+0',	'0',	'0',	'0',	'0', 	'0',	'0',	'0',	'無',	'無','\
+無',	'無',	'無',	'無',	'無', 	'無',	'無',	'無'];
 		}
 		
-		player.status_search = function(string) {
-			var temp = player.status_getposition(string);
-			if(temp == '-1') return '是什麼喵?';
-			else return player.getVal(string);
+		player.output = function() {
+			return player_status.join(';');
+		}
+		
+		player.input = function(string) {
+			player_status = string.split(';');
 		}
 		
 		player.status_getposition = function(string) {
-					//name=0
-					//db=12
-					//status=13
-					//item=14
 			var tempstr = '-1';
+			
 			if (string =='name') { tempstr = 0;
-			} else if (string =='str') { tempstr = 1;
-			} else if (string =='dex') { tempstr = 2;
-			} else if (string =='con') { tempstr = 3;
-			} else if (string =='pow') { tempstr = 4;
-			} else if (string =='app') { tempstr = 5;
-			} else if (string =='int') { tempstr = 6;
-			} else if (string =='siz') { tempstr = 7;
-			} else if (string =='edu') { tempstr = 8;
-			} else if (string =='hp') { tempstr = 9;
-			} else if (string =='mp') { tempstr = 10;
-			} else if (string =='san') { tempstr = 11;
-			} else if (string =='db') { tempstr = 12;
-			} else if (string =='status') { tempstr = 13;
-			} else if (string =='item') { tempstr = 14;
+			} else if (string =='db') { tempstr = 1;
+			} else if (string =='item') { tempstr = 2;
+			} else if (string =='status') { tempstr = 3;
+			} else if (string =='str') { tempstr = 4;
+			} else if (string =='dex') { tempstr = 5;
+			} else if (string =='con') { tempstr = 6;
+			} else if (string =='pow') { tempstr = 7;
+			} else if (string =='app') { tempstr = 8;
+			} else if (string =='int') { tempstr = 9;
+			} else if (string =='siz') { tempstr = 10;
+			} else if (string =='edu') { tempstr = 11;
+			} else if (string =='hp') { tempstr = 12;
+			} else if (string =='mp') { tempstr = 13;
+			} else if (string =='san') { tempstr = 14;
 			} else if (string =='靈感') { tempstr = 15;
 			} else if (string =='知識') { tempstr = 16;
 			} else if (string =='信用') { tempstr = 17;
@@ -197,15 +349,15 @@ var Player = {
 			} else if (string =='心理分析') { tempstr = 23;
 			} else if (string =='調查') { tempstr = 24;
 			} else if (string =='聆聽') { tempstr = 25;
-			} else if (string =='圖書館使用') { tempstr = 26;
+			} else if (string =='圖書館使用' || string =='圖書館') { tempstr = 26;
 			} else if (string =='追蹤') { tempstr = 27;
 			} else if (string =='急救') { tempstr = 28;
 			} else if (string =='醫學') { tempstr = 29;
-			} else if (string =='鎖匠') { tempstr = 30;
+			} else if (string =='鎖匠' || string =='開鎖') { tempstr = 30;
 			} else if (string =='手上功夫') { tempstr = 31;
 			} else if (string =='隱密行動') { tempstr = 32;
 			} else if (string =='生存') { tempstr = 33;
-			} else if (string =='閃避') { tempstr = 34;
+			} else if (string =='閃避' || string =='迴避') { tempstr = 34;
 			} else if (string =='攀爬') { tempstr = 35;
 			} else if (string =='跳躍') { tempstr = 36;
 			} else if (string =='游泳') { tempstr = 37;
@@ -258,10 +410,10 @@ var Player = {
 			} else if (string =='演技') { tempstr = 84;
 			} else if (string =='偽造') { tempstr = 85;
 			} else if (string =='攝影') { tempstr = 86;
-			} else if (string =='克蘇魯神話') { tempstr = 87;
+			} else if (string =='克蘇魯神話' || string =='克蘇魯') { tempstr = 87;
 			} else {
 				for(i=0;i<10;i++) {
-					if(string == other_skills[i]){
+					if(string == player_status[98+i]){	//額外技能 //
 						tempstr = 88+i;
 						break;
 					}
@@ -270,18 +422,10 @@ var Player = {
 			return tempstr;
 		}
 		
-		
 		player.getVal = function(string) {
-			var tempstr;
 			var temp = player.status_getposition(string);
-			if(temp == '0') {	tempstr = name;}
-			else if(temp == '12') { tempstr = db;} 
-			else if(temp == '13') { tempstr = status;} 
-			else if(temp == '14') { tempstr = item;} 
-			else {
-				tempstr = skill_10.charAt(temp)*10 + skill_01.charAt(temp)*1;
-			}
-			return tempstr;
+			if(temp=='-1')	return '是什麼喵?';
+			else	return player_status[temp];
 		}
 		
 		return player;
@@ -302,12 +446,15 @@ function parseInput(rplyToken, inputStr) {
     let msgSplitor = (/\S+/ig);	
 	let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
 	let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
-                       
-    //指令開始於此   
+	
+	//角卡功能快速入口//	
+	for(i=0; i<5; i++){
+		if(mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
+	}
+	   
     	if (trigger.match(/運氣|運勢/) != null) {
 		return randomLuck(mainMsg) ; //占卜運氣        
 	}
-	//FLAG指令開始於此
     	else if (trigger.match(/立flag|死亡flag/) != null) {
 	    	return BStyleFlagSCRIPTS() ;        
 	}
@@ -339,6 +486,11 @@ function parseInput(rplyToken, inputStr) {
 	else if (trigger == 'ccb') {		
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
+    	//生科火大圖指令開始於此
+	else if (trigger == '生科') {		
+		outType = 'image';
+		return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
+	}
 	//choice 指令開始於此
 	else if (trigger.match(/choice|隨機|選項|幫我選/)!= null && mainMsg.length >= 3)  {		
 		return choice(inputStr,mainMsg);
@@ -351,8 +503,8 @@ function parseInput(rplyToken, inputStr) {
 	else if (inputStr.match(/\w/)!=null && inputStr.toLowerCase().match(/\d+d+\d/)!=null) {		
 		return nomalDiceRoller(inputStr,mainMsg[0],mainMsg[1],mainMsg[2]);	
 	}
-	
 }
+
 ////////////////////////////////////////
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
@@ -364,37 +516,69 @@ function CharacterControll(trigger, str1, str2){
 	//建立新角
 	if(trigger == 'new' || trigger == '建立'){
 		if(str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
-		
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
-		}
-		
-		for(i=0; i<5; i++) {
-			if(players[i].getVal('name') == '') {
-				players[i].new(str1);
-				return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+		if(str1.indexOf(';')<0) {
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == str1) return '已經有同名的角色了!';
 			}
+
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == 'undefined') {
+					players[i].new(str1);
+					return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+				}
+			}
+			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
+		} else {
+			var newName;
+			newName = str1.substr(0,str1.indexOf(';'));
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == newName) return '已經有同名的角色了!';
+			}
+			for(i=0; i<5; i++) {
+				if(players[i].getVal('name') == 'undefined') {
+					//players[i].input(str1.trim());
+					players[i].input(str1.trim());
+					return '成功建立角色 ' + players[i].getVal('name') + ' 喵!';
+				}
+			}
+			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 		}
-		return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
 	}
+
 	//角色設定(特定狀態查詢) 刪除 查看
 	for(i=0; i<5; i++) {
 		if(trigger == players[i].getVal('name')){
-			if(str1 == 'debug') return players[i].debug();
-			if(str1 == 'ccb') return players[i].ccb(str2.toString().toLowerCase());
-			if(str1 == 'show' || str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+			if(str1 == 'debug'){ 
+				return Meow();//players[i].show();
+			}
+			else if(str1 == 'ccb'){ 
+				return coc6(players[i].getVal(str2), str2);
+			}
+			else if(str1 == 'skills'){ 
+				return players[i].showall();
+			}
+			else if(str1 == 'addskill'){ 
+				return players[i].addskill(str2);
+			}
+			else if(str1 == 'deleteskill'){ 
+				return players[i].deleteskill(str2);
+			}
+			else if(str1 == 'output'){ 
+				return players[i].output();
+			}
+			else if(str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
 				return players[i].show();
 			}
 			else if (str1 == 'delete' || str1 == '刪除') {
 				players[i].delete();
-				return '已刪除 ' + trigger + ' 角色資料喵';
+				return '已刪除 ' + trigger + ' 角色資料喵~';
 			}
 			else {
 				try {
 					if(str2 == undefined || str2 == null || str2 == '') {						
-						return trigger + ': '+ str1 + '[' + players[i].status_search(str1.toString().toLowerCase()) + ']';					
+						return trigger + ': '+ str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';					
 					} else { 
-						let tempstr = players[i].status_search(str1.toString().toLowerCase());
+						let tempstr = players[i].getVal(str1.toString().toLowerCase());
 						return trigger + ': '+ str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase() ,str2.toString()) + ']';	
 					}					
 				} catch(err) {
@@ -411,7 +595,7 @@ function CharacterControll(trigger, str1, str2){
 		}
 		return tempstr;
 	}
-	return '查無此角色';
+	return '沒有這個角色喵~';
 }
 
 
@@ -430,7 +614,7 @@ function ccb(chack,text){
 	if(val_status<=99){
 		return coc6(val_status,text);
 	}else{
-		return '成功率太高了吧喵~';	
+		return 'error';	
 	}
 }	
 
@@ -818,6 +1002,6 @@ function Cat() {
 	let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵','\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
-衝三小', '87玩夠沒', '生科吃屎'];
+衝三小', '87玩夠沒', '生科ㄎㄎ'];
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
