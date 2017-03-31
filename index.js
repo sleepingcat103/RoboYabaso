@@ -10,6 +10,7 @@ var event = '';
 var v_path = '/v2/bot/message/reply';
 
 var KP_MID = '';
+var GP_MID = '';
 
 var options = {
   host: 'api.line.me',
@@ -52,7 +53,12 @@ app.post('/', jsonParser, function(req, res) {
   }
 
   if (rplyVal) {
-    replyMsgToLine(outType,rplyToken, rplyVal); 
+	if (outType=='kp_ccd'){
+	    replyMsgToLine('ccd',KP_MID, rplyVal); 
+	    replyMsgToLine('',GP_MID, '某八七再擲暗骰不給你們知道'); 
+  	}else{
+	    replyMsgToLine(outType,rplyToken, rplyVal); 
+	}
   } else {
     console.log('Do not trigger'); 
   }
@@ -82,7 +88,7 @@ let rplyObj;
   }else if(outType == 'ccd' && KP_MID != ''){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
-	    to: KP_MID,
+	    to: rplyToken,
 	    messages: [
 	      {
 		type: "text",
@@ -520,7 +526,7 @@ function parseInput(rplyToken, inputStr) {
 	else if (trigger == 'ccb') {		
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
-	//ccb指令開始於此
+	//KP指令開始於此
 	else if (trigger == 'getkp'){
 		return KP_MID;
 	}
@@ -531,6 +537,21 @@ function parseInput(rplyToken, inputStr) {
 		}else{
 			return '私密才能設定MID';
 		}
+	}
+	else if(trigger == 'getgp'){
+		return GP_MID;
+	}
+	else if(trigger == 'setgp'){
+		if(event.source.type == 'group'){
+			GP_MID = event.source.userId;
+			return 'MID是' + GP_MID;
+		}else{
+			return '邊緣人不能設定群組MID';
+		}
+	}
+	else if(trigger == 'ccd' && KP_MID == event.source.userId){
+		outType = 'kp_ccd';
+		return ccb(mainMsg[1],mainMsg[2]);
 	}
 	//ccd指令開始於此
 	else if (trigger == 'ccd') {
