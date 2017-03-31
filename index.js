@@ -54,7 +54,7 @@ app.post('/', jsonParser, function(req, res) {
 
   if (rplyVal) {
 	if (outType=='kp_ccd'){
-	    replyMsgToLine('',KP_MID, rplyVal); 
+	    replyMsgToLine('text',rplyToken, rplyVal); 
 	    replyMsgToLine('ccd',GP_MID, '某八七再擲暗骰不給你們知道'); 
   	}else{
 	    replyMsgToLine(outType,rplyToken, rplyVal); 
