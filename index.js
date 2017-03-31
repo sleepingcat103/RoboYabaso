@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
 var app = express();
-
+ 
 var jsonParser = bodyParser.json();
 
 var outType = 'text';
