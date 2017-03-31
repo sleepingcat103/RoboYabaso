@@ -9,6 +9,8 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
+var KP_MID = '';
+
 var options = {
   host: 'api.line.me',
   port: 443,
@@ -30,7 +32,6 @@ app.get('/', function(req, res) {
 
 app.post('/', jsonParser, function(req, res) {
   event = req.body.events[0];
-  v_path = '/v2/bot/message/reply';
   let type = event.type;
   let msgType = event.message.type;
   let msg = event.message.text;
@@ -67,6 +68,7 @@ function replyMsgToLine(outType,rplyToken, rplyVal) {
 	
 let rplyObj;
   if(outType == 'image'){
+	  v_path = '/v2/bot/message/reply';
 	   rplyObj= {
 	    replyToken: rplyToken,
 	    messages: [
@@ -77,9 +79,10 @@ let rplyObj;
 	      }
 	    ]
 	  }
-  }else if(outType == 'ccd'){
+  }else if(outType == 'ccd' && KP_MID != ''){
+	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
-	    to: rplyToken,
+	    to: KP_MID,
 	    messages: [
 	      {
 		type: "text",
@@ -88,6 +91,7 @@ let rplyObj;
 	    ]
 	  }
   }else{
+	  v_path = '/v2/bot/message/reply';
 	   rplyObj= {
 	    replyToken: rplyToken,
 	    messages: [
@@ -503,16 +507,19 @@ function parseInput(rplyToken, inputStr) {
 	else if (trigger == 'ccb') {		
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
+	//ccb指令開始於此
+	else if (trigger == '設定KP') {
+		if(event.source.type == 'user'){
+			KP_MID = event.source.userId;
+			return '你的MID是' + KP_MID;
+		}else{
+			return '私密才能設定MID';
+		}
+	}
 	//ccd指令開始於此
 	else if (trigger == 'ccd') {
-		//outType = 'ccd';
-		//v_path = '/v2/bot/message/push';
-		//rplyToken = event.source[0].userId;
-		let re_msg = 'type:'+ event.source.type + 
-		    	'\nreplyToken:' + event.replyToken + 
-		    	'\nuserId:' + event.source.userId + 
-		    	'\ngroupId:' + event.source.groupId;
-		return re_msg;//ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+		outType = 'ccd';
+		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
     	//生科火大圖指令開始於此
 	else if (trigger == '生科') {		
