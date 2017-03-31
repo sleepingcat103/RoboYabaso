@@ -543,7 +543,7 @@ function parseInput(rplyToken, inputStr) {
 	}
 	else if(trigger == 'setgp'){
 		if(event.source.type == 'group'){
-			GP_MID = event.source.userId;
+			GP_MID = event.source.groupId;
 			return 'MID是' + GP_MID;
 		}else{
 			return '邊緣人不能設定群組MID';
