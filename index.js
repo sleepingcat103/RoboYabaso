@@ -313,15 +313,11 @@ undefined',	'0',	'無',	'正常',	'0', 	'0',	'0',	'0',	'0',	'0','\
 		}
 		
 		player.output = function() {
-			return player_status.join(';') + ';';
+			return player_status.join(';');
 		}
 		
 		player.input = function(string) {
-			var temp = 0;
-			for(i=0; string.indexOf(';')>0; i++) {
-				player_status[i] = string.substr(temp,string.indexOf(';'));
-				temp = string.indexOf(';')+1;
-			}
+			player_status = string.split(';');
 		}
 		
 		player.status_getposition = function(string) {
