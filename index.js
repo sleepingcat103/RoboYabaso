@@ -56,8 +56,10 @@ app.post('/', jsonParser, function(req, res) {
 	if (outType=='kp_ccd'){
 	    replyMsgToLine('text',rplyToken, rplyVal); 
 	    replyMsgToLine('ccd',GP_MID, '某八七再擲暗骰不給你們知道'); 
-  	}else{
-	    replyMsgToLine(outType,rplyToken, rplyVal); 
+  	}else if(outType=='ccd'){
+	    replyMsgToLine(outType,KP_MID, rplyVal); 
+	}else{
+		replyMsgToLine(outType,rplyToken, rplyVal);
 	}
   } else {
     console.log('Do not trigger'); 
@@ -549,7 +551,7 @@ function parseInput(rplyToken, inputStr) {
 			return '邊緣人不能設定群組MID';
 		}
 	}
-	else if(trigger == 'ccd' && KP_MID == event.source.userId){
+	else if(trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user'){
 		outType = 'kp_ccd';
 		return ccb(mainMsg[1],mainMsg[2]);
 	}
