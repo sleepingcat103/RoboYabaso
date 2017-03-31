@@ -628,6 +628,10 @@ function parseInput(rplyToken, inputStr) {
             return '私密才能設定MID';
         }
     }
+    else if(trigger == 'killkp'){
+	    KP_MID = '';
+	    return 'KP已死亡';
+    }
     else if (trigger == 'getgp') {
         return GP_MID;
     }
@@ -639,11 +643,11 @@ function parseInput(rplyToken, inputStr) {
             return '邊緣人不能設定群組MID';
         }
     }
+	//ccd指令開始於此
     else if (trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
         outType = 'kp_ccd';
         return ccb(mainMsg[1], mainMsg[2]);
     }
-        //ccd指令開始於此
     else if (trigger == 'ccd') {
         outType = 'ccd';
         return ccb(mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
@@ -715,6 +719,14 @@ function CharacterControll(trigger, str1, str2) {
             else if (str1 == 'ccb') {
                 return coc6(players[i].getVal(str2), str2);
             }
+	    else if (str1 == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
+		outType = 'kp_ccd';
+		return coc6(players[i].getVal(str2), str2);
+	    }
+	    else if (str1 == 'ccd') {
+		outType = 'ccd';
+		return coc6(players[i].getVal(str2), str2);
+	    }
             else if (str1 == 'skills') {
                 return players[i].showall();
             }
