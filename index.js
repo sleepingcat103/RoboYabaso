@@ -82,7 +82,7 @@ let rplyObj;
   }else if(outType == 'ccd' && KP_MID != ''){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
-	    to: KP_MID,
+	    to: KP_MID.toString(),
 	    messages: [
 	      {
 		type: "text",
@@ -508,6 +508,9 @@ function parseInput(rplyToken, inputStr) {
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//ccb指令開始於此
+	else if (trigger == 'getkp'){
+		return KP_MID;
+	}
 	else if (trigger == 'setkp') {
 		if(event.source.type == 'user'){
 			KP_MID = event.source.userId;
