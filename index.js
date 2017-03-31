@@ -508,7 +508,7 @@ function parseInput(rplyToken, inputStr) {
 		return ccb(mainMsg[1],mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}
 	//ccb指令開始於此
-	else if (trigger == '設定KP') {
+	else if (trigger == 'setkp') {
 		if(event.source.type == 'user'){
 			KP_MID = event.source.userId;
 			return '你的MID是' + KP_MID;
