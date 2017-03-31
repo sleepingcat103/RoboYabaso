@@ -79,7 +79,7 @@ let rplyObj;
 	      }
 	    ]
 	  }
-  }else if(outType == 'ccd'){
+  }else if(outType == 'ccd' && KP_MID != ''){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
 	    to: KP_MID,
@@ -104,7 +104,7 @@ let rplyObj;
   }
 
   let rplyJson = JSON.stringify(rplyObj); 
-  
+  setOptions();
   var request = https.request(options, function(response) {
     console.log('Status: ' + response.statusCode);
     console.log('Headers: ' + JSON.stringify(response.headers));
@@ -117,6 +117,19 @@ let rplyObj;
     console.log('Request error: ' + e.message);
   })
   request.end(rplyJson);
+}
+
+function setOptions(){
+options = {
+  host: 'api.line.me',
+  port: 443,
+  path: v_path,
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer actVI2pGSgmQ+JYuF2il02qMYH+1+3Q6pvaTjjL4J77uWSuVRoTZnloLqZG39jxfuZAWyS77LfHuQ9rHx4vupzxq3sDLKcwRraRq0F0t9B8aULHlhuO2BYmiIvOFjT6Vs+RFkd3GDQnNB2Ykvo6rlgdB04t89/1O/w1cDnyilFU=' 
+  }
+}
 }
 
 ///////////////////////////////////////
