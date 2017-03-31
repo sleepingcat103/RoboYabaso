@@ -145,6 +145,7 @@ function setOptions() {
 ///////////////////////////////////////
 
 var Player = {
+
     createNew: function () {
         var player = {};
 
@@ -350,17 +351,13 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
 無', '無', '無', '無', '無', '無', '無', '無'];
         }
 
-        player.output = function () {
-            return player_status.join(';') + ';';
-        }
-
-        player.input = function (string) {
-            var temp = 0;
-            for (i = 0; string.indexOf(';') > 0; i++) {
-                player_status[i] = string.substr(temp, string.indexOf(';'));
-                temp = string.indexOf(';') + 1;
-            }
-        }
+		player.output = function() {
+			return player_status.join(';');
+		}
+		
+		player.input = function(string) {
+			player_status = string.split(';');
+		}
 
         player.status_getposition = function (string) {
             var tempstr = '-1';
