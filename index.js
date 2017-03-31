@@ -54,8 +54,8 @@ app.post('/', jsonParser, function(req, res) {
 
   if (rplyVal) {
 	if (outType=='kp_ccd'){
-	    replyMsgToLine('ccd',KP_MID, rplyVal); 
-	    replyMsgToLine('',GP_MID, '某八七再擲暗骰不給你們知道'); 
+	    replyMsgToLine('',KP_MID, rplyVal); 
+	    replyMsgToLine('ccd',GP_MID, '某八七再擲暗骰不給你們知道'); 
   	}else{
 	    replyMsgToLine(outType,rplyToken, rplyVal); 
 	}
@@ -85,7 +85,7 @@ let rplyObj;
 	      }
 	    ]
 	  }
-  }else if(outType == 'ccd' && KP_MID != ''){
+  }else if(outType == 'ccd' && rplyToken != ''){
 	  v_path = '/v2/bot/message/push';
 	  rplyObj= {
 	    to: rplyToken,
