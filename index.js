@@ -537,7 +537,8 @@ function CharacterControll(trigger, str1, str2){
 			for(i=0; i<5; i++) {
 				if(players[i].getVal('name') == 'undefined') {
 					//players[i].input(str1.trim());
-					return '成功建立角色 ' + players[i].input(str1.trim()) + '喵!';
+					players[i].input(str1.trim());
+					return '成功建立角色 ' + players[i].getVal('name') + '喵!';
 				}
 			}
 			return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
