@@ -728,10 +728,10 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].showall();
             }
             else if (str1 == 'addskill') {
-                return players[i].addskill(str2);
+                return players[i].addskill(str2.trim());
             }
             else if (str1 == 'deleteskill') {
-                return players[i].deleteskill(str2);
+                return players[i].deleteskill(str2.trim());
             }
             else if (str1 == 'output') {
                 return players[i].output();
