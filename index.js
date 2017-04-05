@@ -312,11 +312,11 @@ san'+ ': ' + player_status[14] + '\n' + '\
         }
 
         player.addskill = function (string) {
+	    if(player.status_getposition(string)>0) {
+		return '已經有這個技能了喵~';
+	    }
             for (i = 0; i < 10; i++) {
                 if (player_status[98 + i] == '無') {
-			if(player_status[98 + i] == string) {
-				return '已經有這個技能了喵~';
-			}
                     player_status[98 + i] = string;
                     return string + ' 新增成功!';
                 }
