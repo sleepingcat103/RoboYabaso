@@ -291,6 +291,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
         player.set = function (string, value) {
             var tempstr;
             var pos = player.status_getposition(string.trim());
+		console.log('pos'+'='+pos);
             if (pos == '-1') {
                 tempstr = '是什麼喵??';
             } else {
