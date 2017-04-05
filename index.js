@@ -349,6 +349,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
 10', '10', '10', '5', '5', '5', '5', '0', '0', '0', '\
 0', '0', '0', '0', '0', '0', '0', '0', '無', '無', '\
 無', '無', '無', '無', '無', '無', '無', '無'];
+		removeA(this);
         }
 
 		player.output = function() {
@@ -472,7 +473,18 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
     }
 }
 
-var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
+//var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
+var players = [];
+
+function removeA(a) {
+	var what, a = arguments, L = a.length, ax;
+	while (L > 0 && players.length) {
+		what = a[--L];
+		while ((ax= players.indexOf(what)) !== -1) {
+			players.splice(ax, 1);
+		}
+	}
+}
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
@@ -488,7 +500,7 @@ function parseInput(rplyToken, inputStr) {
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
 
     //角卡功能快速入口//	
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < players.length; i++) {
         if (mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
     }
 
@@ -593,13 +605,14 @@ function CharacterControll(trigger, str1, str2) {
     if (trigger == 'new' || trigger == '建立') {
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         if (str1.indexOf(';') < 0) {
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < players.length; i++) {
                 if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
             }
-
-            for (i = 0; i < 5; i++) {
+	    
+	    players.push(Player.createNew());
+            for (i = 0; i < players.length; i++) {
                 if (players[i].getVal('name') == 'undefined') {
-                    players[i].new(str1);
+	            players[i].new(str1);
                     return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
                 }
             }
@@ -607,10 +620,10 @@ function CharacterControll(trigger, str1, str2) {
         } else {
             var newName;
             newName = str1.substr(0, str1.indexOf(';'));
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < players.length; i++) {
                 if (players[i].getVal('name') == newName) return '已經有同名的角色了!';
             }
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < players.length; i++) {
                 if (players[i].getVal('name') == 'undefined') {
                     //players[i].input(str1.trim());
                     return '成功建立角色 ' + players[i].input(str1.trim()) + '喵!';
@@ -621,7 +634,7 @@ function CharacterControll(trigger, str1, str2) {
     }
 
     //角色設定(特定狀態查詢) 刪除 查看
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < players.length; i++) {
         if (trigger == players[i].getVal('name')) {
             if (str1 == 'debug') {
                 return Meow();//players[i].show();
@@ -653,7 +666,8 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].show();
             }
             else if (str1 == 'delete' || str1 == '刪除') {
-                players[i].delete();
+		removeA(players[i]);
+                //players[i].delete();
                 return '已刪除 ' + trigger + ' 角色資料喵~';
             }
             else {
@@ -673,7 +687,7 @@ function CharacterControll(trigger, str1, str2) {
     //列出所有角色
     if (trigger == 'list' || trigger == '清單') {
         var tempstr = '角色清單: (max=5)\n';
-        for (i = 1; i < 6; i++) {
+        for (i = 1; i < players.length+1; i++) {
             tempstr += i + '. ' + players[i - 1].getVal('name') + '\n';
         }
         return tempstr;
@@ -687,7 +701,7 @@ function CharacterControll(trigger, str1, str2) {
 ////////////////////////////////////////
 function ccb(chack, text) {
     var val_status = chack;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < players.length; i++) {
         if (val_status.toString() == players[i].getVal('name')) {
             //return players[i].ccb(text.toString().toLowerCase().trim());
             val_status = players[i].getVal(text.toString().toLowerCase().trim());
