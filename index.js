@@ -293,7 +293,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
             var tempstr;
             var pos = player.status_getposition(string.trim());
             if (pos == '-1') {
-                tempstr = '是什麼喵?';
+                tempstr = '是什麼喵??';
             } else {
                 if (value.charAt(0).toString() == '+') {
                     value = player.getVal(string) * 1 + value.substr(1, value.length - 1) * 1;
