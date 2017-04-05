@@ -291,21 +291,21 @@ san'+ ': ' + player_status[14] + '\n' + '\
 
         player.set = function (string, value) {
             var tempstr;
-            var pos = player.status_getposition(string);
+            var pos = this.status_getposition(string);
             if (pos == '-1') {
                 tempstr = '是什麼喵?';
             } else {
                 if (value.charAt(0).toString() == '+') {
-                    value = player.getVal(string) * 1 + value.substr(1, value.length - 1) * 1;
+                    value = this.getVal(string) * 1 + value.substr(1, value.length - 1) * 1;
                     if (value > 99) value = 99;
                 } else if (value.charAt(0).toString() == '-') {
-                    value = player.getVal(string) * 1 - value.substr(1, value.length - 1) * 1;
+                    value = this.getVal(string) * 1 - value.substr(1, value.length - 1) * 1;
                     if (value < 0 || value == NaN || value == undefined || value == null || value == '') value = 0;
                 }
 
                 if (value == undefined || value == null || value == '') value = 'error';
 
-                player_status[pos] = value;
+                this.player_status[pos] = value;
                 tempstr = player.getVal(string);
             }
             return tempstr;
@@ -452,8 +452,10 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
             } else if (string == '攝影') {tempstr = 86;
             } else if (string == '克蘇魯神話' || string == '克蘇魯') {tempstr = 87;
             } else {
+		var cnt = 0;
                 for (i = 0; i < 10; i++) {
-                    if (string == player_status[98 + i]) {	//額外技能 //
+		    cnt = 98+i;
+                    if (string == player_status[cnt]) {	//額外技能 //
                         tempstr = 88 + i;
                         break;
                     }
