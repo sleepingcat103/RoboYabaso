@@ -476,13 +476,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
 var players = [];
 
 function removeA(a) {
-	var what, a = arguments, L = a.length, ax;
-	while (L > 0 && players.length) {
-		what = a[--L];
-		while ((ax= players.indexOf(what)) !== -1) {
-			players.splice(ax, 1);
-		}
-	}
+	players.splice(a,1);
 }
 
 ////////////////////////////////////////
@@ -665,7 +659,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].show();
             }
             else if (str1 == 'delete' || str1 == '刪除') {
-		removeA(players[i]);
+		removeA(i);
                 //players[i].delete();
                 return '已刪除 ' + trigger + ' 角色資料喵~';
             }
