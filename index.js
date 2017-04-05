@@ -541,7 +541,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
             } else if (string == '克蘇魯神話' || string == '克蘇魯') {
                 tempstr = 87;
             } else {
-                for (i = 0; i < 10; i++) {
+                for (i = 0; i < 10; i++) {	console.log(i+'.'+string+'.'+(player_status[98 + i]));
                     if (string.localeCompare(player_status[98 + i]).toString()=='0') {	//額外技能 //
                         tempstr = 88 + i;
                         break;
