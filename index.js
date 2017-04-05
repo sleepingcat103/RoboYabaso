@@ -324,7 +324,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
         player.deleteskill = function (string) {
             for (i = 0; i < 10; i++) {
                 if (player_status[98 + i] == string) {
-                    player.set(string, 0);
+                    player_status[88 + i] = '0';
                     player_status[98 + i] = '無';
                     return string + ' 技能已刪除!';
                 }
