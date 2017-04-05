@@ -163,8 +163,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
 無', '無', '無', '無', '無', '無', '無', '無'];
 
         player.debug = function (string) {
-            //var tempstr = 'san';
-            return;//skill_10 + '\n' + skill_01;
+            return eval(string);
         }
 
         player.show = function () {
