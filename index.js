@@ -543,7 +543,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
                 tempstr = 87;
             } else {
                 for (i = 0; i < 10; i++) {
-                    if (string.localeCompare(player_status[98 + i])==0) {	//額外技能 //
+                    if (string.localeCompare(player_status[98 + i])=0) {	//額外技能 //
                         tempstr = 88 + i;
                         break;
                     }
