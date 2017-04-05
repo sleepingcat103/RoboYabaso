@@ -748,10 +748,10 @@ function CharacterControll(trigger, str1, str2) {
             else {
                 try {
                     if (str2 == undefined || str2 == null || str2 == '') {
-                        return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase().trim()) + ']';
+                        return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
-                        return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase().trim(), str2.toString().trim()) + ']';
+                        return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase(), str2.toString()) + ']';
                     }
                 } catch (err) {
                     return err.toString();
