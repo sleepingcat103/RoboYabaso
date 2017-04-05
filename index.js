@@ -314,7 +314,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
         player.addskill = function (string) {
             for (i = 0; i < 10; i++) {
                 if (player_status[98 + i] == '無') {
-                    player.player_status[98 + i] = string;
+                    player_status[98 + i] = string;
                     return string + ' 新增成功!';
                 }
             }
@@ -325,7 +325,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
             for (i = 0; i < 10; i++) {
                 if (player_status[98 + i] == string) {
                     player.set(string, 0);
-                    player.player_status[98 + i] = '無';
+                    player_status[98 + i] = '無';
                     return string + ' 技能已刪除!';
                 }
             }
