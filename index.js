@@ -290,6 +290,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
 
         player.set = function (string, value) {
             var tempstr;
+		console.log('set '+string+'='+value+' start');
             var pos = player.status_getposition(string.trim());
 		console.log('pos'+'='+pos);
             if (pos == '-1') {
@@ -543,7 +544,6 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
                 for (i = 0; i < 10; i++) {	console.log(i+'.'+string+'.'+(player_status[98 + i])+'.');
                     if (string == player_status[98+i]) {	//額外技能 //
                         tempstr = 88 + i;
-			break;
                     }
                 }
             }
