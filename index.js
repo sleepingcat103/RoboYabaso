@@ -300,10 +300,8 @@ san'+ ': ' + player_status[14] + '\n' + '\
                 } else if (value.charAt(0).toString() == '-') {
                     value = player.getVal(string) * 1 - value.substr(1, value.length - 1) * 1;
                     if (value < 0 || value == NaN || value == undefined || value == null || value == '') value = 0;
-                }
-
-                if (value == undefined || value == null || value == '') value = 'error';
-
+		}
+		console.log('set'+string+'.'+value);
                 player_status[pos] = value;
                 tempstr = player.getVal(string);
             }
@@ -552,6 +550,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
         }
 
         player.getVal = function (string) {
+		console.log('getVal'+string);
             var temp = player.status_getposition(string);
             if (temp == '-1') return '是什麼喵?';
             else return player_status[temp];
