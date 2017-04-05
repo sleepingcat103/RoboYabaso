@@ -751,6 +751,7 @@ function CharacterControll(trigger, str1, str2) {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
+			    console.log(str1+'.'+str2);
                         return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase(), str2.toString()) + ']';
                     }
                 } catch (err) {
