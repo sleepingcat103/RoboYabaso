@@ -543,8 +543,8 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
                 for (i = 0; i < 10; i++) {	console.log(i+'.'+string+'.'+(player_status[98 + i])+'.');
                     if (string == player_status[98+i]) {	//額外技能 //
                         tempstr = 88 + i;
-                        break;
                     }
+		    break;
                 }
             }
             return tempstr;
