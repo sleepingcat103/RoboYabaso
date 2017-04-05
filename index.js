@@ -713,7 +713,7 @@ function CharacterControll(trigger, str1, str2) {
     for (i = 0; i < 5; i++) {
         if (trigger == players[i].getVal('name')) {
             if (str1 == 'debug') {
-                return Meow();//players[i].show();
+                return players[i].debug(str1);//players[i].show();
             }
             else if (str1 == 'ccb') {
                 return coc6(players[i].getVal(str2), str2);
