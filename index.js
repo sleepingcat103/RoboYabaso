@@ -311,12 +311,12 @@ san'+ ': ' + player_status[14] + '\n' + '\
         }
 
         player.addskill = function (string) {
-	    if(player.status_getposition(string)>0) {
+	    if(this.status_getposition(string)>0) {
 		return '已經有這個技能了喵~';
 	    }
             for (i = 0; i < 10; i++) {
-                if (player_status[98 + i] == '無') {
-                    player_status[98 + i] = string;
+                if (this.player_status[98 + i] == '無') {
+                    this.player_status[98 + i] = string;
                     return string + ' 新增成功!';
                 }
             }
@@ -552,7 +552,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
 
         player.getVal = function (string) {
 		console.log('getVal: '+string);
-            var temp = player.status_getposition(string);
+            var temp = this.status_getposition(string);
             if (temp == '-1') return '是什麼喵?';
             else return player_status[temp];
         }
