@@ -289,7 +289,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
             player_status[0] = value;
         }
 
-        player.set = function (string, value) {
+        player.setStatus = function (string, value) {
             var tempstr;
             var pos = this.status_getposition(string);
 	    var v_num = value;
@@ -325,9 +325,9 @@ san'+ ': ' + player_status[14] + '\n' + '\
 
         player.deleteskill = function (string) {
             for (i = 0; i < 10; i++) {
-                if (player_status[98 + i] == string) {
-                    this.set(string, 0);
-                    player_status[98 + i] = '無';
+                if (this.player_status[98 + i] == string) {
+                    this.setStatus(string, 0);
+                    this.player_status[98 + i] = '無';
                     return string + ' 技能已刪除!';
                 }
             }
@@ -674,7 +674,7 @@ function CharacterControll(trigger, str1, str2) {
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
 			console.log('tempstr=' + tempstr);
-			let afterstr = players[i].set(str1.toString().toLowerCase(),str2.toString());
+			let afterstr = players[i].setStatus(str1.toString().toLowerCase(),str2.toString());
 			console.log('afterstr=' + afterstr);
                         return trigger + ': ' + str1 + '[' + tempstr + '->' + afterstr + ']';
                     }
