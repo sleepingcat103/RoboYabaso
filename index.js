@@ -156,111 +156,107 @@ Class.create = function(methods) {
     return Clz;
 };
 
-var Player = Class.create({
-    initialize : function Player(p_name){ //建構式	
-	this.setVal('name',p_name);
-	this.setVal('db','0');
-	this.setVal('item','無');
-	this.setVal('status','正常');
-	this.setVal('str','0');
-	this.setVal('dex','0');
-	this.setVal('con','0');
-	this.setVal('pow','0');
-	this.setVal('app','0');
-	this.setVal('int','0');
-	this.setVal('siz','0');
-	this.setVal('edu','0');
-	this.setVal('hp','0');
-	this.setVal('mp','0');
-	this.setVal('san','0');
-	this.setVal('靈感','75');
-	this.setVal('知識','75');
-	this.setVal('信用','0');
-	this.setVal('魅惑','15');
-	this.setVal('恐嚇','15');
-	this.setVal('說服','10');
-	this.setVal('話術','5');
-	this.setVal('心理學','10');
-	this.setVal('心理分析','1');
-	this.setVal('調查','25');
-	this.setVal('聆聽','20');
-	this.setVal('圖書館使用','20');
-	this.setVal('追蹤','10');
-	this.setVal('急救','30');
-	this.setVal('醫學','30');
-	this.setVal('鎖匠','1');
-	this.setVal('手上功夫','10');
-	this.setVal('隱密行動','10');
-	this.setVal('生存','10');
-	this.setVal('閃避','0');
-	this.setVal('攀爬','20');
-	this.setVal('跳躍','20');
-	this.setVal('游泳','20');
-	this.setVal('駕駛','20');
-	this.setVal('領航','10');
-	this.setVal('騎術','5');
-	this.setVal('自然學','10');
-	this.setVal('神秘學','5');
-	this.setVal('歷史','5');
-	this.setVal('會計','5');
-	this.setVal('估價','5');
-	this.setVal('法律','5');
-	this.setVal('喬裝','5');
-	this.setVal('電腦使用','5');
-	this.setVal('電器維修','10');
-	this.setVal('機械維修','10');
-	this.setVal('重機械操作','1');
-	this.setVal('數學','10');
-	this.setVal('化學','1');
-	this.setVal('藥學','1');
-	this.setVal('人類學','1');
-	this.setVal('考古學','1');
-	this.setVal('電子學','1');
-	this.setVal('物理學','1');
-	this.setVal('工程學','1');
-	this.setVal('密碼學','1');
-	this.setVal('天文學','1');
-	this.setVal('地質學','1');
-	this.setVal('生物學','1');
-	this.setVal('動物學','1');
-	this.setVal('植物學','1');
-	this.setVal('物證學','1');
-	this.setVal('投擲','20');
-	this.setVal('鬥毆','25');
-	this.setVal('劍','20');
-	this.setVal('矛','20');
-	this.setVal('斧頭','15');
-	this.setVal('絞殺','15');
-	this.setVal('電鋸','10');
-	this.setVal('連枷','10');
-	this.setVal('鞭子','5');
-	this.setVal('弓箭','15');
-	this.setVal('手槍','20');
-	this.setVal('步槍','25');
-	this.setVal('衝鋒槍','15');
-	this.setVal('機關槍','10');
-	this.setVal('重武器','10');
-	this.setVal('火焰噴射器','10');
-	this.setVal('美術','5');
-	this.setVal('演技','5');
-	this.setVal('偽造','5');
-	this.setVal('攝影','5');
-	this.setVal('克蘇魯神話','0');
-    },
-    getVal : function(p_sta) {
-        return eval('this.status.'+p_sta);
-    },
-    setVal : function(p_sta,p_val){
-	eval('this.status.'+p_sta+' = \''+p_val+'\'');
-    },
-    status : {}
-});
-
 function createChar(p_name){
-	var qoo = Player;
-	qoo.prototype = Player.prototype;
-	qoo.status = Player.status;
-	return qoo;
+     var Player = Class.create({
+	    initialize : function(p_name) { //建構式
+		this.setVal('name',p_name);
+		this.setVal('db','0');
+		this.setVal('item','無');
+		this.setVal('status','正常');
+		this.setVal('str','0');
+		this.setVal('dex','0');
+		this.setVal('con','0');
+		this.setVal('pow','0');
+		this.setVal('app','0');
+		this.setVal('int','0');
+		this.setVal('siz','0');
+		this.setVal('edu','0');
+		this.setVal('hp','0');
+		this.setVal('mp','0');
+		this.setVal('san','0');
+		this.setVal('靈感','75');
+		this.setVal('知識','75');
+		this.setVal('信用','0');
+		this.setVal('魅惑','15');
+		this.setVal('恐嚇','15');
+		this.setVal('說服','10');
+		this.setVal('話術','5');
+		this.setVal('心理學','10');
+		this.setVal('心理分析','1');
+		this.setVal('調查','25');
+		this.setVal('聆聽','20');
+		this.setVal('圖書館使用','20');
+		this.setVal('追蹤','10');
+		this.setVal('急救','30');
+		this.setVal('醫學','30');
+		this.setVal('鎖匠','1');
+		this.setVal('手上功夫','10');
+		this.setVal('隱密行動','10');
+		this.setVal('生存','10');
+		this.setVal('閃避','0');
+		this.setVal('攀爬','20');
+		this.setVal('跳躍','20');
+		this.setVal('游泳','20');
+		this.setVal('駕駛','20');
+		this.setVal('領航','10');
+		this.setVal('騎術','5');
+		this.setVal('自然學','10');
+		this.setVal('神秘學','5');
+		this.setVal('歷史','5');
+		this.setVal('會計','5');
+		this.setVal('估價','5');
+		this.setVal('法律','5');
+		this.setVal('喬裝','5');
+		this.setVal('電腦使用','5');
+		this.setVal('電器維修','10');
+		this.setVal('機械維修','10');
+		this.setVal('重機械操作','1');
+		this.setVal('數學','10');
+		this.setVal('化學','1');
+		this.setVal('藥學','1');
+		this.setVal('人類學','1');
+		this.setVal('考古學','1');
+		this.setVal('電子學','1');
+		this.setVal('物理學','1');
+		this.setVal('工程學','1');
+		this.setVal('密碼學','1');
+		this.setVal('天文學','1');
+		this.setVal('地質學','1');
+		this.setVal('生物學','1');
+		this.setVal('動物學','1');
+		this.setVal('植物學','1');
+		this.setVal('物證學','1');
+		this.setVal('投擲','20');
+		this.setVal('鬥毆','25');
+		this.setVal('劍','20');
+		this.setVal('矛','20');
+		this.setVal('斧頭','15');
+		this.setVal('絞殺','15');
+		this.setVal('電鋸','10');
+		this.setVal('連枷','10');
+		this.setVal('鞭子','5');
+		this.setVal('弓箭','15');
+		this.setVal('手槍','20');
+		this.setVal('步槍','25');
+		this.setVal('衝鋒槍','15');
+		this.setVal('機關槍','10');
+		this.setVal('重武器','10');
+		this.setVal('火焰噴射器','10');
+		this.setVal('美術','5');
+		this.setVal('演技','5');
+		this.setVal('偽造','5');
+		this.setVal('攝影','5');
+		this.setVal('克蘇魯神話','0');
+	    },
+	    getVal : function(p_sta) {
+		return eval('this.status.'+p_sta);
+	    },
+	    setVal : function(p_sta,p_val){
+		eval('this.status.'+p_sta+' = \''+p_val+'\'');
+	    },
+	    status : {}
+	});
+     return Player;
 }
 
 //var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
