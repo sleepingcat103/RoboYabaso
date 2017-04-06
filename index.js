@@ -149,18 +149,18 @@ var Player = {
     createNew: function () {
         var player = {};
 
-        var player_status = ['\
-undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
-0', '0', '0', '0', '0', '75', '75', '0', '15', '15', '\
-10', '5', '10', '1', '25', '20', '20', '10', '30', '30', '\
-1', '10', '10', '10', '0', '20', '20', '20', '20', '10', '\
-5', '10', '5', '5', '5', '5', '5', '5', '5', '10', '\
-10', '1', '10', '1', '1', '1', '1', '1', '1', '1', '\
-1', '1', '1', '1', '1', '1', '1', '20', '25', '20', '\
-20', '15', '15', '10', '10', '5', '15', '20', '25', '15', '\
-10', '10', '10', '5', '5', '5', '5', '0', '0', '0', '\
-0', '0', '0', '0', '0', '0', '0', '0', '無', '無', '\
-無', '無', '無', '無', '無', '無', '無', '無'];
+        var player_status = [
+'undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0',
+'0', '0', '0', '0', '0', '75', '75', '0', '15', '15',
+'10', '5', '10', '1', '25', '20', '20', '10', '30', '30',
+'1', '10', '10', '10', '0', '20', '20', '20', '20', '10',
+'5', '10', '5', '5', '5', '5', '5', '5', '5', '10',
+'10', '1', '10', '1', '1', '1', '1', '1', '1', '1',
+'1', '1', '1', '1', '1', '1', '1', '20', '25', '20',
+'20', '15', '15', '10', '10', '5', '15', '20', '25', '15',
+'10', '10', '10', '5', '5', '5', '5', '0', '0', '0',
+'0', '0', '0', '0', '0', '0', '0', '0', '無', '無',
+'無', '無', '無', '無', '無', '無', '無', '無'];
 
         player.debug = function (string) {
             //var tempstr = 'san';
@@ -170,14 +170,14 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
         player.show = function () {
             var tempstr;
             tempstr = '+==========================+\n';
-            tempstr += player.getVal('name') + '\n';
-            tempstr += 'STR: ' + player.getVal('str') + ' DEX: ' + player.getVal('dex') + ' CON: ' + player.getVal('con') + '\n';
-            tempstr += 'POW: ' + player.getVal('pow') + ' APP: ' + player.getVal('app') + ' INT: ' + player.getVal('int') + '\n';
-            tempstr += 'SIZ: ' + player.getVal('siz') + ' EDU: ' + player.getVal('edu') + ' DB: ' + player.getVal('db') + '\n';
+            tempstr += this.getVal('name') + '\n';
+            tempstr += 'STR: ' + this.getVal('str') + ' DEX: ' + this.getVal('dex') + ' CON: ' + this.getVal('con') + '\n';
+            tempstr += 'POW: ' + this.getVal('pow') + ' APP: ' + this.getVal('app') + ' INT: ' + this.getVal('int') + '\n';
+            tempstr += 'SIZ: ' + this.getVal('siz') + ' EDU: ' + this.getVal('edu') + ' DB: ' + this.getVal('db') + '\n';
             tempstr += '+--------------------------+\n';
-            tempstr += 'HP: ' + player.getVal('hp') + ' MP: ' + player.getVal('mp') + ' SAN: ' + player.getVal('san') + '\n';
-            tempstr += 'STATUS: ' + player.getVal('status') + '\n';
-            tempstr += 'ITEM: ' + player.getVal('item') + '\n';
+            tempstr += 'HP: ' + this.getVal('hp') + ' MP: ' + this.getVal('mp') + ' SAN: ' + this.getVal('san') + '\n';
+            tempstr += 'STATUS: ' + this.getVal('status') + '\n';
+            tempstr += 'ITEM: ' + this.getVal('item') + '\n';
             tempstr += '+==========================+\n';
             return tempstr;
         }
@@ -296,7 +296,6 @@ san'+ ': ' + player_status[14] + '\n' + '\
             if (pos == '-1') {
                 tempstr = '是什麼喵?';
             } else {
-		console.log('v_num='+v_num);
                 if (v_num.charAt(0).toString() == '+') {
                     v_num = this.getVal(string) * 1 + v_num.substr(1, v_num.length - 1) * 1;
                     if (v_num > 99) v_num = 99;
@@ -304,11 +303,11 @@ san'+ ': ' + player_status[14] + '\n' + '\
                     v_num = this.getVal(string) * 1 - v_num.substr(1, v_num.length - 1) * 1;
                     if (v_num < 0 || v_num == NaN || v_num == undefined || v_num == null || v_num == '') v_num = 0;
                 }
-
+		
                 if (v_num == undefined || v_num == null || v_num == '') v_num = 'error';
-
-                this.player_status[pos] = v_num;
-                tempstr = player.getVal(string);
+		console.log('v_num='+v_num);
+                player_status[pos] = v_num;
+                tempstr = this.getVal(string);
             }
             return tempstr;
         }
@@ -325,9 +324,9 @@ san'+ ': ' + player_status[14] + '\n' + '\
 
         player.deleteskill = function (string) {
             for (i = 0; i < 10; i++) {
-                if (this.player_status[98 + i] == string) {
+                if (player_status[98 + i] == string) {
                     this.setStatus(string, 0);
-                    this.player_status[98 + i] = '無';
+                    player_status[98 + i] = '無';
                     return string + ' 技能已刪除!';
                 }
             }
@@ -335,31 +334,16 @@ san'+ ': ' + player_status[14] + '\n' + '\
         }
 
         player.ccb = function (string) {
-            return coc6(player.getVal(string), string);
+            return coc6(this.getVal(string), string);
         }
 
-        player.delete = function () {
-            player_status = ['\
-undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
-0', '0', '0', '0', '0', '75', '75', '0', '15', '15', '\
-10', '5', '10', '1', '25', '20', '20', '10', '30', '30', '\
-1', '10', '10', '10', '0', '20', '20', '20', '20', '10', '\
-5', '10', '5', '5', '5', '5', '5', '5', '5', '10', '\
-10', '1', '10', '1', '1', '1', '1', '1', '1', '1', '\
-1', '1', '1', '1', '1', '1', '1', '20', '25', '20', '\
-20', '15', '15', '10', '10', '5', '15', '20', '25', '15', '\
-10', '10', '10', '5', '5', '5', '5', '0', '0', '0', '\
-0', '0', '0', '0', '0', '0', '0', '0', '無', '無', '\
-無', '無', '無', '無', '無', '無', '無', '無'];
-        }
-
-		player.output = function() {
-			return player_status.join(';');
-		}
+	player.output = function() {
+		return player_status.join(';');
+	}
 		
-		player.input = function(string) {
-			player_status = string.split(';');
-		}
+	player.input = function(string) {
+		player_status = string.split(';');
+	}
 
         player.status_getposition = function (string) {
             var tempstr = '-1';
@@ -456,7 +440,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
             } else {
 		var cnt = 0;
                 for (i = 0; i < 10; i++) {
-		    cnt = 98+i;
+		    cnt = 98 + i;
                     if (string == player_status[cnt]) {	//額外技能 //
                         tempstr = 88 + i;
                         break;
@@ -467,7 +451,7 @@ undefined', '0', '無', '正常', '0', '0', '0', '0', '0', '0', '\
         }
 
         player.getVal = function (string) {
-            var temp = player.status_getposition(string);
+            var temp = this.status_getposition(string);
             if (temp == '-1') return '是什麼喵?';
             else return player_status[temp];
         }
