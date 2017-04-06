@@ -253,7 +253,7 @@ var Player = Class.create({
     setVal : function(p_sta,p_val){
 	eval('this.status.'+p_sta+' = \''+p_val+'\'');
     },
-    status : {name: p_name,
+    status : {name: 'unknown',
 	db: '0',
 	item: '無',
 	status: '正常',
