@@ -249,7 +249,7 @@ function createChar(p_name){
 		this.setVal('克蘇魯神話','0');
 	    },
 	    getVal : function(p_sta) {
-		return eval('this.'+p_sta);
+		return eval('this.'+p_sta+'.toString()');
 	    },
 	    setVal : function(p_sta,p_val){
 		eval('this.'+p_sta+' = \''+p_val+'\'');
