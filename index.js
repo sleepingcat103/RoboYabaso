@@ -159,7 +159,94 @@ Class.create = function(methods) {
 function createNewChar(p_name){
 	var Player = Class.create({
 	    initialize: function(){
-		    return Player;
+		this.status.name = p_name;
+		this.status.db = '0';
+		this.status.item = '無';
+		this.status.status = '正常';
+		this.status.str = '0';
+		this.status.dex = '0';
+		this.status.con = '0';
+		this.status.pow = '0';
+		this.status.app = '0';
+		this.status.int = '0';
+		this.status.siz = '0';
+		this.status.edu = '0';
+		this.status.hp = '0';
+		this.status.mp = '0';
+		this.status.san = '0';
+		this.status.靈感 = '75';
+		this.status.知識 = '75';
+		this.status.信用 = '0';
+		this.status.魅惑 = '15';
+		this.status.恐嚇 = '15';
+		this.status.說服 = '10';
+		this.status.話術 = '5';
+		this.status.心理學 = '10';
+		this.status.心理分析 = '1';
+		this.status.調查 = '25';
+		this.status.聆聽 = '20';
+		this.status.圖書館使用 = '20';
+		this.status.追蹤 = '10';
+		this.status.急救 = '30';
+		this.status.醫學 = '30';
+		this.status.鎖匠 = '1';
+		this.status.手上功夫 = '10';
+		this.status.隱密行動 = '10';
+		this.status.生存 = '10';
+		this.status.閃避 = '0';
+		this.status.攀爬 = '20';
+		this.status.跳躍 = '20';
+		this.status.游泳 = '20';
+		this.status.駕駛 = '20';
+		this.status.領航 = '10';
+		this.status.騎術 = '5';
+		this.status.自然學 = '10';
+		this.status.神秘學 = '5';
+		this.status.歷史 = '5';
+		this.status.會計 = '5';
+		this.status.估價 = '5';
+		this.status.法律 = '5';
+		this.status.喬裝 = '5';
+		this.status.電腦使用 = '5';
+		this.status.電器維修 = '10';
+		this.status.機械維修 = '10';
+		this.status.重機械操作 = '1';
+		this.status.數學 = '10';
+		this.status.化學 = '1';
+		this.status.藥學 = '1';
+		this.status.人類學 = '1';
+		this.status.考古學 = '1';
+		this.status.電子學 = '1';
+		this.status.物理學 = '1';
+		this.status.工程學 = '1';
+		this.status.密碼學 = '1';
+		this.status.天文學 = '1';
+		this.status.地質學 = '1';
+		this.status.生物學 = '1';
+		this.status.動物學 = '1';
+		this.status.植物學 = '1';
+		this.status.物證學 = '1';
+		this.status.投擲 = '20';
+		this.status.鬥毆 = '25';
+		this.status.劍 = '20';
+		this.status.矛 = '20';
+		this.status.斧頭 = '15';
+		this.status.絞殺 = '15';
+		this.status.電鋸 = '10';
+		this.status.連枷 = '10';
+		this.status.鞭子 = '5';
+		this.status.弓箭 = '15';
+		this.status.手槍 = '20';
+		this.status.步槍 = '25';
+		this.status.衝鋒槍 = '15';
+		this.status.機關槍 = '10';
+		this.status.重武器 = '10';
+		this.status.火焰噴射器 = '10';
+		this.status.美術 = '5';
+		this.status.演技 = '5';
+		this.status.偽造 = '5';
+		this.status.攝影 = '5';
+		this.status.克蘇魯神話 = '0';
 	    },
 	    getVal : function(p_sta) {
 		return eval('this.status.'+p_sta);
@@ -167,94 +254,7 @@ function createNewChar(p_name){
 	    setVal : function(p_sta,p_val){
 		eval('this.status.'+p_sta+' = \''+p_val+'\'');
 	    },
-	    status : {name: p_name,
-		db: '0',
-		item: '無',
-		status: '正常',
-		str: '0',
-		dex: '0',
-		con: '0',
-		pow: '0',
-		app: '0',
-		int: '0',
-		siz: '0',
-		edu: '0',
-		hp: '0',
-		mp: '0',
-		san: '0',
-		靈感: '75',
-		知識: '75',
-		信用: '0',
-		魅惑: '15',
-		恐嚇: '15',
-		說服: '10',
-		話術: '5',
-		心理學: '10',
-		心理分析: '1',
-		調查: '25',
-		聆聽: '20',
-		圖書館使用: '20',
-		追蹤: '10',
-		急救: '30',
-		醫學: '30',
-		鎖匠: '1',
-		手上功夫: '10',
-		隱密行動: '10',
-		生存: '10',
-		閃避: '0',
-		攀爬: '20',
-		跳躍: '20',
-		游泳: '20',
-		駕駛: '20',
-		領航: '10',
-		騎術: '5',
-		自然學: '10',
-		神秘學: '5',
-		歷史: '5',
-		會計: '5',
-		估價: '5',
-		法律: '5',
-		喬裝: '5',
-		電腦使用: '5',
-		電器維修: '10',
-		機械維修: '10',
-		重機械操作: '1',
-		數學: '10',
-		化學: '1',
-		藥學: '1',
-		人類學: '1',
-		考古學: '1',
-		電子學: '1',
-		物理學: '1',
-		工程學: '1',
-		密碼學: '1',
-		天文學: '1',
-		地質學: '1',
-		生物學: '1',
-		動物學: '1',
-		植物學: '1',
-		物證學: '1',
-		投擲: '20',
-		鬥毆: '25',
-		劍: '20',
-		矛: '20',
-		斧頭: '15',
-		絞殺: '15',
-		電鋸: '10',
-		連枷: '10',
-		鞭子: '5',
-		弓箭: '15',
-		手槍: '20',
-		步槍: '25',
-		衝鋒槍: '15',
-		機關槍: '10',
-		重武器: '10',
-		火焰噴射器: '10',
-		美術: '5',
-		演技: '5',
-		偽造: '5',
-		攝影: '5',
-		克蘇魯神話: '0'}
+	    status : {}
 });
 	return Player;
 }
