@@ -289,7 +289,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
             player_status[0] = value;
         }
 
-        setStatus = function (pl,string, value) {
+        function setStatus(pl,string, value) {
             var tempstr;
             var pos = pl.status_getposition(string);
 	    var v_num = value;
