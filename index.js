@@ -157,7 +157,7 @@ Class.create = function(methods) {
 };
 
 function createChar(p_name){
-return Class.create(
+return new Class.create(
 	{
 	    initialize: function Player(){
 		this.setVal('name',p_name);
