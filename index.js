@@ -662,16 +662,19 @@ function CharacterControll(trigger, str1, str2) {
             }
             else if (str1 == 'delete' || str1 == '刪除') {
 		removeA(i);
-                //players[i].delete();
                 return '已刪除 ' + trigger + ' 角色資料喵~';
             }
             else {
                 try {
+		    console.log('str1='+str1+',str2 = ' + str2);
                     if (str2 == undefined || str2 == null || str2 == '') {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
-                        return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].set(str1.toString().toLowerCase(), str2.toString()) + ']';
+			let afterstr = players[i].set(str1.toString().toLowerCase(),str2.toString());
+			console.log('tempstr=' + tempstr);
+			console.log('afterstr=' + afterstr);
+                        return trigger + ': ' + str1 + '[' + tempstr + '->' + afterstr + ']';
                     }
                 } catch (err) {
                     return err.toString();
