@@ -259,6 +259,7 @@ var Player = Class.create({
 function createChar(p_name){
 	var qoo = Player;
 	qoo.prototype = Player.prototype;
+	qoo.status = Player.status;
 	return qoo;
 }
 
