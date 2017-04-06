@@ -156,11 +156,11 @@ Class.create = function(methods) {
     return Clz;
 };
 
-function createChar(){
+function createChar(p_name){
 var Player = Class.create(
 	{
 	    initialize: function Player(){
-		this.setVal('name','unknown');
+		this.setVal('name',p_name);
 		this.setVal('db','0');
 		this.setVal('item','無');
 		this.setVal('status','正常');
@@ -390,7 +390,7 @@ function CharacterControll(trigger, str1, str2) {
         for (i = 0; i < players.length; i++) {
             if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
-	players.push(new Player(str1));
+	players.push(createChar(str1));
 	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
     }
 
