@@ -388,7 +388,7 @@ function CharacterControll(trigger, str1, str2) {
 	console.log('create new charater:' + str1+'Current number of char is ' + players.length);
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         for (i = 0; i < players.length; i++) {
-            if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
+            if (players[i].status.name == str1) return '已經有同名的角色了!';
         }
 	players.push(createChar(str1));
 	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
