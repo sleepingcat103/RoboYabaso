@@ -369,12 +369,6 @@ function parseInput(rplyToken, inputStr) {
         //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
-    }else if(trigger = 'debug'){
-	try{
-		return eval(mainMsg[1]);
-	}catch(err){
-		return err.toString();
-	}
     }
 }
 
