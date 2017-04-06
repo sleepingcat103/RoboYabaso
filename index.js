@@ -144,6 +144,97 @@ function setOptions() {
 /////////////////測試功能///////////////
 ///////////////////////////////////////
 
+function Player(p_name){
+	this.name = p_name;
+	this.db = '0';
+	this.item = '無';
+	this.status = '正常';
+	this.str = '0';
+	this.dex = '0';
+	this.con = '0';
+	this.pow = '0';
+	this.app = '0';
+	this.int = '0';
+	this.siz = '0';
+	this.edu = '0';
+	this.hp = '0';
+	this.mp = '0';
+	this.san = '0';
+	this.靈感 = '75';
+	this.知識 = '75';
+	this.信用 = '0';
+	this.魅惑 = '15';
+	this.恐嚇 = '15';
+	this.說服 = '10';
+	this.話術 = '5';
+	this.心理學 = '10';
+	this.心理分析 = '1';
+	this.調查 = '25';
+	this.聆聽 = '20';
+	this.圖書館使用 = '20';
+	this.追蹤 = '10';
+	this.急救 = '30';
+	this.醫學 = '30';
+	this.鎖匠 = '1';
+	this.手上功夫 = '10';
+	this.隱密行動 = '10';
+	this.生存 = '10';
+	this.閃避 = '0';
+	this.攀爬 = '20';
+	this.跳躍 = '20';
+	this.游泳 = '20';
+	this.駕駛 = '20';
+	this.領航 = '10';
+	this.騎術 = '5';
+	this.自然學 = '10';
+	this.神秘學 = '5';
+	this.歷史 = '5';
+	this.會計 = '5';
+	this.估價 = '5';
+	this.法律 = '5';
+	this.喬裝 = '5';
+	this.電腦使用 = '5';
+	this.電器維修 = '10';
+	this.機械維修 = '10';
+	this.重機械操作 = '1';
+	this.數學 = '10';
+	this.化學 = '1';
+	this.藥學 = '1';
+	this.人類學 = '1';
+	this.考古學 = '1';
+	this.電子學 = '1';
+	this.物理學 = '1';
+	this.工程學 = '1';
+	this.密碼學 = '1';
+	this.天文學 = '1';
+	this.地質學 = '1';
+	this.生物學 = '1';
+	this.動物學 = '1';
+	this.植物學 = '1';
+	this.物證學 = '1';
+	this.投擲 = '20';
+	this.鬥毆 = '25';
+	this.劍 = '20';
+	this.矛 = '20';
+	this.斧頭 = '15';
+	this.絞殺 = '15';
+	this.電鋸 = '10';
+	this.連枷 = '10';
+	this.鞭子 = '5';
+	this.弓箭 = '15';
+	this.手槍 = '20';
+	this.步槍 = '25';
+	this.衝鋒槍 = '15';
+	this.機關槍 = '10';
+	this.重武器 = '10';
+	this.火焰噴射器 = '10';
+	this.美術 = '5';
+	this.演技 = '5';
+	this.偽造 = '5';
+	this.攝影 = '5';
+	this.克蘇魯神話 = '0';
+}
+
 var Player = {
 
     createNew: function () {
@@ -482,7 +573,7 @@ function parseInput(rplyToken, inputStr) {
 
     //角卡功能快速入口//	
     for (i = 0; i < players.length; i++) {
-        if (mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
+        if (mainMsg[0].toString() == players[i].name) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
@@ -587,20 +678,15 @@ function CharacterControll(trigger, str1, str2) {
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         if (str1.indexOf(';') < 0) {
             for (i = 0; i < players.length; i++) {
-                if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
+                if (players[i].name == str1) return '已經有同名的角色了!';
             }
 	    
-	    players.push(Player.createNew());
-            for (i = 0; i < players.length; i++) {
-                if (players[i].getVal('name') == 'undefined') {
-	            players[i].new(str1);
-                    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
-                }
-            }
-            return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
+	    players.push(new Player(str1));
+	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
         } else {
             var newName;
             newName = str1.substr(0, str1.indexOf(';'));
+	    /*
             for (i = 0; i < players.length; i++) {
                 if (players[i].getVal('name') == newName) return '已經有同名的角色了!';
             }
@@ -610,6 +696,7 @@ function CharacterControll(trigger, str1, str2) {
                     return '成功建立角色 ' + players[i].input(str1.trim()) + '喵!';
                 }
             }
+	    */
             return '角色上限已滿! (max=5)\n請刪除不用的角色喵!';
         }
     }
