@@ -292,20 +292,22 @@ san'+ ': ' + player_status[14] + '\n' + '\
         player.set = function (string, value) {
             var tempstr;
             var pos = this.status_getposition(string);
+	    var v_num = value;
             if (pos == '-1') {
                 tempstr = '是什麼喵?';
             } else {
-                if (value.charAt(0).toString() == '+') {
-                    value = this.getVal(string) * 1 + value.substr(1, value.length - 1) * 1;
-                    if (value > 99) value = 99;
-                } else if (value.charAt(0).toString() == '-') {
-                    value = this.getVal(string) * 1 - value.substr(1, value.length - 1) * 1;
-                    if (value < 0 || value == NaN || value == undefined || value == null || value == '') value = 0;
+		console.log('v_num='+v_num);
+                if (v_num.charAt(0).toString() == '+') {
+                    v_num = this.getVal(string) * 1 + v_num.substr(1, v_num.length - 1) * 1;
+                    if (v_num > 99) v_num = 99;
+                } else if (v_num.charAt(0).toString() == '-') {
+                    v_num = this.getVal(string) * 1 - v_num.substr(1, v_num.length - 1) * 1;
+                    if (v_num < 0 || v_num == NaN || v_num == undefined || v_num == null || v_num == '') v_num = 0;
                 }
 
-                if (value == undefined || value == null || value == '') value = 'error';
+                if (v_num == undefined || v_num == null || v_num == '') v_num = 'error';
 
-                this.player_status[pos] = value;
+                this.player_status[pos] = v_num;
                 tempstr = player.getVal(string);
             }
             return tempstr;
@@ -671,8 +673,8 @@ function CharacterControll(trigger, str1, str2) {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
-			let afterstr = players[i].set(str1.toString().toLowerCase(),str2.toString());
 			console.log('tempstr=' + tempstr);
+			let afterstr = players[i].set(str1.toString().toLowerCase(),str2.toString());
 			console.log('afterstr=' + afterstr);
                         return trigger + ': ' + str1 + '[' + tempstr + '->' + afterstr + ']';
                     }
