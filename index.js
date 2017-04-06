@@ -385,8 +385,7 @@ function CharacterControll(trigger, str1, str2) {
         for (i = 0; i < players.length; i++) {
             if (players[i].name == str1) return '已經有同名的角色了!';
         }
-	var player = new Player(str1);
-	players.push(player);
+	players.push(new Player(str1));
 	return '成功建立角色 ' + player.getVal('name') + ' 請補充他/她的能力值!'
     }
 
