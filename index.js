@@ -289,25 +289,25 @@ san'+ ': ' + player_status[14] + '\n' + '\
             player_status[0] = value;
         }
 
-        player.setStatus = function (string, value) {
+        setStatus = function (pl,string, value) {
             var tempstr;
-            var pos = this.status_getposition(string);
+            var pos = pl.status_getposition(string);
 	    var v_num = value;
             if (pos == '-1') {
                 tempstr = '是什麼喵?';
             } else {
                 if (v_num.charAt(0).toString() == '+') {
-                    v_num = this.getVal(string) * 1 + v_num.substr(1, v_num.length - 1) * 1;
+                    v_num = pl.getVal(string) * 1 + v_num.substr(1, v_num.length - 1) * 1;
                     if (v_num > 99) v_num = 99;
                 } else if (v_num.charAt(0).toString() == '-') {
-                    v_num = this.getVal(string) * 1 - v_num.substr(1, v_num.length - 1) * 1;
+                    v_num = pl.getVal(string) * 1 - v_num.substr(1, v_num.length - 1) * 1;
                     if (v_num < 0 || v_num == NaN || v_num == undefined || v_num == null || v_num == '') v_num = 0;
                 }
 		
                 if (v_num == undefined || v_num == null || v_num == '') v_num = 'error';
 		console.log('v_num='+v_num);
-                player_status[pos] = v_num;
-                tempstr = this.getVal(string);
+                pl.player_status[pos] = v_num;
+                tempstr = pl.getVal(string);
             }
             return tempstr;
         }
@@ -325,7 +325,7 @@ san'+ ': ' + player_status[14] + '\n' + '\
         player.deleteskill = function (string) {
             for (i = 0; i < 10; i++) {
                 if (player_status[98 + i] == string) {
-                    this.setStatus(string, 0);
+                    setStatus(this,string, 0);
                     player_status[98 + i] = '無';
                     return string + ' 技能已刪除!';
                 }
@@ -658,7 +658,7 @@ function CharacterControll(trigger, str1, str2) {
                     } else {
                         let tempstr = players[i].getVal(str1.toString().toLowerCase());
 			console.log('tempstr=' + tempstr);
-			let afterstr = players[i].setStatus(str1.toString().toLowerCase(),str2.toString());
+			let afterstr = setStatus(players[i],str1.toString().toLowerCase(),str2.toString());
 			console.log('afterstr=' + afterstr);
                         return trigger + ': ' + str1 + '[' + tempstr + '->' + afterstr + ']';
                     }
