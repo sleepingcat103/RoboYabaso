@@ -369,7 +369,7 @@ function parseInput(rplyToken, inputStr) {
     }
     else if(trigger == 'debug'){
 	    var a = {};
-	    eval('a.'+trigger+' = ''test''');
+	    eval('a.'+trigger+' = \'test\'');
 	    return eval('a.'+trigger);
     }
 }
