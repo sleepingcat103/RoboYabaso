@@ -156,6 +156,8 @@ Class.create = function(methods) {
     return Clz;
 };
 
+
+
 var Player = Class.create({
     initialize : function Player(){ //建構式
     },
@@ -253,8 +255,6 @@ var Player = Class.create({
 	偽造: '5',
 	攝影: '5',
 	克蘇魯神話: '0'}
-
-
 });
 
 //var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
@@ -384,9 +384,10 @@ function CharacterControll(trigger, str1, str2) {
 	console.log('create new charater:' + str1+'Current number of char is ' + players.length);
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         for (i = 0; i < players.length; i++) {
-            if (players[i].name == str1) return '已經有同名的角色了!';
+            if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
-	var player = new Player(str1)
+	var player = Player;
+	player.setVal('name',str1);
 	players.push(player);
 	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
     }
