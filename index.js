@@ -367,6 +367,10 @@ function parseInput(rplyToken, inputStr) {
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
     }
+    else if(trigger == 'debug'){
+	    var a['debug'] = 'test';
+	    return a['debug'];
+    }
 }
 
 ////////////////////////////////////////
