@@ -368,8 +368,9 @@ function parseInput(rplyToken, inputStr) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
     }
     else if(trigger == 'debug'){
-	    var a['debug'] = 'test';
-	    return a['debug'];
+	    var a = {}
+	    var a[trigger] = 'test';
+	    return a[trigger];
     }
 }
 
