@@ -158,6 +158,9 @@ Class.create = function(methods) {
 
 function createNewChar(p_name){
 	var Player = Class.create({
+	    initialize: function(){
+		    return Player;
+	    },
 	    getVal : function(p_sta) {
 		return eval('this.status.'+p_sta);
 	    },
