@@ -156,6 +156,7 @@ Class.create = function(methods) {
     return Clz;
 };
 
+function createChar(){
 var Player = Class.create(
 	{
 	    initialize: function Player(){
@@ -256,8 +257,9 @@ var Player = Class.create(
 	    },
 	    status : {}
 	}
-	return Player;
 );
+	return Player;
+}
 
 //var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
 var players = [];
