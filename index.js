@@ -157,7 +157,7 @@ Class.create = function(methods) {
 };
 
 function createChar(p_name){
-var Player = Class.create(
+return Class.create(
 	{
 	    initialize: function Player(){
 		this.setVal('name',p_name);
@@ -258,7 +258,6 @@ var Player = Class.create(
 	    status : {}
 	}
 );
-	return Player;
 }
 
 //var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
