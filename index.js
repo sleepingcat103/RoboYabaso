@@ -252,7 +252,8 @@ var Player = Class.create({
     },
     setVal : function(p_sta,p_val){
 	eval('this.status.'+p_sta+' = \''+p_val+'\'');
-    }
+    },
+    status : {}
 });
 
 //var players = [Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew(), Player.createNew()];
