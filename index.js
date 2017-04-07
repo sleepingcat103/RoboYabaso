@@ -242,7 +242,7 @@ function createChar(p_name){
 	return eval('this.status.'+p_sta);
      };
      player.setVal = function(p_sta,p_val){
-	if(Number(p_val)==NaN){
+	if(isNaN(Number(p_val))){
 	   eval('this.status.'+p_sta+' = \''+p_val+'\'');
 	}else{
 	   if(Number(p_val)<0){
