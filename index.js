@@ -412,8 +412,12 @@ function parseInput(rplyToken, inputStr) {
         return ccb(mainMsg[1], mainMsg[2]);
     }
     else if (trigger == 'ccd') {
-        outType = 'ccd';
-        return ccb(mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+	if(KP_MID!=''){
+	   outType = 'ccd';
+           return ccb(mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+	}else{
+	   return '現在沒有KP，你是想傳給誰辣';
+	}
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
@@ -472,17 +476,21 @@ function CharacterControll(trigger, str1, str2, str3) {
                 return coc6(players[i].getVal(str2), str2);
             }
 	    else if (str1 == 'ccd'){
-		if(event.source.type == 'user' && event.source.userId == KP_MID){
-		   outType = 'kp_ccd';
-		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
-		}else if(event.source.type == 'user' && event.source.userId == players[i].getVal('uid')){
-		   outType = 'pl_ccd';
-		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
-		}else if(event.source.type == 'group'){
-		   outType = 'gp_ccd';
-		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
+		if(KP_MID != ''){
+		   if(event.source.type == 'user' && event.source.userId == KP_MID){
+			outType = 'kp_ccd';
+			return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
+		   }else if(event.source.type == 'user' && event.source.userId == players[i].getVal('uid')){
+			outType = 'pl_ccd';
+			return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
+		   }else if(event.source.type == 'group'){
+			outType = 'gp_ccd';
+			return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
+		   }
+		   return Meow();
+		}else{
+			return '現在沒有KP，你是想傳給誰辣';
 		}
-		return Meow();
 	    }
             else if (str1 == 'skills') {
                 return players[i].showAll();
