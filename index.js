@@ -269,15 +269,15 @@ function createChar(p_name){
 	tempstr += '+==========================+\n';
 	return tempstr;
      };
-     player.outPut = function() {
-	var retStr = JSON.stringify(this.ststus);
+     player.export = function() {
+	var retStr = JSON.stringify(this.status);
 	return retStr;
      };
-     player.inPut = function(p_str) {
+     player.import = function(p_str) {
 	var newChar = JSON.parse(p_str);
 	var oriName = this.getVal('name');
 	this.status = newChar;
-	this.serVal('name',oriName);
+	this.setVal('name',oriName);
 	return '成功匯入角色 ' + this.getVal('name') + ' !!!!'
      };
      return player;
@@ -416,7 +416,7 @@ function CharacterControll(trigger, str1, str2) {
 	if(str2 == undefined || str2 == null || str2 == ''){
 	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 	}else{
-	    return newPlayer.inPut(str2);
+	    return newPlayer.import(str2);
 	}
     }
 
@@ -447,7 +447,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].delVal(str2);
             }
             else if (str1 == 'output') {
-                return players[i].outPut();
+                return players[i].export();
             }
             else if (str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
                 return players[i].show();
