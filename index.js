@@ -281,13 +281,13 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+==========================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += padRight('ＳＴＲ：',8) + padLeft(this.getVal('str'),5) + padLeft('ＤＥＸ：',8) + padLeft(this.getVal('dex'),5) + padLeft('ＣＯＮ：',8) + padLeft(this.getVal('con'),5) + '\n';
-	tempstr += padRight('ＰＯＷ：',8) + padLeft(this.getVal('pow'),5) + padLeft('ＡＰＰ：',8) + padLeft(this.getVal('app'),5) + padLeft('ＩＮＴ：',8) + padLeft(this.getVal('int'),5) + '\n';
-	tempstr += padRight('ＳＩＺ：',8) + padLeft(this.getVal('siz'),5) + padLeft('ＥＤＵ：',8) + padLeft(this.getVal('edu'),5) + padLeft('ＤＢ：',8)  + padLeft(this.getVal('db'),5) + '\n';
+	tempstr += padRight('STR:',5) + padLeft(this.getVal('str'),3) + padLeft('DEX:',5) + padLeft(this.getVal('dex'),3) + padLeft('CON:',5) + padLeft(this.getVal('con'),3) + '\n';
+	tempstr += padRight('POW:',5) + padLeft(this.getVal('pow'),3) + padLeft('APP:',5) + padLeft(this.getVal('app'),3) + padLeft('INT:',5) + padLeft(this.getVal('int'),3) + '\n';
+	tempstr += padRight('SIZ:',5) + padLeft(this.getVal('siz'),3) + padLeft('EDU:',5) + padLeft(this.getVal('edu'),3) + padLeft('DB:',5)  + padLeft(this.getVal('db'),3) + '\n';
 	tempstr += '+--------------------------+\n';
-	tempstr += padRight('ＨＰ：',8) + padLeft(this.getVal('hp'),5)   + padLeft('ＭＰ：',8)  + padLeft(this.getVal('mp'),5)  + padLeft('ＳＡＮ：',8) + padLeft(this.getVal('san'),5) + '\n';
-	tempstr += padRight('ＳＴＡＴＵＳ：',8) + padLeft(this.getVal('status'),5) + '\n';
-	tempstr += padRight('ＩＴＥＭ：',8)  + padLeft(this.getVal('item'),5) + '\n';
+	tempstr += padRight('HP:',5) + padLeft(this.getVal('hp'),3)   + padLeft('MP:',5)  + padLeft(this.getVal('mp'),3)  + padLeft('SAN:',5) + padLeft(this.getVal('san'),3) + '\n';
+	tempstr += padRight('STATUS:',8) + this.getVal('status') + '\n';
+	tempstr += padRight('ITEM:',8)  + this.getVal('item') + '\n';
 	tempstr += '+==========================+';
 	return tempstr;
      };
