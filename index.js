@@ -176,7 +176,7 @@ function createChar(p_name,p_uid){
 	鞭子: '5',	弓箭: '15',	手槍: '20',	步槍: '25',
 	衝鋒槍: '15',	機關槍: '10',	重武器: '10',	火焰噴射器: '10',
 	美術: '5',	演技: '5',	偽造: '5',	攝影: '5',
-	克蘇魯神話: '0'
+	克蘇魯神話: '0',	職業: '無'
 	}
      };
      player.getVal = function(p_sta) {
@@ -215,6 +215,7 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
+	tempstr += this.getVal('職業') + '\n';
 	tempstr += padRight('STR:',4) + padRight(this.getVal('str'),3) + padRight('DEX:',4) + padRight(this.getVal('dex'),3) + padRight('CON:',4) + padRight(this.getVal('con'),3) + '\n';
 	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),3) + padRight('APP:',4) + padRight(this.getVal('app'),3) + padRight('INT:',4) + padRight(this.getVal('int'),3) + '\n';
 	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),3) + padRight('EDU:',4) + padRight(this.getVal('edu'),3) + padRight('DB:',4)  + padRight(this.getVal('db'),3) + '\n';
