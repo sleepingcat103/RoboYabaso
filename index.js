@@ -806,7 +806,7 @@ function padRight(str,lenght){
 }
 
 var JSONmapping = {
-character_name = 'name',
+character_name: 'name',
 char_section0_1_field1: 'hp',
 char_section0_1_field3: 'mp',
 char_section0_1_field5: 'san',
@@ -896,7 +896,7 @@ char_section9_1_field3: '偽造',
 char_section9_1_field4: '攝影',
 char_section10_1_field1: '克蘇魯神話',
 char_section11_1_field1: 'item'
-}
+};
 	
 	
 ////////////////////////////////////////
