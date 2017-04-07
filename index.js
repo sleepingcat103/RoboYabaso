@@ -452,7 +452,7 @@ function CharacterControll(trigger, str1, str2, str3) {
             }
             else if (str1 == 'addskill') {
 		if(players[i].status.hasOwnProperty(str2)){
-		   return '該技能已經學會:'+str2;
+		   return '該技能之前就學過了';
 		}else{
 		   if(str3 == '' || str3 == undefined){
 			players[i].setVal(str2,'0')
@@ -460,7 +460,7 @@ function CharacterControll(trigger, str1, str2, str3) {
 			players[i].setVal(str2,str3)
 		   }
 		}
-		return players[i].getVal('name') + ' 學會了 ' + players[i].getVal(str2) + ' !!! ';
+		return players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
             }
             else if (str1 == 'deleteskill') {
 		if(players[i].status.hasOwnProperty(str2)){
