@@ -895,8 +895,8 @@ char_section9_1_field1: '美術',
 char_section9_1_field2: '演技',
 char_section9_1_field3: '偽造',
 char_section9_1_field4: '攝影',
-char_section10_1_field1: '克蘇魯神話',
-char_section11_1_field1: 'item'
+char_section10_1_field1: '克蘇魯神話'
+//,char_section11_1_field1: 'item'
 };
 	
 	
