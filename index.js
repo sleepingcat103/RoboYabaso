@@ -281,11 +281,11 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += padRight('STR:',6) + padRight(this.getVal('str'),2) + padRight('DEX:',4) + padRight(this.getVal('dex'),2) + padRight('CON:',4) + padRight(this.getVal('con'),2) + '\n';
-	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),2) + padRight('APP:',4) + padRight(this.getVal('app'),2) + padRight('INT:',4) + padRight(this.getVal('int'),2) + '\n';
-	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),2) + padRight('EDU:',4) + padRight(this.getVal('edu'),2) + padRight('DB:',4)  + padRight(this.getVal('db'),2) + '\n';
+	tempstr += padRight('STR:',4) + padRight(this.getVal('str'),3) + padRight('DEX:',4) + padRight(this.getVal('dex'),3) + padRight('CON:',4) + padRight(this.getVal('con'),3) + '\n';
+	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),3) + padRight('APP:',4) + padRight(this.getVal('app'),3) + padRight('INT:',4) + padRight(this.getVal('int'),3) + '\n';
+	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),3) + padRight('EDU:',4) + padRight(this.getVal('edu'),3) + padRight('DB:',4)  + padRight(this.getVal('db'),3) + '\n';
 	tempstr += '+=====================+\n';
-	tempstr += padRight('HP:',4) + padRight(this.getVal('hp'),2)   + padRight('MP:',4)  + padRight(this.getVal('mp'),2)  + padRight('SAN:',4) + padRight(this.getVal('san'),2) + '\n';
+	tempstr += padRight('HP:',4) + padRight(this.getVal('hp'),3)   + padRight('MP:',4)  + padRight(this.getVal('mp'),3)  + padRight('SAN:',4) + padRight(this.getVal('san'),3) + '\n';
 	tempstr += padRight('STATUS:',8) + this.getVal('status') + '\n';
 	tempstr += padRight('ITEM:',8)  + this.getVal('item') + '\n';
 	tempstr += '+=====================+';
@@ -536,7 +536,10 @@ function CharacterControll(trigger, str1, str2, str3) {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1) + ']';
                     } else {
 			if( players[i].status.hasOwnProperty(str1) &&
-			   (event.source.type == 'group' || (event.source.type == 'user' && event.source.userId == KP_MID))
+			   (event.source.type == 'group' ||
+			    (event.source.type == 'user' && event.source.userId == KP_MID)||
+			    (event.source.type == 'user' && KP_MID == '')
+			   )
 			){
 			   var tempVal = players[i].getVal(str1);
 			   var afterVal = str2;
