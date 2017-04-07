@@ -249,9 +249,11 @@ function createChar(p_name){
      };
      player.showAll = function(){
 	var result = "";
-	$.each(this.status, function(k, v) {
-	     result += k + " : " + v + "\n";
-	});
+	for (var p in this.status) {
+	    if( this.status.hasOwnProperty(p) ) {
+		result += p + ": " + this.status[p] + "\n";
+	    } 
+	};
 	return result;
      };
      player.show = function() {
