@@ -485,15 +485,19 @@ function CharacterControll(trigger, str1, str2, str3) {
                     if (str2 == undefined || str2 == null || str2 == '') {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1) + ']';
                     } else {
-                        var tempVal = players[i].getVal(str1);
-			var afterVal = str2;
-			if(afterVal.charAt(0) == '+'){
-			   afterVal = Number(tempVal) + Number(afterVal.substring(1));
-			}else if(afterVal.charAt(0) == '-'){
-			   afterVal = Number(tempVal) - Number(afterVal.substring(1));
+			if(players[i].status.hasOwnProperty(str1)){
+			   var tempVal = players[i].getVal(str1);
+			   var afterVal = str2;
+			   if(afterVal.charAt(0) == '+'){
+				afterVal = Number(tempVal) + Number(afterVal.substring(1));
+			   }else if(afterVal.charAt(0) == '-'){
+				afterVal = Number(tempVal) - Number(afterVal.substring(1));
+			   }
+			   players[i].setVal(str1,afterVal);
+                           return trigger + ': ' + str1 + '[' + tempVal + '->' + players[i].getVal(str1) + ']';
+			}else{
+				return Meow();
 			}
-			players[i].setVal(str1,afterVal);
-                        return trigger + ': ' + str1 + '[' + tempVal + '->' + players[i].getVal(str1) + ']';
                     }
                 } catch (err) {
                     return err.toString();
