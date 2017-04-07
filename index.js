@@ -281,14 +281,15 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+==========================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += 'STR:'.padStart(8) + this.getVal('str').padStart(5) + 'DEX:'.padStart(8) + this.getVal('dex').padStart(5) + 'CON:'.padStart(8) + this.getVal('con').padStart(5) + '\n';
-	tempstr += 'POW:'.padStart(8) + this.getVal('pow').padStart(5) + 'APP:' + this.getVal('app').padStart(5) + 'INT:' + this.getVal('int').padStart(5) + '\n';
-	tempstr += 'SIZ:'.padStart(8) + this.getVal('siz').padStart(5) + 'EDU:' + this.getVal('edu').padStart(5) + 'DB:' + this.getVal('db').padStart(5) + '\n';
+	tempstr += this.getVal('name') + '\n';
+	tempstr += padLeft('STR:',8) + padLeft(this.getVal('str'),5) + padLeft('DEX:',8) + padLeft(this.getVal('dex'),5) + padLeft('CON:',8) + padLeft(this.getVal('con'),5) + '\n';
+	tempstr += padLeft('POW:',8) + padLeft(this.getVal('pow'),5) + padLeft('APP:',8) + padLeft(this.getVal('app'),5) + padLeft('INT:',8) + padLeft(this.getVal('int'),5) + '\n';
+	tempstr += padLeft('SIZ:',8) + padLeft(this.getVal('siz'),5) + padLeft('EDU:',8) + padLeft(this.getVal('edu'),5) + padLeft('DB:',8)  + padLeft(this.getVal('db'),5) + '\n';
 	tempstr += '+--------------------------+\n';
-	tempstr += 'HP:'.padStart(8) + this.getVal('hp').padStart(5) + 'MP:'.padStart(8) + this.getVal('mp').padStart(5) + 'SAN:'.padStart(8) + this.getVal('san').padStart(5) + '\n';
-	tempstr += 'STATUS:'.padStart(8) + this.getVal('status').padStart(5) + '\n';
-	tempstr += 'ITEM:'.padStart(8) + this.getVal('item').padStart(5) + '\n';
-	tempstr += '+==========================+\n';
+	tempstr += padLeft('HP:',8) + padLeft(this.getVal('hp'),5)   + padLeft('MP:',8)  + padLeft(this.getVal('mp'),5)  + padLeft('SAN:',8) + padLeft(this.getVal('san'),5) + '\n';
+	tempstr += padLeft('STATUS:',8) + padLeft(this.getVal('status'),5) + '\n';
+	tempstr += padLeft('ITEM:',8)  + padLeft(this.getVal('item'),5) + '\n';
+	tempstr += '+==========================+';
 	return tempstr;
      };
      player.export = function() {
@@ -833,6 +834,22 @@ function db(value, flag) {
     if (flag == 1) return 'db -> ' + restr;
 }
 
+////////////////////////////////////////
+//////////////// 工具
+////////////////////////////////////////
+
+function padLeft(str,lenght){
+    if(str.length >= lenght)
+        return str;
+    else
+        return padLeft(' ' + str,lenght);
+}
+function padRight(str,lenght,p_fill){
+    if(str.length >= lenght)
+        return str;
+    else
+        return padRight(str+' ',lenght,);
+}
 
 ////////////////////////////////////////
 //////////////// 占卜&其他
