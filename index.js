@@ -383,7 +383,7 @@ function CharacterControll(trigger, str1, str2) {
     for (i = 0; i < players.length; i++) {
         if (trigger == players[i].getVal('name')) {
             if (str1 == 'debug') {
-                return Meow();//players[i].show();
+                return players[i].debug(str1);//players[i].show();
             }
             else if (str1 == 'ccb') {
                 return coc6(players[i].getVal(str2), str2);
@@ -403,7 +403,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].setVal(str2,'0');
             }
             else if (str1 == 'deleteskill') {
-                return players[i].deleteskill(str2);
+                return players[i].deleteskill(str2.trim());
             }
             else if (str1 == 'output') {
                 return players[i].output();
