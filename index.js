@@ -464,9 +464,9 @@ function CharacterControll(trigger, str1, str2) {
                         var tempVal = players[i].getVal(str1);
 			var afterVal = str2;
 			if(afterVal.charAt(0) == '+'){
-			   afterVal = tempVal + afterVal.substring(1);
+			   afterVal = Number(tempVal) + Number(afterVal.substring(1));
 			}else if(afterVal.charAt(0) == '-'){
-			   afterVal = tempVal - afterVal.substring(1);
+			   afterVal = Number(tempVal) - Number(afterVal.substring(1));
 			}
 			players[i].setVal(str1,afterVal);
                         return trigger + ': ' + str1 + '[' + tempVal + '->' + players[i].getVal(str1) + ']';
