@@ -242,7 +242,17 @@ function createChar(p_name){
 	return eval('this.status.'+p_sta);
      };
      player.setVal = function(p_sta,p_val){
-	eval('this.status.'+p_sta+' = \''+p_val+'\'');
+	if(Number(p_val)==NaN){
+	   eval('this.status.'+p_sta+' = \''+p_val+'\'');
+	}else{
+	   if(Number(p_val)<0){
+		eval('this.status.'+p_sta+' = \''+0+'\'');
+	   }else if{Number(p_val)>99){
+		eval('this.status.'+p_sta+' = \''+99+'\'');
+	   }else{
+		eval('this.status.'+p_sta+' = \''+p_val+'\'');
+	   }
+	}
      };
      player.delVal = function(p_sta){
 	eval('delete this.status.'+p_sta);
