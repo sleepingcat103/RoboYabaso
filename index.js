@@ -58,11 +58,11 @@ app.post('/', jsonParser, function (req, res) {
             replyMsgToLine('text', rplyToken, rplyVal);
             replyMsgToLine('ccd', GP_MID, '剛剛好像發生了什麼事');
         }else if(outType == 'pl_ccd') {
-            replyMsgToLine('text', KP_MID, rplyVal);
-            replyMsgToLine('ccd', rplyToken, '成功執行暗骰');
+            replyMsgToLine('text', rplyToken, '成功執行暗骰');
+            replyMsgToLine('ccd', KP_MID, rplyVal);
         }else if(outType == 'gp_ccd') {
-            replyMsgToLine('text', rplyToken, rplyVal);
-            replyMsgToLine('ccd', GP_MID, '成功執行暗骰');
+            replyMsgToLine('text', rplyToken, '成功執行暗骰');
+            replyMsgToLine('ccd', KP_MID, rplyVal);
         }else if (outType == 'ccd') {
             replyMsgToLine(outType, KP_MID, rplyVal);
         } else {
