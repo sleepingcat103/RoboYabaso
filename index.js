@@ -385,7 +385,7 @@ function parseInput(rplyToken, inputStr) {
 	   return 'KP已經重製了';
 	}else{
 	   if(KP_MID!=''){
-		return '只有KP才能使用這個功能哦!';
+		return '只有KP在私下密語才能使用這個功能哦!';
 	   }else{
 		return '現在沒有KP。';
 	   }
@@ -474,13 +474,15 @@ function CharacterControll(trigger, str1, str2, str3) {
 	    else if (str1 == 'ccd'){
 		if(event.source.type == 'user' && event.source.userId == KP_MID){
 		   outType = 'kp_ccd';
-		   return coc6(players[i].getVal(str2), str2);
+		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
 		}else if(event.source.type == 'user' && event.source.userId == players[i].getVal('uid')){
 		   outType = 'pl_ccd';
-		   return coc6(players[i].getVal(str2), str2);
+		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
+		}else if(event.source.type == 'group'){
+		   outType = 'gp_ccd';
+		   return ccd_dice(players[i].getVal('name'),players[i].getVal(str2), str2);
 		}
-		outType = 'gp_ccd';
-		return coc6(players[i].getVal(str2), str2);
+		return Meow();
 	    }
             else if (str1 == 'skills') {
                 return players[i].showAll();
@@ -589,6 +591,25 @@ function coc6(chack, text) {
             else return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 成功';
         }
         else return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
+    }
+}
+function ccd_dice(p_name,chack, text) {
+
+    let temp = Dice(100);
+    if (text == null) {
+        if (temp > 95) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 大失敗！哈哈哈！';
+        if (temp <= chack) {
+            if (temp <= 5) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 喔喔！大成功！';
+            else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 成功';
+        }
+        else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 失敗';
+    } else {
+        if (temp > 95) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
+        if (temp <= chack) {
+            if (temp <= 5) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大成功！';
+            else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 成功';
+        }
+        else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
     }
 }
 
