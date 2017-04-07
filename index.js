@@ -238,10 +238,10 @@ function createChar(p_name){
 	克蘇魯神話: '0'
 	}
      };
-     player.getVal : function(p_sta) {
+     player.getVal = function(p_sta) {
 	return eval('this.status.'+p_sta);
      };
-     player.setVal : function(p_sta,p_val){
+     player.setVal = function(p_sta,p_val){
 	eval('this.status.'+p_sta+' = \''+p_val+'\'');
      };
      return player;
