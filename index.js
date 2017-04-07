@@ -237,14 +237,15 @@ function createChar(p_name,p_uid){
 	return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
      };
      player.importFromTRPG = function(p_str){
-	var newChar = JSON.parse(p_str);
-	newChar = newChar.skill;
-	for (var p in newChar){
-	   if(this.status.hasOwnProperty(JSONmapping[p])){
-		eval(  'this.setVal(\''+ JSONmapping[p] +'\',\''+newChar[p]+'\')'  );
-	   }
-	}
-	return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+	var tempChar = JSON.parse(p_str);
+	var newChar = tempChar.skill;
+	//for (var p in newChar){
+	//   if(this.status.hasOwnProperty(JSONmapping[p])){
+	//	eval('this.setVal(\''+ JSONmapping[p] +'\',\''+ newChar[p] +'\')'  );
+	//   }
+	//}
+	//return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+	return JSON.stringify(newChar);
      };
      return player;
 }
