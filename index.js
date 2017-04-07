@@ -461,11 +461,15 @@ function CharacterControll(trigger, str1, str2) {
                     if (str2 == undefined || str2 == null || str2 == '') {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1) + ']';
                     } else {
-                        let tempstr = players[i].getVal(str1);
-			//console.log('tempstr=' + tempstr);
-			players[i].setVal(str1,str2);
-			//console.log('afterstr=' + afterstr);
-                        return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].getVal(str1) + ']';
+                        var tempVal = players[i].getVal(str1);
+			var afterVal = str2;
+			if(afterVal.charAt(0) == '+'){
+			   afterVal = tempVal + afterVal.substring(1);
+			}else if(afterVal.charAt(0) == '-'){
+			   afterVal = tempVal - afterVal.substring(1);
+			}
+			players[i].setVal(str1,afterVal);
+                        return trigger + ': ' + str1 + '[' + tempVal + '->' + players[i].getVal(str1) + ']';
                     }
                 } catch (err) {
                     return err.toString();
@@ -492,7 +496,6 @@ function ccb(chack, text) {
     var val_status = chack;
     for (i = 0; i < players.length; i++) {
         if (val_status.toString() == players[i].getVal('name')) {
-            //return players[i].ccb(text.toString().toLowerCase().trim());
             val_status = players[i].getVal(text.toString().toLowerCase().trim());
             break;
         }
