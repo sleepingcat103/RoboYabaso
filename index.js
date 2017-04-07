@@ -428,7 +428,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].setVal(str2,'0');
             }
             else if (str1 == 'deleteskill') {
-                return players[i].deleteskill(str2.trim());
+                return players[i].delVal(str2);
             }
             else if (str1 == 'output') {
                 return players[i].output();
