@@ -56,8 +56,14 @@ app.post('/', jsonParser, function (req, res) {
     if (rplyVal) {
         if (outType == 'kp_ccd') {
             replyMsgToLine('text', rplyToken, rplyVal);
-            replyMsgToLine('ccd', GP_MID, '某八七再擲暗骰不給你們知道');
-        } else if (outType == 'ccd') {
+            replyMsgToLine('ccd', GP_MID, '剛剛好像發生了什麼事');
+        }else if(outType == 'pl_ccd') {
+            replyMsgToLine('text', KP_MID, rplyVal);
+            replyMsgToLine('ccd', rplyToken, '成功執行暗骰');
+        }else if(outType == 'gp_ccd') {
+            replyMsgToLine('text', rplyToken, rplyVal);
+            replyMsgToLine('ccd', GP_MID, '成功執行暗骰');
+        }else if (outType == 'ccd') {
             replyMsgToLine(outType, KP_MID, rplyVal);
         } else {
             replyMsgToLine(outType, rplyToken, rplyVal);
@@ -145,10 +151,11 @@ function setOptions() {
 /////////////////測試功能///////////////
 ///////////////////////////////////////
 
-function createChar(p_name){
+function createChar(p_name,p_uid){
      var player = {
 	status:{
 	name: p_name,
+	uid: p_uid,
 	db: '0',
 	item: '無',
 	status: '正常',
@@ -441,7 +448,12 @@ function CharacterControll(trigger, str1, str2, str3) {
         for (i = 0; i < players.length; i++) {
             if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
-	var newPlayer = createChar(str1);
+	var newPlayer;
+	if(event.source.type == 'user'){
+	   newPlayer = createChar(str1,event.source.userId);
+	}else{
+	   newPlayer = createChar(str1,'');
+	}
 	players.push(newPlayer);
 	if(str2 == undefined || str2 == null || str2 == ''){
 	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
@@ -459,12 +471,15 @@ function CharacterControll(trigger, str1, str2, str3) {
             else if (str1 == 'ccb') {
                 return coc6(players[i].getVal(str2), str2);
             }
-	    else if (str1 == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
-		outType = 'kp_ccd';
-		return coc6(players[i].getVal(str2), str2);
-	    }
-	    else if (str1 == 'ccd') {
-		outType = 'ccd';
+	    else if (str1 == 'ccd'){
+		if(event.source.type == 'user' && event.source.userId == KP_MID){
+		   outType = 'kp_ccd';
+		   return coc6(players[i].getVal(str2), str2);
+		}else if(event.source.type == 'user' && event.source.userId == players[i].getVal('uid')){
+		   outType = 'pl_ccd';
+		   return coc6(players[i].getVal(str2), str2);
+		}
+		outType = 'gp_ccd';
 		return coc6(players[i].getVal(str2), str2);
 	    }
             else if (str1 == 'skills') {
@@ -505,12 +520,14 @@ function CharacterControll(trigger, str1, str2, str3) {
                     if (str2 == undefined || str2 == null || str2 == '') {
                         return trigger + ': ' + str1 + '[' + players[i].getVal(str1) + ']';
                     } else {
-			if(players[i].status.hasOwnProperty(str1)){
+			if( players[i].status.hasOwnProperty(str1) &&
+			   (event.source.type == 'group' || (event.source.type == 'user' && event.source.userId == KP_MID))
+			){
 			   var tempVal = players[i].getVal(str1);
 			   var afterVal = str2;
-			   if(afterVal.charAt(0) == '+'){
+			   if(afterVal.charAt(0) == '+' && str1 != 'db'){
 				afterVal = Number(tempVal) + Number(afterVal.substring(1));
-			   }else if(afterVal.charAt(0) == '-'){
+			   }else if(afterVal.charAt(0) == '-' && str1 != 'db'){
 				afterVal = Number(tempVal) - Number(afterVal.substring(1));
 			   }
 			   players[i].setVal(str1,afterVal);
