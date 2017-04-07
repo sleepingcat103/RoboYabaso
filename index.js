@@ -281,13 +281,13 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+==========================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += 'STR: ' + this.getVal('str') + ' DEX: ' + this.getVal('dex') + ' CON: ' + this.getVal('con') + '\n';
-	tempstr += 'POW: ' + this.getVal('pow') + ' APP: ' + this.getVal('app') + ' INT: ' + this.getVal('int') + '\n';
-	tempstr += 'SIZ: ' + this.getVal('siz') + ' EDU: ' + this.getVal('edu') + ' DB: ' + this.getVal('db') + '\n';
+	tempstr += 'STR:'.padStart(8) + this.getVal('str').padStart(5) + 'DEX:'.padStart(8) + this.getVal('dex').padStart(5) + 'CON:'.padStart(8) + this.getVal('con').padStart(5) + '\n';
+	tempstr += 'POW:'.padStart(8) + this.getVal('pow').padStart(5) + 'APP:' + this.getVal('app').padStart(5) + 'INT:' + this.getVal('int').padStart(5) + '\n';
+	tempstr += 'SIZ:'.padStart(8) + this.getVal('siz').padStart(5) + 'EDU:' + this.getVal('edu').padStart(5) + 'DB:' + this.getVal('db').padStart(5) + '\n';
 	tempstr += '+--------------------------+\n';
-	tempstr += 'HP: ' + this.getVal('hp') + ' MP: ' + this.getVal('mp') + ' SAN: ' + this.getVal('san') + '\n';
-	tempstr += 'STATUS: ' + this.getVal('status') + '\n';
-	tempstr += 'ITEM: ' + this.getVal('item') + '\n';
+	tempstr += 'HP:'.padStart(8) + this.getVal('hp').padStart(5) + 'MP:'.padStart(8) + this.getVal('mp').padStart(5) + 'SAN:'.padStart(8) + this.getVal('san').padStart(5) + '\n';
+	tempstr += 'STATUS:'.padStart(8) + this.getVal('status').padStart(5) + '\n';
+	tempstr += 'ITEM:'.padStart(8) + this.getVal('item').padStart(5) + '\n';
 	tempstr += '+==========================+\n';
 	return tempstr;
      };
