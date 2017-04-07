@@ -268,7 +268,21 @@ function createChar(p_name){
 	tempstr += 'ITEM: ' + this.getVal('item') + '\n';
 	tempstr += '+==========================+\n';
 	return tempstr;
-     }
+     };
+     player.output = function() {
+	var retStr = JSON.stringify(this.ststus);
+	return retStr;
+     };
+     player.input = function(p_str) {
+	var newChar = JSON.parse(p_str);
+	for (i = 0; i < players.length; i++) {
+            if (players[i].getVal('name') == newChar.name) return '已經有同名的角色了!';
+        }
+	var newPlayer = createChar(newChar.name);
+	newPlayer.status = newChar;
+	players.push(newPlayer);
+	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
+     };
      return player;
 }
 
