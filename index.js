@@ -269,7 +269,7 @@ function parseInput(rplyToken, inputStr) {
 
     //角卡功能快速入口//	
     for (i = 0; i < players.length; i++) {
-        if (mainMsg[0].toString() == players[i].name) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
+        if (mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
@@ -371,7 +371,6 @@ function CharacterControll(trigger, str1, str2) {
     }
     //建立新角
     if (trigger == 'new' || trigger == '建立') {
-	console.log('create new charater:' + str1+'Current number of char is ' + players.length);
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         for (i = 0; i < players.length; i++) {
             if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
@@ -401,7 +400,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].showall();
             }
             else if (str1 == 'addskill') {
-                return players[i].addskill(str2);
+                return players[i].setVal(str2,'0');
             }
             else if (str1 == 'deleteskill') {
                 return players[i].deleteskill(str2);
@@ -418,15 +417,14 @@ function CharacterControll(trigger, str1, str2) {
             }
             else {
                 try {
-		    console.log('str1='+str1+',str2 = ' + str2);
                     if (str2 == undefined || str2 == null || str2 == '') {
-                        return trigger + ': ' + str1 + '[' + players[i].getVal(str1.toString().toLowerCase()) + ']';
+                        return trigger + ': ' + str1 + '[' + players[i].getVal(str1) + ']';
                     } else {
-                        let tempstr = players[i].getVal(str1.toString().toLowerCase());
-			console.log('tempstr=' + tempstr);
-			let afterstr = setStatus(players[i],str1.toString().toLowerCase(),str2.toString());
-			console.log('afterstr=' + afterstr);
-                        return trigger + ': ' + str1 + '[' + tempstr + '->' + afterstr + ']';
+                        let tempstr = players[i].getVal(str1);
+			//console.log('tempstr=' + tempstr);
+			players[i].setVal(str1,str2);
+			//console.log('afterstr=' + afterstr);
+                        return trigger + ': ' + str1 + '[' + tempstr + '->' + players[i].getVal(str1) + ']';
                     }
                 } catch (err) {
                     return err.toString();
