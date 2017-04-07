@@ -451,21 +451,24 @@ function CharacterControll(trigger, str1, str2, str3) {
                 return players[i].showAll();
             }
             else if (str1 == 'addskill') {
-		try{
-		   var tempVal = players[i].getVal(str2);
+		if(players[i].status.hasOwnProperty(str2)){
 		   return '該技能已經學會:'+str2;
-		}catch(err){
+		}else{
 		   if(str3 == '' || str3 == undefined){
 			players[i].setVal(str2,'0')
 		   }else{
-		   	players[i].setVal(str2,str3)
+			players[i].setVal(str2,str3)
 		   }
 		}
-                return players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
+		return players[i].getVal('name') + ' 學會了 ' + players[i].getVal(str2) + ' !!! ';
             }
             else if (str1 == 'deleteskill') {
-		players[i].delVal(str2)
-                return '已經刪除技能: '+str2 + '.';
+		if(players[i].status.hasOwnProperty(str2)){
+		   players[i].delVal(str2)
+                   return '已經刪除技能: '+str2 + '.';
+		}else{
+		   return '你沒有這個技能.';
+		}
             }
             else if (str1 == 'output') {
                 return players[i].export();
