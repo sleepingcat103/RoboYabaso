@@ -244,6 +244,29 @@ function createChar(p_name){
      player.setVal = function(p_sta,p_val){
 	eval('this.status.'+p_sta+' = \''+p_val+'\'');
      };
+     player.delVal = function(p_sta){
+	eval('delete this.status.'+p_sta);
+     };
+     player.showAll = function(){
+	var result = "";
+	$.each(this.status, function(k, v) {
+	     result += k + " : " + v + "\n";
+	});
+	return result;
+     };
+     player.show = function() {
+	var tempstr = '+==========================+\n';
+	tempstr += this.getVal('name') + '\n';
+	tempstr += 'STR: ' + this.getVal('str') + ' DEX: ' + this.getVal('dex') + ' CON: ' + this.getVal('con') + '\n';
+	tempstr += 'POW: ' + this.getVal('pow') + ' APP: ' + this.getVal('app') + ' INT: ' + this.getVal('int') + '\n';
+	tempstr += 'SIZ: ' + this.getVal('siz') + ' EDU: ' + this.getVal('edu') + ' DB: ' + this.getVal('db') + '\n';
+	tempstr += '+--------------------------+\n';
+	tempstr += 'HP: ' + this.getVal('hp') + ' MP: ' + this.getVal('mp') + ' SAN: ' + this.getVal('san') + '\n';
+	tempstr += 'STATUS: ' + this.getVal('status') + '\n';
+	tempstr += 'ITEM: ' + this.getVal('item') + '\n';
+	tempstr += '+==========================+\n';
+	return tempstr;
+     }
      return player;
 }
 
@@ -397,7 +420,7 @@ function CharacterControll(trigger, str1, str2) {
 		return coc6(players[i].getVal(str2), str2);
 	    }
             else if (str1 == 'skills') {
-                return players[i].showall();
+                return players[i].showAll();
             }
             else if (str1 == 'addskill') {
                 return players[i].setVal(str2,'0');
