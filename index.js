@@ -345,6 +345,12 @@ function parseInput(rplyToken, inputStr) {
             return '邊緣人不能設定群組MID';
         }
     }
+    else if(trigger == 'getuid'){
+	if(event.source.type =='user')
+	   return '你的uid是\n'+event.source.userId;
+	else if(event.source.type =='group')
+	   return '群組的uid是\n'+event.source.groupId;
+    }
 	//ccd指令開始於此
     else if (trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
         outType = 'kp_ccd';
