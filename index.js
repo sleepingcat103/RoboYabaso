@@ -844,11 +844,11 @@ function padLeft(str,lenght){
     else
         return padLeft(' ' + str,lenght);
 }
-function padRight(str,lenght,p_fill){
+function padRight(str,lenght){
     if(str.length >= lenght)
         return str;
     else
-        return padRight(str+' ',lenght,);
+        return padRight(str+' ',lenght);
 }
 
 ////////////////////////////////////////
