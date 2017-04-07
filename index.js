@@ -266,9 +266,14 @@ function createChar(p_name,p_uid){
      };
      player.showAll = function(){
 	var result = "";
+	var v_cnt = 0;
 	for (var p in this.status) {
 	    if( this.status.hasOwnProperty(p) ) {
-		result += p + ": " + this.status[p] + "\n";
+		v_cnt = Number(v_cnt)+1;
+		if( v_cnt%3 == 0)
+		   result += p + ": " + this.status[p] + "\n";
+		else
+		   result += p + ": " + this.status[p] + "\t";
 	    } 
 	};
 	return result;
