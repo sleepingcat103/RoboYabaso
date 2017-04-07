@@ -315,7 +315,7 @@ function parseInput(rplyToken, inputStr) {
 
     //角卡功能快速入口//	
     for (i = 0; i < players.length; i++) {
-        if (mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2]);
+        if (mainMsg[0].toString() == players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
@@ -331,7 +331,7 @@ function parseInput(rplyToken, inputStr) {
         return db(mainMsg[1], 1);
     }
     else if (trigger == '角色' || trigger == 'char') {
-        return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3]);
+        return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
     }
     else if (trigger == '貓咪') {
         return MeowHelp();
@@ -411,7 +411,7 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function CharacterControll(trigger, str1, str2) {
+function CharacterControll(trigger, str1, str2, str3) {
     if (trigger == undefined || trigger == null || trigger == '') {
         return Meow() + '請輸入更多資訊';
     }
@@ -451,10 +451,21 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].showAll();
             }
             else if (str1 == 'addskill') {
-                return players[i].setVal(str2,'0');
+		try{
+		   var tempVal = players[i].getVal(str2);
+		   return '該技能已經學會:'+str2;
+		}catch(err){
+		   if(str3 == '' || str3 == undefined){
+			players[i].setVal(str2,'0')
+		   }else{
+		   	players[i].setVal(str2,str3)
+		   }
+		}
+                return players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
             }
             else if (str1 == 'deleteskill') {
-                return players[i].delVal(str2);
+		players[i].delVal(str2)
+                return '已經刪除技能: '+str2 + '.';
             }
             else if (str1 == 'output') {
                 return players[i].export();
