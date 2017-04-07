@@ -269,19 +269,16 @@ function createChar(p_name){
 	tempstr += '+==========================+\n';
 	return tempstr;
      };
-     player.output = function() {
+     player.outPut = function() {
 	var retStr = JSON.stringify(this.ststus);
 	return retStr;
      };
-     player.input = function(p_str) {
+     player.inPut = function(p_str) {
 	var newChar = JSON.parse(p_str);
-	for (i = 0; i < players.length; i++) {
-            if (players[i].getVal('name') == newChar.name) return '已經有同名的角色了!';
-        }
-	var newPlayer = createChar(newChar.name);
-	newPlayer.status = newChar;
-	players.push(newPlayer);
-	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
+	var oriName = this.getVal('name');
+	this.status = newChar;
+	this.serVal('name',oriName);
+	return '成功匯入角色 ' + this.getVal('name') + ' !!!!'
      };
      return player;
 }
@@ -414,8 +411,13 @@ function CharacterControll(trigger, str1, str2) {
         for (i = 0; i < players.length; i++) {
             if (players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
-	players.push(createChar(str1));
-	return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!'
+	var newPlayer = createChar(str1);
+	players.push(newPlayer);
+	if(str2 == undefined || str2 == null || str2 == ''){
+	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+	}else{
+	    return newPlayer.inPut(str2);
+	}
     }
 
     //角色設定(特定狀態查詢) 刪除 查看
@@ -445,7 +447,7 @@ function CharacterControll(trigger, str1, str2) {
                 return players[i].delVal(str2);
             }
             else if (str1 == 'output') {
-                return players[i].output();
+                return players[i].outPut();
             }
             else if (str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
                 return players[i].show();
