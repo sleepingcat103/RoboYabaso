@@ -281,14 +281,13 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+==========================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += this.getVal('name') + '\n';
-	tempstr += padLeft('STR:',8) + padLeft(this.getVal('str'),5) + padLeft('DEX:',8) + padLeft(this.getVal('dex'),5) + padLeft('CON:',8) + padLeft(this.getVal('con'),5) + '\n';
-	tempstr += padLeft('POW:',8) + padLeft(this.getVal('pow'),5) + padLeft('APP:',8) + padLeft(this.getVal('app'),5) + padLeft('INT:',8) + padLeft(this.getVal('int'),5) + '\n';
-	tempstr += padLeft('SIZ:',8) + padLeft(this.getVal('siz'),5) + padLeft('EDU:',8) + padLeft(this.getVal('edu'),5) + padLeft('DB:',8)  + padLeft(this.getVal('db'),5) + '\n';
+	tempstr += padRight('STR:',8) + padLeft(this.getVal('str'),5) + padLeft('DEX:',8) + padLeft(this.getVal('dex'),5) + padLeft('CON:',8) + padLeft(this.getVal('con'),5) + '\n';
+	tempstr += padRight('POW:',8) + padLeft(this.getVal('pow'),5) + padLeft('APP:',8) + padLeft(this.getVal('app'),5) + padLeft('INT:',8) + padLeft(this.getVal('int'),5) + '\n';
+	tempstr += padRight('SIZ:',8) + padLeft(this.getVal('siz'),5) + padLeft('EDU:',8) + padLeft(this.getVal('edu'),5) + padLeft('DB:',8)  + padLeft(this.getVal('db'),5) + '\n';
 	tempstr += '+--------------------------+\n';
-	tempstr += padLeft('HP:',8) + padLeft(this.getVal('hp'),5)   + padLeft('MP:',8)  + padLeft(this.getVal('mp'),5)  + padLeft('SAN:',8) + padLeft(this.getVal('san'),5) + '\n';
-	tempstr += padLeft('STATUS:',8) + padLeft(this.getVal('status'),5) + '\n';
-	tempstr += padLeft('ITEM:',8)  + padLeft(this.getVal('item'),5) + '\n';
+	tempstr += padRight('HP:',8) + padLeft(this.getVal('hp'),5)   + padLeft('MP:',8)  + padLeft(this.getVal('mp'),5)  + padLeft('SAN:',8) + padLeft(this.getVal('san'),5) + '\n';
+	tempstr += padRight('STATUS:',8) + padLeft(this.getVal('status'),5) + '\n';
+	tempstr += padRight('ITEM:',8)  + padLeft(this.getVal('item'),5) + '\n';
 	tempstr += '+==========================+';
 	return tempstr;
      };
@@ -842,13 +841,13 @@ function padLeft(str,lenght){
     if(str.length >= lenght)
         return str;
     else
-        return padLeft(' ' + str,lenght);
+        return padLeft('　' + str,lenght);
 }
 function padRight(str,lenght){
     if(str.length >= lenght)
         return str;
     else
-        return padRight(str+' ',lenght);
+        return padRight(str+'　',lenght);
 }
 
 ////////////////////////////////////////
