@@ -346,10 +346,10 @@ function parseInput(rplyToken, inputStr) {
         }
     }
     else if(trigger == 'getuid'){
-	if(event.source.type =='user')
-	   return '你的uid是\n'+event.source.userId;
+	if(event.source.type == 'user' )
+	   return '你的uid是' + event.source.userId;
 	else if(event.source.type =='group')
-	   return '群組的uid是\n'+event.source.groupId;
+	   return '群組的uid是' + event.source.groupId;
     }
 	//ccd指令開始於此
     else if (trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
