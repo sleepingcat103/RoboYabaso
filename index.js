@@ -247,7 +247,7 @@ function createChar(p_name){
 	}else{
 	   if(Number(p_val)<0){
 		eval('this.status.'+p_sta+' = \''+0+'\'');
-	   }else if{Number(p_val)>99){
+	   }else if(Number(p_val)>99){
 		eval('this.status.'+p_sta+' = \''+99+'\'');
 	   }else{
 		eval('this.status.'+p_sta+' = \''+p_val+'\'');
