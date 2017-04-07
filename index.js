@@ -354,22 +354,42 @@ function parseInput(rplyToken, inputStr) {
     }
         //KP指令開始於此
     else if (trigger == 'getkp') {
-        return KP_MID;
+	if(KP_MID != ''){
+           return KP_MID;
+	}else{
+	   return '現在沒有KP哦!!!';
+	}
     }
     else if (trigger == 'setkp') {
         if (event.source.type == 'user') {
-            KP_MID = event.source.userId;
-            return '你的MID是' + KP_MID;
+	    if( KP_MID == '' || KP_MID == event.source.userId ){
+            	KP_MID = event.source.userId;
+            	return '已經設定完成，KP的MID是' + KP_MID;
+	    }else{
+		return '如果要更換KP，請現任KP先下"killkp"之後，才能重新"setkp"';
+	    }
         } else {
-            return '私密才能設定MID';
+            return '私密BOT才能設定KP哦!!!';
         }
     }
     else if(trigger == 'killkp'){
-	    KP_MID = '';
-	    return 'KP已死亡';
+	if (event.source.type == 'user' && KP_MID == event.source.userId){
+	   KP_MID = '';
+	   return 'KP已經重製了';
+	}else{
+	   if(KP_MID!=''){
+		return '只有KP才能使用這個功能哦!';
+	   }else{
+		return '現在沒有KP。';
+	   }
+	}
     }
     else if (trigger == 'getgp') {
-        return GP_MID;
+	if(GP_MID != ''){
+           return GP_MID;
+	}else{
+	   return '現在沒有KP哦!!!';
+	}
     }
     else if (trigger == 'setgp') {
         if (event.source.type == 'group') {
