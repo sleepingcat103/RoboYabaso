@@ -279,16 +279,16 @@ function createChar(p_name,p_uid){
 	return result;
      };
      player.show = function() {
-	var tempstr = '+==========================+\n';
+	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
-	tempstr += padRight('STR:',5) + padLeft(this.getVal('str'),3) + padLeft('DEX:',5) + padLeft(this.getVal('dex'),3) + padLeft('CON:',5) + padLeft(this.getVal('con'),3) + '\n';
-	tempstr += padRight('POW:',5) + padLeft(this.getVal('pow'),3) + padLeft('APP:',5) + padLeft(this.getVal('app'),3) + padLeft('INT:',5) + padLeft(this.getVal('int'),3) + '\n';
-	tempstr += padRight('SIZ:',5) + padLeft(this.getVal('siz'),3) + padLeft('EDU:',5) + padLeft(this.getVal('edu'),3) + padLeft('DB:',5)  + padLeft(this.getVal('db'),3) + '\n';
-	tempstr += '+--------------------------+\n';
-	tempstr += padRight('HP:',5) + padLeft(this.getVal('hp'),3)   + padLeft('MP:',5)  + padLeft(this.getVal('mp'),3)  + padLeft('SAN:',5) + padLeft(this.getVal('san'),3) + '\n';
+	tempstr += padRight('STR:',4) + padLeft(this.getVal('str'),2) + padLeft('DEX:',4) + padLeft(this.getVal('dex'),2) + padLeft('CON:',4) + padLeft(this.getVal('con'),2) + '\n';
+	tempstr += padRight('POW:',4) + padLeft(this.getVal('pow'),2) + padLeft('APP:',4) + padLeft(this.getVal('app'),2) + padLeft('INT:',4) + padLeft(this.getVal('int'),2) + '\n';
+	tempstr += padRight('SIZ:',4) + padLeft(this.getVal('siz'),2) + padLeft('EDU:',4) + padLeft(this.getVal('edu'),2) + padLeft('DB:',4)  + padLeft(this.getVal('db'),2) + '\n';
+	tempstr += '+=====================+\n';
+	tempstr += padRight('HP:',4) + padLeft(this.getVal('hp'),2)   + padLeft('MP:',4)  + padLeft(this.getVal('mp'),2)  + padLeft('SAN:',4) + padLeft(this.getVal('san'),2) + '\n';
 	tempstr += padRight('STATUS:',8) + this.getVal('status') + '\n';
 	tempstr += padRight('ITEM:',8)  + this.getVal('item') + '\n';
-	tempstr += '+==========================+';
+	tempstr += '+=========================+';
 	return tempstr;
      };
      player.export = function() {
