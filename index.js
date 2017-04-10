@@ -216,6 +216,7 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
+	tempstr += this.getVal('職業') + '\n';
 	tempstr += padRight('STR:',4) + padRight(this.getVal('str'),3) + padRight('DEX:',4) + padRight(this.getVal('dex'),3) + padRight('CON:',4) + padRight(this.getVal('con'),3) + '\n';
 	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),3) + padRight('APP:',4) + padRight(this.getVal('app'),3) + padRight('INT:',4) + padRight(this.getVal('int'),3) + '\n';
 	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),3) + padRight('EDU:',4) + padRight(this.getVal('edu'),3) + padRight('DB:',4)  + padRight(this.getVal('db'),3) + '\n';
