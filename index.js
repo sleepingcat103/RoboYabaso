@@ -53,7 +53,7 @@ app.post('/', jsonParser, function (req, res) {
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
 		for(var r in TRPG){
-		    if(userToRoom[p] == r){
+		    if(userToRoom[p].GP_MID == r){
 			    roomMID = r;
 			    break;
 		    }
@@ -205,11 +205,11 @@ function getUserProfile(p_MID) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
             console.log('body:' + body);
-	    profile = JSON.stringify(response.bodys);
-	    return profile;
+	    eval('userToRoom.'+p_MID+'.profile = body');
+	    eval('replyMsgToLine(\'text\', userToRoom.'+ p_MID +'.GP_MID , body.displayName + \' 加入群組囉!!\' )');
         });
     });
-    console.log('request' + JSON.stringify(request));
+
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
     });
@@ -378,10 +378,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
 	   userToRoom.hasOwnProperty(event.source.userId) &&
-	   userToRoom[event.source.userId] == mainMsg[1] ){
+	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
 		return '你已經在該房間了!';
 	}else if(event.source.type == 'user'){
-	    eval('userToRoom.'+event.source.userId + ' = \''+mainMsg[1]+'\'');
+	    eval('userToRoom.'+event.source.userId + ' = { GP_MID : \''+mainMsg[1]+'\'}');
+	    getUserProfile(event.source.userId)
 	    return '你已經加入' + mainMsg[1];
 	}else{
 	    return '請自己合併群組哦~~~';
@@ -475,12 +476,6 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	}else{
 	   return '現在沒有KP，你是想傳給誰辣';
 	}
-    }
-	//getUserProfile
-    else if(trigger == 'getprofile'){
-	var profile = getUserProfile(event.source.userId);
-	//var ret_val = JSON.stringify(profile);
-	return profile;
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
