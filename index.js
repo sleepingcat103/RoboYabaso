@@ -23,16 +23,6 @@ TRPG.createRoom = function(p_mid,p_room){
 //UserMid: GroupMid
 var userToRoom={};
 
-var options = {
-    host: 'api.line.me',
-    port: 443,
-    path: v_path,
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
-    }
-}
 app.set('port', (process.env.PORT || 5000));
 
 // views is directory for all template files
@@ -51,12 +41,36 @@ app.post('/', jsonParser, function (req, res) {
 
     let rplyVal = null;
 
+    var room = {};
+    if(event.source.type == 'user'){
+	for (var p in userToRoom) {
+	    if( p == event.source.userId ) {
+		for(var r in TRPG){
+		    if(userToRoom[p] == r){
+			    room = TRPG[r];
+			    break;
+		    }
+		}
+	    }
+	    if(players <> ''){
+		break;
+	    }
+	}
+    }else if(event.source.type == 'group'){
+	for(var r in TRPG){
+	    if(r == event.source.groupId ){
+		room = TRPG[r];
+		break;
+	    }
+	}
+    }
+	
     outType = 'text';
 
     console.log(msg);
     if (type == 'message' && msgType == 'text') {
         try {
-            rplyVal = parseInput(rplyToken, msg);
+            rplyVal = parseInput(room,rplyToken, msg);
         }
         catch (e) {
             console.log('catch error');
@@ -67,15 +81,15 @@ app.post('/', jsonParser, function (req, res) {
     if (rplyVal) {
         if (outType == 'kp_ccd') {
             replyMsgToLine('text', rplyToken, rplyVal);
-            replyMsgToLine('push', GP_MID, '剛剛好像發生了什麼事');
+            replyMsgToLine('push', room.GP_MID, '剛剛好像發生了什麼事');
         }else if(outType == 'pl_ccd') {
             replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', KP_MID, rplyVal);
+            replyMsgToLine('push', room.KP_MID, rplyVal);
         }else if(outType == 'gp_ccd') {
             replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', KP_MID, rplyVal);
+            replyMsgToLine('push', room.KP_MID, rplyVal);
         }else if (outType == 'ccd') {
-            replyMsgToLine('push', KP_MID, rplyVal);
+            replyMsgToLine('push', room.KP_MID, rplyVal);
         } else {
             replyMsgToLine(outType, rplyToken, rplyVal);
         }
@@ -130,7 +144,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
     }
 
     let rplyJson = JSON.stringify(rplyObj);
-    setOptions();
+    var options = setOptions();
     var request = https.request(options, function (response) {
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
@@ -146,16 +160,17 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
 }
 
 function setOptions() {
-    options = {
+    var options = {
         host: 'api.line.me',
         port: 443,
         path: v_path,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer actVI2pGSgmQ+JYuF2il02qMYH+1+3Q6pvaTjjL4J77uWSuVRoTZnloLqZG39jxfuZAWyS77LfHuQ9rHx4vupzxq3sDLKcwRraRq0F0t9B8aULHlhuO2BYmiIvOFjT6Vs+RFkd3GDQnNB2Ykvo6rlgdB04t89/1O/w1cDnyilFU='
+            'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
         }
     }
+    return options;
 }
 
 ///////////////////////////////////////
@@ -291,7 +306,7 @@ function removeRoomPlayer(p_room,a) {
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
-function parseInput(rplyToken, inputStr) {
+function parseInput(room,rplyToken, inputStr) {
 
     console.log('InputStr: ' + inputStr);
     _isNaN = function (obj) {
@@ -300,33 +315,10 @@ function parseInput(rplyToken, inputStr) {
     let msgSplitor = (/\S+/ig);
     let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
-    var room = {};
-    if(event.source.type == 'user'){
-	for (var p in userToRoom) {
-	    if( p == event.source.userId ) {
-		for(var r in TRPG){
-		    if(userToRoom[p] == r){
-			    room = TRPG[r];
-			    break;
-		    }
-		}
-	    }
-	    if(players <> ''){
-		break;
-	    }
-	}
-    }else if(event.source.type == 'group'){
-	for(var r in TRPG){
-	    if(r == event.source.groupId ){
-		room = TRPG[r];
-		break;
-	    }
-	}
-    }
 
     //角卡功能快速入口//
     for (i = 0; i < room.players.length; i++) {
-	if (mainMsg[0].toString() == room.players[i].getVal('name')) return CharacterControll(mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
+	if (mainMsg[0].toString() == room.players[i].getVal('name')) return CharacterControll(room,mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
@@ -342,7 +334,7 @@ function parseInput(rplyToken, inputStr) {
         return db(mainMsg[1], 1);
     }
     else if (trigger == '角色' || trigger == 'char') {
-        return CharacterControll(mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
+        return CharacterControll(room,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
     }
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
@@ -434,6 +426,7 @@ function parseInput(rplyToken, inputStr) {
 	//ccd指令開始於此
     else if (trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
         outType = 'kp_ccd';
+	GP_MID = room.GP_MID;
         return ccb(room,mainMsg[1], mainMsg[2]);
     }
     else if (trigger == 'ccd') {
@@ -467,33 +460,9 @@ function parseInput(rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function CharacterControll(trigger, str1, str2, str3) {
+function CharacterControll(room,trigger, str1, str2, str3) {
     if (trigger == undefined || trigger == null || trigger == '') {
         return Meow() + '請輸入更多資訊';
-    }
-	
-    var room = {};
-    if(event.source.type == 'user'){
-	for (var p in userToRoom) {
-	    if( p == event.source.userId ) {
-		for(var r in TRPG){
-		    if(userToRoom[p] == r){
-			    room = TRPG[r];
-			    break;
-		    }
-		}
-	    }
-	    if(players <> ''){
-		break;
-	    }
-	}
-    }else if(event.source.type == 'group'){
-	for(var r in TRPG){
-	    if(r == event.source.groupId ){
-		room = TRPG[r];
-		break;
-	    }
-	}
     }
 	
     //建立新角
