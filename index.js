@@ -9,9 +9,6 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
-//var KP_MID = '';
-//var GP_MID = '';
-
 //key:value
 //GroupMid:room
 var TRPG = { 
@@ -53,7 +50,7 @@ app.post('/', jsonParser, function (req, res) {
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
 		for(var r in TRPG){
-		    if(userToRoom[p].GP_MID == r){
+		    if(userToRoom[p] == r){
 			    roomMID = r;
 			    break;
 		    }
@@ -194,20 +191,14 @@ function getUserProfile(p_MID) {
     };
 
     var request = https.request(options, function (response) {
-	var profile = {
-	   displayName:'LINE taro',
-	   userId : '',
-	   pictureUrl: '',
-	   statusMessage:''
-	};
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
-            console.log('body:' + body);
-	    var retBody = JSON.stringify(body)
-	    eval('userToRoom.'+p_MID+'.profile = body');
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , retBody.displayName + \' 加入群組囉!!\' )');
+            console.log('Body:' + body);
+	    
+	    //eval('userToRoom.'+p_MID+'.profile = body');
+	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , retBody.displayName + \' 加入群組囉!!\' )');
         });
     });
 
@@ -379,10 +370,10 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
 	   userToRoom.hasOwnProperty(event.source.userId) &&
-	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
+	   userToRoom[event.source.userId] == mainMsg[1] ){
 		return '你已經在該房間了!';
 	}else if(event.source.type == 'user'){
-	    eval('userToRoom.'+event.source.userId + ' = { GP_MID : \''+mainMsg[1]+'\'}');
+	    eval('userToRoom.'+event.source.userId + ' = \''+mainMsg[1]+'\'');
 	    getUserProfile(event.source.userId)
 	    return '你已經加入' + mainMsg[1];
 	}else{
@@ -473,16 +464,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'ccd') {
 	if(TRPG[roomMID].KP_MID!=''){
 	   outType = 'ccd';
-           return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+           return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);
 	}else{
 	   return '現在沒有KP，你是想傳給誰辣';
-	}
-    }
-    else if(trigger == 'getprofile'){
-	for(var r in userToRoom){
-	   if(userToRoom[r].profile.userId == event.source.userId){
-		return userToRoom[r].profile.displayName;
-	   }
 	}
     }
         //生科火大圖指令開始於此
