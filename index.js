@@ -198,22 +198,19 @@ function getUserProfile(p_MID) {
 	pictureUrl: '',
 	statusMessage:''
     };
-    var request = https.request(options, function (response) {
-        console.log('Status: ' + response.statusCode);
-        console.log('Headers: ' + JSON.stringify(response.headers));
-        response.setEncoding('utf8');
-        response.on('data', function (body) {
-            //console.log(body);
-	    profile.displayName = body.displayName;
-	    profile.userId = body.userId;
-	    profile.pictureUrl = body.pictureUrl;
-	    profile.statusMessage = body.statusMessage;
-        });
-    });
-    request.on('error', function (e) {
-        console.log('Request error: ' + e.message);
-    })
-    request.end();
+	
+    profile = https.get(options, function(res) {
+	var body;
+	res.on('data', function(chunk) {
+	    body = chunk
+	});
+	res.on('end', function() {
+	    console.log(body);
+	    return body;
+	});
+    }).on('error', function(e) {
+	console.log('Request error: ' + e.message);
+    }); 
     return profile;
 }
 
