@@ -211,7 +211,7 @@ function getUserProfile(p_MID) {
     }).on('error', function(e) {
 	console.log('Request error: ' + e.message);
     }); 
-    return profile;
+    return JSON.stringify(profile);
 }
 
 ///////////////////////////////////////
@@ -477,8 +477,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	//getUserProfile
     else if(trigger == 'getprofile'){
 	var profile = getUserProfile(event.source.userId);
-	var ret_val = JSON.stringify(profile);
-	return ret_val;
+	//var ret_val = JSON.stringify(profile);
+	return profile;
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
