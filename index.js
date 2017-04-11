@@ -274,7 +274,7 @@ function createChar(p_name,p_uid){
      return player;
 }
 
-function createRoom(p_Mid){
+function createNewRoom(p_Mid){
      var room = {
 	GP_MID: p_Mid,
 	KP_MID:'',
@@ -293,10 +293,6 @@ function createRoom(p_Mid){
 	this.players.push(p_char);
      };
      return room;
-}
-
-function removeRoomPlayer(p_room,a) {
-	p_room.players.splice(a,1);
 }
 
 ////////////////////////////////////////
@@ -407,7 +403,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	    if(TRPG.hasOwnProperty(event.source.groupId)){
 		return '此群組已經開啟房間了!';
 	    }else{
-		TRPG.createRoom(event.source.groupId,createRoom(event.source.groupId));
+		TRPG.createRoom(event.source.groupId,createNewRoom(event.source.groupId));
 		return '房間建立成功，請PL私密輸入\njoin '+event.source.groupId;
 	    }
 	}else{
