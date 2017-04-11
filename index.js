@@ -41,7 +41,7 @@ app.post('/', jsonParser, function (req, res) {
 
     let rplyVal = null;
 
-    var room = {};
+    var room = '';
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
@@ -52,7 +52,7 @@ app.post('/', jsonParser, function (req, res) {
 		    }
 		}
 	    }
-	    if(room <> ''){
+	    if(room != ''){
 		break;
 	    }
 	}
