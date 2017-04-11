@@ -469,7 +469,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
 	//getUserProfile
     else if(trigger == 'getprofile'){
-	var profile = getUserProfile(event.source.userId);
+	var profile = getUserProfile(eval('event.source.'+event.source.type+'Id'));
 	//return JSON.stringify(profile);
 	return profile;
     }
