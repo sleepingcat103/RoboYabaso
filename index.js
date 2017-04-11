@@ -50,14 +50,25 @@ app.post('/', jsonParser, function (req, res) {
     var roomMID = 'first';
 	
     if(event.source.type == 'user'){
-	if(userToRoom.hasOwnProperty[event.source.userId]){
-	    if(TRPG.hasOwnProperty[userToRoom[event.source.userId]]){
-		roomMID = userToRoom[event.source.userId];
+	for (var p in userToRoom) {
+	    if( p == event.source.userId ) {
+		for(var r in TRPG){
+		    if(userToRoom[p] == r){
+			    roomMID = r;
+			    break;
+		    }
+		}
+	    }
+	    if(roomMID != 'first'){
+		break;
 	    }
 	}
     }else if(event.source.type == 'group'){
-	if(TRPG.hasOwnProperty[event.source.groupId]){
-	    roomMID = event.source.groupId;
+	for(var r in TRPG){
+	    if(r == event.source.groupId ){
+		roomMID = r;
+		break;
+	    }
 	}
     }
 	
