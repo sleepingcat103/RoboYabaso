@@ -44,12 +44,14 @@ app.post('/', jsonParser, function (req, res) {
     var room = {
 	    players : {lenght: '-1'}
     };
+    var temp_r;
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
 		for(var r in TRPG){
 		    if(userToRoom[p] == r){
 			    room = TRPG[r];
+			    temp_r = r;
 			    break;
 		    }
 		}
@@ -62,6 +64,7 @@ app.post('/', jsonParser, function (req, res) {
 	for(var r in TRPG){
 	    if(r == event.source.groupId ){
 		room = TRPG[r];
+		temp_r = r;
 		break;
 	    }
 	}
@@ -80,6 +83,8 @@ app.post('/', jsonParser, function (req, res) {
         }
     }
 
+    room = TRPG[temp_r];
+    
     if (rplyVal) {
         if (outType == 'kp_ccd') {
             replyMsgToLine('text', rplyToken, rplyVal);
@@ -381,7 +386,7 @@ function parseInput(room,rplyToken, inputStr) {
         if (event.source.type == 'user') {
 	    if( room.KP_MID == '' || room.KP_MID == event.source.userId ){
             	room.KP_MID = event.source.userId;
-            	return '已經設定完成，KP的MID是' + KP_MID;
+            	return '已經設定完成，KP的MID是' + room.KP_MID;
 	    }else{
 		return '如果要更換KP，請現任KP先下"killkp"之後，才能重新"setkp"';
 	    }
