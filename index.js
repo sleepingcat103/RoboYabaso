@@ -472,10 +472,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
 	//getUserProfile
     else if(trigger == 'getprofile'){
-	var profile = getUserProfile(eval('event.source.'+event.source.type+'Id'));
-	console.log(profile);
-	return JSON.stringify(profile);
-	//return profile.toString();
+	var profile = getUserProfile(event.source.userId);
+	var ret_val = JSON.stringify(profile);
+	return ret_val;
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
