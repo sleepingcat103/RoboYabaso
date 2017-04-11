@@ -191,7 +191,8 @@ function getUserProfile(p_MID) {
         headers: {
             'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
         }
-    }
+    };
+
     var profile = {
 	displayName:'LINE taro',
 	userId : '',
@@ -200,12 +201,12 @@ function getUserProfile(p_MID) {
     };
 	
     profile = https.get(options, function(res) {
-	var body;
+	var body = {};
 	res.on('data', function(chunk) {
-	    body = chunk
+	    body = chunk;
 	});
 	res.on('end', function() {
-	    console.log(body);
+	    console.log(JSON.stringify(body));
 	    return body;
 	});
     }).on('error', function(e) {
