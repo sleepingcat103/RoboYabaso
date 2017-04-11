@@ -470,7 +470,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	//getUserProfile
     else if(trigger == 'getprofile'){
 	var profile = getUserProfile(event.source.userId);
-	return JSON.stringify(profile);
+	//return JSON.stringify(profile);
+	return profile;
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
