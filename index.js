@@ -408,6 +408,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 		return '此群組已經開啟房間了!';
 	    }else{
 		TRPG.createRoom(event.source.groupId,createRoom(event.source.groupId));
+		return '房間建立成功，請PL私密輸入\njoin '+event.source.groupId;
 	    }
 	}else{
 	    return '必須是群組才能開房間唷 <3 ';
