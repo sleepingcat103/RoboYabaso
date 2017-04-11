@@ -192,16 +192,23 @@ function getUserProfile(p_MID) {
             'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
         }
     }
-    let profile = {11:321};
+    var profile = {
+	displayName:'LINE taro',
+	userId : '',
+	pictureUrl: '',
+	statusMessage:''
+    };
     var request = https.request(options, function (response) {
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
-	profile = response.body;
-        //response.on('data', function (body) {
-        //    console.log(body);
-	//    profile = body;
-        //});
+        response.on('data', function (body) {
+            //console.log(body);
+	    profile.displayName = body.displayName;
+	    profile.userId = body.userId;
+	    profile.pictureUrl = body.pictureUrl;
+	    profile.statusMessage = body.statusMessage;
+        });
     });
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
