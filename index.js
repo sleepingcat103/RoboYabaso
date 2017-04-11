@@ -52,7 +52,7 @@ app.post('/', jsonParser, function (req, res) {
 		    }
 		}
 	    }
-	    if(players <> ''){
+	    if(room <> ''){
 		break;
 	    }
 	}
