@@ -180,6 +180,33 @@ function setOptions() {
     return options;
 }
 
+function getUserProfile(p_MID) {
+
+    v_path = '/v2/bot/profile/'+p_MID;
+    var options = {
+        host: 'api.line.me',
+        port: 443,
+        path: v_path,
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
+        }
+    }
+    var request = https.request(options, function (response) {
+        console.log('Status: ' + response.statusCode);
+        console.log('Headers: ' + JSON.stringify(response.headers));
+        response.setEncoding('utf8');
+        response.on('data', function (body) {
+            console.log(body);
+        });
+    });
+    request.on('error', function (e) {
+        console.log('Request error: ' + e.message);
+    })
+    request.end();
+    return request;
+}
+
 ///////////////////////////////////////
 /////////////////測試功能///////////////
 ///////////////////////////////////////
@@ -439,6 +466,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	}else{
 	   return '現在沒有KP，你是想傳給誰辣';
 	}
+    }
+	//getUserProfile
+    else if(trigger == 'getprofile'){
+	var profile = getUserProfile(event.source.userId);
+	return JSON.stringify(profile);
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
