@@ -206,10 +206,10 @@ function getUserProfile(p_MID) {
         response.on('data', function (body) {
             console.log('body:' + body);
 	    profile = JSON.stringify(response.bodys);
+	    return profile;
         });
-	return profile;
     });
-    console.log('request' + request);
+    console.log('request' + JSON.stringify(request));
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
     });
