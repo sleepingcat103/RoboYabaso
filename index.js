@@ -198,7 +198,7 @@ function getUserProfile(p_MID) {
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
-            //console.log(body);
+            console.log(body);
 	    profile = body;
         });
     });
