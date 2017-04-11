@@ -193,26 +193,27 @@ function getUserProfile(p_MID) {
         }
     };
 
-    var profile = {
-	displayName:'LINE taro',
-	userId : '',
-	pictureUrl: '',
-	statusMessage:''
-    };
-	
-    profile = https.get(options, function(res) {
-	var body = {};
-	res.on('data', function(chunk) {
-	    body = chunk;
-	});
-	res.on('end', function() {
-	    console.log(JSON.stringify(body));
-	    return body;
-	});
-    }).on('error', function(e) {
-	console.log('Request error: ' + e.message);
-    }); 
-    return JSON.stringify(profile);
+    var request = https.request(options, function (response) {
+	var profile = {
+	   displayName:'LINE taro',
+	   userId : '',
+	   pictureUrl: '',
+	   statusMessage:''
+	};
+        console.log('Status: ' + response.statusCode);
+        console.log('Headers: ' + JSON.stringify(response.headers));
+        response.setEncoding('utf8');
+        response.on('data', function (body) {
+            console.log('body:' + body);
+	    profile = JSON.stringify(response.bodys);
+        });
+    });
+    request.on('error', function (e) {
+        console.log('Request error: ' + e.message);
+    });
+    request.on('end',function(){
+	return this.profile;
+    });
 }
 
 ///////////////////////////////////////
