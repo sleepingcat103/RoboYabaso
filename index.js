@@ -41,7 +41,9 @@ app.post('/', jsonParser, function (req, res) {
 
     let rplyVal = null;
 
-    var room = {lenght: '-1'};
+    var room = {
+	    players : {lenght: '-1'}
+    };
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
