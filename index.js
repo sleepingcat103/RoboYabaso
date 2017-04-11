@@ -207,13 +207,13 @@ function getUserProfile(p_MID) {
             console.log('body:' + body);
 	    profile = JSON.stringify(response.bodys);
         });
+	return profile;
     });
+    console.log('request' + request);
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
     });
-    request.on('end',function(){
-	return this.profile;
-    });
+    request.end();
 }
 
 ///////////////////////////////////////
