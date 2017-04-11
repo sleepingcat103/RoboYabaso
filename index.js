@@ -18,7 +18,7 @@ var TRPG = {
     first : {
 	KP_MID: '',
 	GP_MID: '',
-	players : {lenght: '-1'}
+	players : []
     }
 };
 TRPG.createRoom = function(p_mid,p_room){
