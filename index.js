@@ -9,12 +9,18 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
-var KP_MID = '';
-var GP_MID = '';
+//var KP_MID = '';
+//var GP_MID = '';
 
 //key:value
 //GroupMid:room
-var TRPG = {};
+var TRPG = { 
+    first : {
+	KP_MID: '',
+	GP_MID: '',
+	players : {lenght: '-1'}
+    }
+};
 TRPG.createRoom = function(p_mid,p_room){
     eval('TRPG.'+p_mid+' = p_room');
 }
@@ -41,32 +47,17 @@ app.post('/', jsonParser, function (req, res) {
 
     let rplyVal = null;
 
-    var room = {
-	    players : {lenght: '-1'}
-    };
-    var temp_r;
+    var roomMID = 'first';
+	
     if(event.source.type == 'user'){
-	for (var p in userToRoom) {
-	    if( p == event.source.userId ) {
-		for(var r in TRPG){
-		    if(userToRoom[p] == r){
-			    room = TRPG[r];
-			    temp_r = r;
-			    break;
-		    }
-		}
-	    }
-	    if(room.lenght != '-1'){
-		break;
+	if(userToRoom.hasOwnProperty[event.source.userId]){
+	    if(TRPG.hasOwnProperty[userToRoom[event.source.userId]]){
+		roomMID = userToRoom[event.source.userId];
 	    }
 	}
     }else if(event.source.type == 'group'){
-	for(var r in TRPG){
-	    if(r == event.source.groupId ){
-		room = TRPG[r];
-		temp_r = r;
-		break;
-	    }
+	if(TRPG.hasOwnProperty[event.source.groupId]){
+	    roomMID = event.source.groupId;
 	}
     }
 	
@@ -75,28 +66,26 @@ app.post('/', jsonParser, function (req, res) {
     console.log(msg);
     if (type == 'message' && msgType == 'text') {
         try {
-            rplyVal = parseInput(room,rplyToken, msg);
+            rplyVal = parseInput(roomMID,rplyToken, msg);
         }
         catch (e) {
             console.log('catch error');
 	    console.log(e.toString());
         }
     }
-
-    room = TRPG[temp_r];
-    
+	
     if (rplyVal) {
         if (outType == 'kp_ccd') {
             replyMsgToLine('text', rplyToken, rplyVal);
-            replyMsgToLine('push', room.GP_MID, '剛剛好像發生了什麼事');
+            replyMsgToLine('push', TRPG[roomMID].GP_MID, '剛剛好像發生了什麼事');
         }else if(outType == 'pl_ccd') {
             replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', room.KP_MID, rplyVal);
+            replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
         }else if(outType == 'gp_ccd') {
             replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', room.KP_MID, rplyVal);
+            replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
         }else if (outType == 'ccd') {
-            replyMsgToLine('push', room.KP_MID, rplyVal);
+            replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
         } else {
             replyMsgToLine(outType, rplyToken, rplyVal);
         }
@@ -313,7 +302,7 @@ function removeRoomPlayer(p_room,a) {
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
-function parseInput(room,rplyToken, inputStr) {
+function parseInput(roomMID,rplyToken, inputStr) {
 
     console.log('InputStr: ' + inputStr);
     _isNaN = function (obj) {
@@ -324,12 +313,12 @@ function parseInput(room,rplyToken, inputStr) {
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
 
     //角卡功能快速入口//
-    for (i = 0; i < room.players.length; i++) {
-	if (mainMsg[0].toString() == room.players[i].getVal('name')) return CharacterControll(room,mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
+    for (i = 0; i < TRPG[roomMID].players.length; i++) {
+	if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name')) return CharacterControll(roomMID,mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
-        return randomLuck(mainMsg); //占卜運氣        
+        return randomLuck(mainMsg); //占卜運氣
     }
     else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
@@ -341,7 +330,7 @@ function parseInput(room,rplyToken, inputStr) {
         return db(mainMsg[1], 1);
     }
     else if (trigger == '角色' || trigger == 'char') {
-        return CharacterControll(room,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
+        return CharacterControll(roomMID,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
     }
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
@@ -372,21 +361,21 @@ function parseInput(room,rplyToken, inputStr) {
     }
         //ccb指令開始於此
     else if (trigger == 'ccb') {
-        return ccb(room,mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+        return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
     }
         //KP指令開始於此
     else if (trigger == 'getkp') {
-	if(room.KP_MID != ''){
-           return room.KP_MID;
+	if(TRPG[roomMID].KP_MID != ''){
+           return TRPG[roomMID].KP_MID;
 	}else{
 	   return '你所在的房間沒有KP哦!!!';
 	}
     }
     else if (trigger == 'setkp') {
         if (event.source.type == 'user') {
-	    if( room.KP_MID == '' || room.KP_MID == event.source.userId ){
-            	room.KP_MID = event.source.userId;
-            	return '已經設定完成，KP的MID是' + room.KP_MID;
+	    if( TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId ){
+            	TRPG[roomMID].KP_MID = event.source.userId;
+            	return '已經設定完成，KP的MID是' + TRPG[roomMID].KP_MID;
 	    }else{
 		return '如果要更換KP，請現任KP先下"killkp"之後，才能重新"setkp"';
 	    }
@@ -395,11 +384,11 @@ function parseInput(room,rplyToken, inputStr) {
         }
     }
     else if(trigger == 'killkp'){
-	if (event.source.type == 'user' && room.KP_MID == event.source.userId){
-	   room.KP_MID = '';
+	if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId){
+	   TRPG[roomMID].KP_MID = '';
 	   return 'KP已經重製了';
 	}else{
-	   if(room.KP_MID!=''){
+	   if(TRPG[roomMID].KP_MID!=''){
 		return '只有KP在私下密語才能使用這個功能哦!';
 	   }else{
 		return '現在沒有KP。';
@@ -407,8 +396,8 @@ function parseInput(room,rplyToken, inputStr) {
 	}
     }
     else if (trigger == 'getgp') {
-	if(room.GP_MID != ''){
-           return room.GP_MID;
+	if(TRPG[roomMID].GP_MID != ''){
+           return TRPG[roomMID].GP_MID;
 	}else{
 	   return '你還沒有進任何一間房間哦!!!';
 	}
@@ -431,15 +420,14 @@ function parseInput(room,rplyToken, inputStr) {
 	   return '群組的uid是' + event.source.groupId;
     }
 	//ccd指令開始於此
-    else if (trigger == 'ccd' && KP_MID == event.source.userId && event.source.type == 'user') {
+    else if (trigger == 'ccd' && TRPG[roomMID].KP_MID == event.source.userId && event.source.type == 'user') {
         outType = 'kp_ccd';
-	GP_MID = room.GP_MID;
-        return ccb(room,mainMsg[1], mainMsg[2]);
+        return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);
     }
     else if (trigger == 'ccd') {
-	if(room.KP_MID!=''){
+	if(TRPG[roomMID].KP_MID!=''){
 	   outType = 'ccd';
-           return ccb(room,mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+           return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
 	}else{
 	   return '現在沒有KP，你是想傳給誰辣';
 	}
@@ -467,7 +455,7 @@ function parseInput(room,rplyToken, inputStr) {
 //////////////// 角色卡 測試功能
 ////////////////////////////////////////
 
-function CharacterControll(room,trigger, str1, str2, str3) {
+function CharacterControll(roomMID,trigger, str1, str2, str3) {
     if (trigger == undefined || trigger == null || trigger == '') {
         return Meow() + '請輸入更多資訊';
     }
@@ -475,8 +463,8 @@ function CharacterControll(room,trigger, str1, str2, str3) {
     //建立新角
     if (trigger == 'new' || trigger == '建立') {
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
-        for (i = 0; i < room.players.length; i++) {
-            if (room.players[i].getVal('name') == str1) return '已經有同名的角色了!';
+        for (i = 0; i < TRPG[roomMID].players.length; i++) {
+            if (TRPG[roomMID].players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
 	var newPlayer;
 	if(event.source.type == 'user'){
@@ -484,7 +472,7 @@ function CharacterControll(room,trigger, str1, str2, str3) {
 	}else{
 	   newPlayer = createChar(str1,'');
 	}
-	room.players.push(newPlayer);
+	TRPG[roomMID].players.push(newPlayer);
 	if(str2 == undefined || str2 == null || str2 == ''){
 	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
 	}else if (str2 == 'trpg'){
@@ -495,25 +483,25 @@ function CharacterControll(room,trigger, str1, str2, str3) {
     }
 
     //角色設定(特定狀態查詢) 刪除 查看
-    for (i = 0; i < room.players.length; i++) {
-        if (trigger == room.players[i].getVal('name')) {
+    for (i = 0; i < TRPG[roomMID].players.length; i++) {
+        if (trigger == TRPG[roomMID].players[i].getVal('name')) {
             if (str1 == 'debug') {
-                return room.players[i].debug(str1);//players[i].show();
+                return TRPG[roomMID].players[i].debug(str1);//players[i].show();
             }
             else if (str1 == 'ccb') {
-                return coc6(room.players[i].getVal(str2), str2);
+                return coc6(TRPG[roomMID].players[i].getVal(str2), str2);
             }
 	    else if (str1 == 'ccd'){
-		if(KP_MID != ''){
-		   if(event.source.type == 'user' && event.source.userId == room.KP_MID){
+		if(TRPG[roomMID].KP_MID != ''){
+		   if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
 			outType = 'kp_ccd';
-			return ccd_dice(room.players[i].getVal('name'),room.players[i].getVal(str2), str2);
-		   }else if(event.source.type == 'user' && event.source.userId == room.players[i].getVal('uid')){
+			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+		   }else if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid')){
 			outType = 'pl_ccd';
-			return ccd_dice(room.players[i].getVal('name'),room.players[i].getVal(str2), str2);
+			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
 		   }else if(event.source.type == 'group'){
 			outType = 'gp_ccd';
-			return ccd_dice(room.players[i].getVal('name'),room.players[i].getVal(str2), str2);
+			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
 		   }
 		   return Meow();
 		}else{
@@ -521,58 +509,58 @@ function CharacterControll(room,trigger, str1, str2, str3) {
 		}
 	    }
             else if (str1 == 'skills') {
-                return room.players[i].showAll();
+                return TRPG[roomMID].players[i].showAll();
             }
             else if (str1 == 'addskill') {
-		if(room.players[i].status.hasOwnProperty(str2)){
+		if(TRPG[roomMID].players[i].status.hasOwnProperty(str2)){
 		   return '該技能之前就學過了';
 		}else{
 		   if(str3 == '' || str3 == undefined){
-			room.players[i].setVal(str2,'0')
+			TRPG[roomMID].players[i].setVal(str2,'0')
 		   }else{
-			room.players[i].setVal(str2,str3)
+			TRPG[roomMID].players[i].setVal(str2,str3)
 		   }
 		}
-		return room.players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
+		return TRPG[roomMID].players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
             }
             else if (str1 == 'deleteskill') {
-		if(room.players[i].status.hasOwnProperty(str2)){
-		   room.players[i].delVal(str2)
+		if(TRPG[roomMID].players[i].status.hasOwnProperty(str2)){
+		   TRPG[roomMID].players[i].delVal(str2)
                    return '已經刪除技能: '+str2 + '.';
 		}else{
 		   return '你沒有這個技能.';
 		}
             }
             else if (str1 == 'output') {
-                return room.players[i].export();
+                return TRPG[roomMID].players[i].export();
             }
             else if (str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
-                return room.players[i].show();
+                return TRPG[roomMID].players[i].show();
             }
             else if (str1 == 'delete' || str1 == '刪除') {
-		room.players.splice(i,1);
+		TRPG[roomMID].players.splice(i,1);
                 return '已刪除 ' + trigger + ' 角色資料喵~';
             }
             else {
                 try {
                     if (str2 == undefined || str2 == null || str2 == '') {
-                        return trigger + ': ' + str1 + '[' + room.players[i].getVal(str1) + ']';
+                        return trigger + ': ' + str1 + '[' + TRPG[roomMID].players[i].getVal(str1) + ']';
                     } else {
-			if( room.players[i].status.hasOwnProperty(str1) &&
+			if( TRPG[roomMID].players[i].status.hasOwnProperty(str1) &&
 			   (event.source.type == 'group' ||
-			    (event.source.type == 'user' && event.source.userId == room.KP_MID)||
-			    (event.source.type == 'user' && room.KP_MID == '')
+			    (event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID)||
+			    (event.source.type == 'user' && TRPG[roomMID].KP_MID == '')
 			   )
 			){
-			   var tempVal = room.players[i].getVal(str1);
+			   var tempVal = TRPG[roomMID].players[i].getVal(str1);
 			   var afterVal = str2;
 			   if(afterVal.charAt(0) == '+' && str1 != 'db'){
 				afterVal = Number(tempVal) + Number(afterVal.substring(1));
 			   }else if(afterVal.charAt(0) == '-' && str1 != 'db'){
 				afterVal = Number(tempVal) - Number(afterVal.substring(1));
 			   }
-			   room.players[i].setVal(str1,afterVal);
-                           return trigger + ': ' + str1 + '[' + tempVal + '->' + room.players[i].getVal(str1) + ']';
+			   TRPG[roomMID].players[i].setVal(str1,afterVal);
+                           return trigger + ': ' + str1 + '[' + tempVal + '->' + TRPG[roomMID].players[i].getVal(str1) + ']';
 			}else{
 				return Meow();
 			}
@@ -586,8 +574,8 @@ function CharacterControll(room,trigger, str1, str2, str3) {
     //列出所有角色
     if (trigger == 'list' || trigger == '清單') {
         var tempstr = '角色清單: (max=5)\n';
-        for (i = 1; i < room.players.length+1; i++) {
-            tempstr += i + '. ' + room.players[i - 1].getVal('name') + '\n';
+        for (i = 1; i < TRPG[roomMID].players.length+1; i++) {
+            tempstr += i + '. ' + TRPG[roomMID].players[i - 1].getVal('name') + '\n';
         }
         return tempstr;
     }
