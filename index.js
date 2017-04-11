@@ -197,10 +197,11 @@ function getUserProfile(p_MID) {
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
-        response.on('data', function (body) {
-            console.log(body);
-	    profile = body;
-        });
+	profile = response.body;
+        //response.on('data', function (body) {
+        //    console.log(body);
+	//    profile = body;
+        //});
     });
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
