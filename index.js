@@ -192,7 +192,7 @@ function getUserProfile(p_MID) {
             'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
         }
     }
-    var profile = {};
+    var profile = {11:321};
     var request = https.request(options, function (response) {
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
@@ -473,8 +473,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if(trigger == 'getprofile'){
 	var profile = getUserProfile(eval('event.source.'+event.source.type+'Id'));
 	console.log(profile);
-	//return JSON.stringify(profile);
-	return profile.toString();
+	return JSON.stringify(profile);
+	//return profile.toString();
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
