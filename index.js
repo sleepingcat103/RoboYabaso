@@ -206,7 +206,7 @@ function getUserProfile(p_MID) {
         response.on('data', function (body) {
             console.log('body:' + body);
 	    eval('userToRoom.'+p_MID+'.profile = body');
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , body.displayName + \' 加入群組囉!!\' )');
+	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , body[displayName] + \' 加入群組囉!!\' )');
         });
     });
 
