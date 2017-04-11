@@ -477,6 +477,13 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	   return '現在沒有KP，你是想傳給誰辣';
 	}
     }
+    else if(trigger == 'getprofile'){
+	for(var r in userToRoom){
+	   if(userToRoom[r].profile.userId == event.source.userId){
+		return userToRoom[r].profile.displayName;
+	   }
+	}
+    }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
         outType = 'image';
