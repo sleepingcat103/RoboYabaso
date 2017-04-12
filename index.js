@@ -196,11 +196,13 @@ function getUserProfile(p_MID) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
             console.log('Body:' + body);
-	    userToRoom[p_MID].displayName = body.contacts.displayName;
-	    userToRoom[p_MID].userId = body.contacts.userId;
-	    userToRoom[p_MID].pictureUrl = body.contacts.pictureUrl;
-	    userToRoom[p_MID].statusMessage = body.contacts.statusMessage;
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , body.contacts.displayName + \' 加入群組囉!!\' )');
+	    var newBody = simpleStringify(body);
+	    console.log('newBody = '+newBody);
+	    //userToRoom[p_MID].displayName = body.contacts.displayName;
+	    //userToRoom[p_MID].userId = body.contacts.userId;
+	    //userToRoom[p_MID].pictureUrl = body.contacts.pictureUrl;
+	    //userToRoom[p_MID].statusMessage = body.contacts.statusMessage;
+	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , newBody.displayName + \' 加入群組囉!!\' )');
         });
     });
 
@@ -1096,6 +1098,23 @@ function choice(input, str) {
     let a = input.replace(str[0], '').match(/\S+/ig);
     return str[0] + '[' + a + '] → ' + a[Dice(a.length) - 1];
 }
+
+function simpleStringify (object){
+    var simpleObject = {};
+    for (var prop in object ){
+        if (!object.hasOwnProperty(prop)){
+            continue;
+        }
+        if (typeof(object[prop]) == 'object'){
+            continue;
+        }
+        if (typeof(object[prop]) == 'function'){
+            continue;
+        }
+        simpleObject[prop] = object[prop];
+    }
+    return JSON.stringify(simpleObject); // returns cleaned up JSON
+};
 
 ////////////////////////////////////////
 //////////////// Help
