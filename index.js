@@ -654,7 +654,12 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
 function ccb(roomMID,chack, text) {
     var val_status = chack;
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
-        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
+        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name') &&
+	    ( //綁腳色或者群組發話
+		(TRPG[roomMID].players[i].getVal('uid')==event.source.userId && event.source.type == 'user') ||
+		(event.source.type != 'user')
+	    )
+	   ) {
             val_status = TRPG[roomMID].players[i].getVal(text);
             if (val_status <= 99) {
 		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),val_status, text);
