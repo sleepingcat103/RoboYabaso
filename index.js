@@ -198,11 +198,12 @@ function getUserProfile(p_MID) {
             console.log('Body:' + body);
 	    var newBody = simpleStringify(body);
 	    console.log('newBody = '+newBody);
+	    var jsonBody = JSON.parse(newBody);
 	    //userToRoom[p_MID].displayName = body.contacts.displayName;
 	    //userToRoom[p_MID].userId = body.contacts.userId;
 	    //userToRoom[p_MID].pictureUrl = body.contacts.pictureUrl;
 	    //userToRoom[p_MID].statusMessage = body.contacts.statusMessage;
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , newBody.displayName + \' 加入群組囉!!\' )');
+	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , jsonBody.displayName + \' 加入群組囉!!\' )');
         });
     });
 
@@ -1100,7 +1101,8 @@ function choice(input, str) {
 }
 
 function simpleStringify (object){
-    var simpleObject = {};
+    //var simpleObject = {};
+    var simpleObject = '';
     for (var prop in object ){
         if (!object.hasOwnProperty(prop)){
             continue;
@@ -1111,9 +1113,11 @@ function simpleStringify (object){
         if (typeof(object[prop]) == 'function'){
             continue;
         }
-        simpleObject[prop] = object[prop];
+        //simpleObject[prop] = object[prop];
+	simpleObject += object[prop];
     }
-    return JSON.stringify(simpleObject); // returns cleaned up JSON
+    //return JSON.stringify(simpleObject); // returns cleaned up JSON
+    return simpleObject;
 };
 
 ////////////////////////////////////////
