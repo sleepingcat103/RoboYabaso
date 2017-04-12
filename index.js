@@ -9,7 +9,9 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
-//key:value
+
+// 房間入口
+// key:value
 // GroupMid : room Object
 var TRPG = { 
     first : {
@@ -22,8 +24,9 @@ TRPG.createRoom = function(p_mid,p_room){
     eval('TRPG.'+p_mid+' = p_room');
 }
 
-//key:value
-//UserMid: {GP_MID,displayName,userId,pictureUrl,statusMessage}
+// 紀錄使用者的資訊，以及進入的房間
+// key:value
+// UserMid: {GP_MID,displayName,userId,pictureUrl,statusMessage}
 var userToRoom={};
 
 app.set('port', (process.env.PORT || 5000));
@@ -44,6 +47,7 @@ app.post('/', jsonParser, function (req, res) {
 
     var roomMID = 'first';
 	
+    // 先找是否已經進入房間
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
@@ -187,7 +191,7 @@ function getUserProfile(p_MID) {
             'Authorization': 'Bearer fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU='
         }
     };
-
+    v_path = null;
     var request = https.request(options, function (response) {
         console.log('Status: ' + response.statusCode);
         console.log('Headers: ' + JSON.stringify(response.headers));
@@ -200,6 +204,7 @@ function getUserProfile(p_MID) {
 	    userToRoom[p_MID].statusMessage = newBody.statusMessage;
 	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , newBody.displayName + \' 加入群組囉!!\' )');
 	    replyMsgToLine('push',userToRoom[p_MID].GP_MID , userToRoom[p_MID].displayName + ' 加入群組囉!!');
+	    newBody = null;
         });
     });
 
@@ -210,7 +215,7 @@ function getUserProfile(p_MID) {
 }
 
 ///////////////////////////////////////
-/////////////////測試功能///////////////
+/////////////////角色功能///////////////
 ///////////////////////////////////////
 
 function createChar(p_name,p_uid){
@@ -314,6 +319,10 @@ function createChar(p_name,p_uid){
      return player;
 }
 
+////////////////////////////////////////
+//////////////// 創房間 ////////////////
+////////////////////////////////////////
+
 function createNewRoom(p_Mid){
      var room = {
 	GP_MID: p_Mid,
@@ -350,7 +359,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 
     //角卡功能快速入口//
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
-	if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name')) return CharacterControll(roomMID,mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
+	if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name'))
+		return CharacterControll( roomMID, mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
@@ -410,12 +420,19 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
     else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
         return SortIt(inputStr, mainMsg);
-    }
-        //ccb指令開始於此
+    }   //ccb指令開始於此
     else if (trigger == 'ccb') {
-        return ccb(roomMID,mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
-    }
-        //KP指令開始於此
+        return ccb(roomMID,mainMsg[1], mainMsg[2]);
+    }   //ccd指令開始於此
+    else if (trigger == 'ccd') {
+	if(TRPG[roomMID].KP_MID != ''){ //
+           return ccd(roomMID,mainMsg[1], mainMsg[2]);
+	}else if(roomMID == 'first'){ // 房間還沒創或是沒進入房間
+	   return '你還沒進入房間';
+	}else{
+	   return '現在房間沒有KP，你想傳給誰呢 <3 ';
+	}
+    }    //房間相關指令開始於此
     else if (trigger == 'getkp') {
 	if(TRPG[roomMID].KP_MID != ''){
            return TRPG[roomMID].KP_MID;
@@ -478,19 +495,6 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	//   return '群組的uid是' + event.source.groupId;
 	else
 	   return eval('\'群組的uid是 \' + event.source.+'+event.source.type+'Id');
-    }//ccd指令開始於此
-    else if (trigger == 'ccd') {
-	if(TRPG[roomMID].KP_MID == event.source.userId && event.source.type == 'user'){
-	    outType = 'kp_ccd';
-            return ccb(roomMID,mainMsg[1], mainMsg[2]);
-	}else if(TRPG[roomMID].KP_MID!=''){
-	   outType = 'ccd';
-           return ccb(roomMID,mainMsg[1], mainMsg[2]);
-	}else if(roomMID == 'first'){
-	   return '你還沒進入房間';
-	}else{
-	   return '現在房間沒有KP，你想傳給誰呢 <3 ';
-	}
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
@@ -651,27 +655,46 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
-function ccb(roomMID,chack, text) {
+function ccb( roomMID, chack, text) {
     var val_status = chack;
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
-        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name') &&
-	    ( //綁腳色或者群組發話
-		(TRPG[roomMID].players[i].getVal('uid')==event.source.userId && event.source.type == 'user') ||
-		(event.source.type != 'user')
-	    )
-	   ) {
-            val_status = TRPG[roomMID].players[i].getVal(text);
-            if (val_status <= 99) {
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),val_status, text);
-	    } else {
-		return 'error!';
-	    }
+        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
+	    val_status = TRPG[roomMID].players[i].getVal(text);
+	    break;
         }
     }
     if (val_status <= 99) {
         return coc6(val_status, text);
     } else {
-        return 'error!';
+        return '**Error**\n找不到該角色或者輸入錯誤';
+    }
+}
+
+function ccd( roomMID, chack, text) {
+    var val_status = chack;
+    for (i = 0; i < TRPG[roomMID].players.length; i++) {
+        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
+	    if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
+		outType = 'kp_ccd';
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+	    }else if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid')){
+		outType = 'pl_ccd';
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+	    }else if(event.source.type == 'group'){
+		outType = 'gp_ccd';
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+	    }else if(event.source.type == 'user' && event.source.userId != TRPG[roomMID].players[i].getVal('uid')){
+		outType = 'text';
+		replyMsgToLine('push',userToRoom[p_MID].KP_MID , userToRoom[p_MID].displayName + '再亂用別人角色的CCD!!');
+		return '這隻角色不是你的唷 !!! ';
+	    }
+	    return Meow();
+        }
+    }
+    if (val_status <= 99) {
+        return coc6(val_status, text);
+    } else {
+        return '**Error**\n找不到該角色或者輸入錯誤';
     }
 }
 
