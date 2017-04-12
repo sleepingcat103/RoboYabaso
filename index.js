@@ -533,7 +533,9 @@ function CharacterControll(trigger, str1, str2, str3) {
 function ccb(chack, text) {
     var val_status = chack;
     for (i = 0; i < players.length; i++) {
-        if (val_status.toString() == players[i].getVal('name')) {
+        if (val_status.toString() == players[i].getVal('name') &&
+	    ( event.source.type == 'user' && players[i].getVal('uid') == event.source.userId ) || 
+	    ( event.source.type != 'user' )) {
             val_status = players[i].getVal(text.toString().toLowerCase().trim());
             break;
         }
