@@ -196,11 +196,11 @@ function getUserProfile(p_MID) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
             console.log('Body:' + body);
-	    userToRoom[p_MID].displayName = body.contacts[0].displayName;
-	    userToRoom[p_MID].userId = body.contacts[0].userId;
-	    userToRoom[p_MID].pictureUrl = body.contacts[0].pictureUrl;
-	    userToRoom[p_MID].statusMessage = body.contacts[0].statusMessage;
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , body.contacts[0].displayName + \' 加入群組囉!!\' )');
+	    userToRoom[p_MID].displayName = body.contacts.displayName;
+	    userToRoom[p_MID].userId = body.contacts.userId;
+	    userToRoom[p_MID].pictureUrl = body.contacts.pictureUrl;
+	    userToRoom[p_MID].statusMessage = body.contacts.statusMessage;
+	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , body.contacts.displayName + \' 加入群組囉!!\' )');
         });
     });
 
