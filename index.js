@@ -10,7 +10,7 @@ var event = '';
 var v_path = '/v2/bot/message/reply';
 
 //key:value
-//GroupMid:room
+// GroupMid : room Object
 var TRPG = { 
     first : {
 	KP_MID: '',
@@ -23,12 +23,10 @@ TRPG.createRoom = function(p_mid,p_room){
 }
 
 //key:value
-//UserMid: GroupMid
+//UserMid: {GP_MID,displayName,userId,pictureUrl,statusMessage}
 var userToRoom={};
 
 app.set('port', (process.env.PORT || 5000));
-
-// views is directory for all template files
 
 app.get('/', function (req, res) {
     //  res.send(parseInput(req.query.input));
@@ -94,7 +92,7 @@ app.post('/', jsonParser, function (req, res) {
             replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
         }else if (outType == 'ccd') {
             replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
-        } else {
+        }else {
             replyMsgToLine(outType, rplyToken, rplyVal);
         }
     } else {
@@ -195,15 +193,13 @@ function getUserProfile(p_MID) {
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
-            console.log('Body:' + body);
-	    var newBody = simpleStringify(body);
-	    console.log('newBody = '+newBody);
-	    var jsonBody = JSON.parse(newBody);
-	    //userToRoom[p_MID].displayName = body.contacts.displayName;
-	    //userToRoom[p_MID].userId = body.contacts.userId;
-	    //userToRoom[p_MID].pictureUrl = body.contacts.pictureUrl;
-	    //userToRoom[p_MID].statusMessage = body.contacts.statusMessage;
-	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , jsonBody.displayName + \' 加入群組囉!!\' )');
+	    var newBody = MyJSONStringify(body);
+	    userToRoom[p_MID].displayName = newBody.displayName;
+	    userToRoom[p_MID].userId = newBody.userId;
+	    userToRoom[p_MID].pictureUrl = newBody.pictureUrl;
+	    userToRoom[p_MID].statusMessage = newBody.statusMessage;
+	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , newBody.displayName + \' 加入群組囉!!\' )');
+	    replyMsgToLine('push',userToRoom[p_MID].GP_MID , userToRoom[p_MID].displayName + ' 加入群組囉!!');
         });
     });
 
@@ -370,7 +366,15 @@ function parseInput(roomMID,rplyToken, inputStr) {
         return db(mainMsg[1], 1);
     }
     else if (trigger == '角色' || trigger == 'char') {
-        return CharacterControll(roomMID,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
+	if(roomMID == 'first'){
+	    if(event.source.type =='user'){
+		return '你尚未進入房間哦!!!';
+	    }else{
+		return '房間還沒有建立!!\n請輸入  setgp';
+	    }
+    	}else{
+	    return CharacterControll(roomMID,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
+	}
     }
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
@@ -386,8 +390,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 		    pictureUrl: '',
 		    statusMessage: ''
 	    };
-	    getUserProfile(event.source.userId)
-	    return '你已經加入' + mainMsg[1];
+	    getUserProfile(event.source.userId)	    
+	    return '請到該群組確認是否有成功加入';
 	}else{
 	    return '請自己合併群組哦~~~';
 	}
@@ -409,7 +413,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
         //ccb指令開始於此
     else if (trigger == 'ccb') {
-        return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
+        return ccb(roomMID,mainMsg[1], mainMsg[2]);//coc6(mainMsg[1],mainMsg[2]);
     }
         //KP指令開始於此
     else if (trigger == 'getkp') {
@@ -422,8 +426,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'setkp') {
         if (event.source.type == 'user') {
 	    if( TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId ){
-            	TRPG[roomMID].KP_MID = event.source.userId;
-            	return '已經設定完成，KP的MID是' + TRPG[roomMID].KP_MID;
+		if(roomMID=='first'){
+			return '你還沒有進入房間';
+		}
+		TRPG[roomMID].KP_MID = event.source.userId;
+            	return '已經設定完成，KP的MID是\n' + TRPG[roomMID].KP_MID;
 	    }else{
 		return '如果要更換KP，請現任KP先下"killkp"之後，才能重新"setkp"';
 	    }
@@ -438,6 +445,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	}else{
 	   if(TRPG[roomMID].KP_MID!=''){
 		return '只有KP在私下密語才能使用這個功能哦!';
+	   }else if(roomMID=='first'){
+		return '你還沒有進入房間';
 	   }else{
 		return '現在沒有KP。';
 	   }
@@ -447,7 +456,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	if(TRPG[roomMID].GP_MID != ''){
            return TRPG[roomMID].GP_MID;
 	}else{
-	   return '你還沒有進任何一間房間哦!!!';
+	   return '你還沒有進房間哦!!!';
 	}
     }
     else if (trigger == 'setgp') {
@@ -465,20 +474,22 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if(trigger == 'getuid'){
 	if(event.source.type == 'user' )
 	   return '你的uid是' + event.source.userId;
-	else if(event.source.type =='group')
-	   return '群組的uid是' + event.source.groupId;
-    }
-	//ccd指令開始於此
-    else if (trigger == 'ccd' && TRPG[roomMID].KP_MID == event.source.userId && event.source.type == 'user') {
-        outType = 'kp_ccd';
-        return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);
-    }
+	//else if(event.source.type =='group')
+	//   return '群組的uid是' + event.source.groupId;
+	else
+	   return eval('\'群組的uid是 \' + event.source.+'+event.source.type+'Id');
+    }//ccd指令開始於此
     else if (trigger == 'ccd') {
-	if(TRPG[roomMID].KP_MID!=''){
+	if(TRPG[roomMID].KP_MID == event.source.userId && event.source.type == 'user'){
+	    outType = 'kp_ccd';
+            return ccb(roomMID,mainMsg[1], mainMsg[2]);
+	}else if(TRPG[roomMID].KP_MID!=''){
 	   outType = 'ccd';
-           return ccb(TRPG[roomMID],mainMsg[1], mainMsg[2]);
+           return ccb(roomMID,mainMsg[1], mainMsg[2]);
+	}else if(roomMID == 'first'){
+	   return '你還沒進入房間';
 	}else{
-	   return '現在沒有KP，你是想傳給誰辣';
+	   return '現在房間沒有KP，你想傳給誰呢 <3 ';
 	}
     }
         //生科火大圖指令開始於此
@@ -497,8 +508,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
         //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
-    }else if(trigger == 'getprofile'){
-	return userToRoom[event.source.userId].displayName;
+    }else if(trigger == 'getprofile' && event.source.type =='user'){
+	return userToRoom[event.source.userId].displayName + '\n'+
+	       userToRoom[event.source.userId].userId + '\n'+
+	       userToRoom[event.source.userId].pictureUrl + '\n'+
+	       userToRoom[event.source.userId].statusMessage;
     }
 }
 
@@ -624,7 +638,7 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
     }
     //列出所有角色
     if (trigger == 'list' || trigger == '清單') {
-        var tempstr = '角色清單: (max=5)\n';
+        var tempstr = '角色清單:\n';
         for (i = 1; i < TRPG[roomMID].players.length+1; i++) {
             tempstr += i + '. ' + TRPG[roomMID].players[i - 1].getVal('name') + '\n';
         }
@@ -637,18 +651,22 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
-function ccb(room,chack, text) {
+function ccb(roomMID,chack, text) {
     var val_status = chack;
-    for (i = 0; i < room.players.length; i++) {
-        if (val_status.toString() == room.players[i].getVal('name')) {
-            val_status = room.players[i].getVal(text.toString().toLowerCase().trim());
-            break;
+    for (i = 0; i < TRPG[roomMID].players.length; i++) {
+        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
+            val_status = TRPG[roomMID].players[i].getVal(text);
+            if (val_status <= 99) {
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),val_status, text);
+	    } else {
+		return 'error!';
+	    }
         }
     }
     if (val_status <= 99) {
         return coc6(val_status, text);
     } else {
-        return 'error';
+        return 'error!';
     }
 }
 
@@ -896,23 +914,128 @@ function db(value, flag) {
     //return restr;	
     if (flag == 0) return restr;
     if (flag == 1) return 'db -> ' + restr;
+}	
+	
+////////////////////////////////////////
+//////////////// 占卜&其他
+////////////////////////////////////////
+
+
+function BStyleFlagSCRIPTS() {
+    let rplyArr = ['\
+「打完這仗我就回老家結婚」', '\
+「打完這一仗後我請你喝酒」', '\
+「你、你要錢嗎！要什麼我都能給你！/我可以給你更多的錢！」', '\
+「做完這次任務，我就要結婚了。」', '\
+「幹完這一票我就金盆洗手了。」', '\
+「好想再XXX啊……」', '\
+「已經沒什麼好害怕的了」', '\
+「我一定會回來的」', '\
+「差不多該走了」', '\
+「我只是希望你永遠不要忘記我。」', '\
+「我只是希望能永遠和你在一起。」', '\
+「啊啊…為什麼會在這種時候、想起了那些無聊的事呢？」', '\
+「能遇見你真是太好了。」', '\
+「我終於…為你們報仇了！」', '\
+「等到一切結束後，我有些話想跟妳說！」', '\
+「這段時間我過的很開心啊。」', '\
+把自己的寶物借給其他人，然後說「待一切結束後記得還給我。」', '\
+「真希望這份幸福可以永遠持續下去。」', '\
+「我們三個人要永永遠遠在一起！」', '\
+「這是我女兒的照片，很可愛吧？」', '\
+「請告訴他/她，我永遠愛他/她」', '\
+「聽好，在我回來之前絕不要亂走動哦」', '\
+「要像一個乖孩子一樣等著我回來」', '\
+「我去去就來」', '\
+「快逃！」', '\
+「對方只有一個人，大家一起上啊」', '\
+「我就不信，這麼多人還殺不了他一個！」', '\
+「幹，幹掉了嗎？」', '\
+「身體好輕」', '\
+「可惡！你給我看著！（逃跑）」', '\
+「躲在這裡就應該不會被發現了吧。」', '\
+「我不會讓任何人死的。」', '\
+「可惡！原來是這麼回事！」', '\
+「跑這麼遠應該就行了。」', '\
+「我已經甚麼都不怕了」', '\
+「這XXX是什麼，怎麼之前沒見過」', '\
+「什麼聲音……？就去看一下吧」', '\
+「是我的錯覺嗎？/果然是錯覺/錯覺吧/可能是我（看/聽）錯了」', '\
+「二十年後又是一條好漢！」', '\
+「大人/將軍武運昌隆」', '\
+「這次工作的報酬是以前無法比較的」', '\
+「我才不要和罪犯呆在一起，我回自己的房間去了！」', '\
+「其實我知道事情的真相…（各種廢話）…犯人就是……」', '\
+「我已經天下無敵了~~」', '\
+「大人！這邊就交給小的吧，請快離開這邊吧」', '\
+「XX，這就是我們流派的最終奧義。這一招我只會演示一次，你看好了！」', '\
+「誰敢殺我？」', '\
+「從來沒有人能越過我的劍圍。」', '\
+「就算殺死也沒問題吧？」', '\
+「看我塔下強殺！」', '\
+「騙人的吧，我們不是朋友嗎？」', '\
+「我老爸是....你有種就....」', '\
+「我可以好好利用這件事」'];
+
+    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+}
+
+
+function randomLuck(TEXT) {
+    let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
+    return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
 
 ////////////////////////////////////////
-//////////////// 工具
+//////////////// Others
 ////////////////////////////////////////
 
-function padLeft(str,lenght){
-    if(str.length >= lenght)
-        return str;
-    else
-        return padLeft('　' + str,lenght);
+function SortIt(input, mainMsg) {
+
+    let a = input.replace(mainMsg[0], '').match(/\S+/ig);
+    for (var i = a.length - 1; i >= 0; i--) {
+        var randomIndex = Math.floor(Math.random() * (i + 1));
+        var itemAtIndex = a[randomIndex];
+        a[randomIndex] = a[i];
+        a[i] = itemAtIndex;
+    }
+    return mainMsg[0] + ' → [' + a + ']';
 }
-function padRight(str,lenght){
-    if(str.length >= lenght)
+
+function choice(input, str) {
+    let a = input.replace(str[0], '').match(/\S+/ig);
+    return str[0] + '[' + a + '] → ' + a[Dice(a.length) - 1];
+}
+
+function MyJSONStringify (object){
+    var simpleObject = '';
+    for (var prop in object ){
+        if (!object.hasOwnProperty(prop)){
+            continue;
+        }
+        if (typeof(object[prop]) == 'object'){
+            continue;
+        }
+        if (typeof(object[prop]) == 'function'){
+            continue;
+        }
+        //simpleObject[prop] = object[prop];
+	simpleObject += object[prop];
+    }
+    return JSON.parse(simpleObject);
+};
+
+function padLeft(str,length){
+    if(str.length >= length)
         return str;
     else
-        return padRight(str+'　',lenght);
+        return padLeft('　' + str,length);
+}
+function padRight(str,length){
+    if(str.length >= length)
+        return str;
+    else
+        return padRight(str+'　',length);
 }
 
 var JSONmapping = {
@@ -1006,118 +1129,6 @@ char_section9_1_field3: '偽造',
 char_section9_1_field4: '攝影',
 char_section10_1_field1: '克蘇魯神話'
 //,char_section11_1_field1: 'item'
-};
-	
-	
-////////////////////////////////////////
-//////////////// 占卜&其他
-////////////////////////////////////////
-
-
-function BStyleFlagSCRIPTS() {
-    let rplyArr = ['\
-「打完這仗我就回老家結婚」', '\
-「打完這一仗後我請你喝酒」', '\
-「你、你要錢嗎！要什麼我都能給你！/我可以給你更多的錢！」', '\
-「做完這次任務，我就要結婚了。」', '\
-「幹完這一票我就金盆洗手了。」', '\
-「好想再XXX啊……」', '\
-「已經沒什麼好害怕的了」', '\
-「我一定會回來的」', '\
-「差不多該走了」', '\
-「我只是希望你永遠不要忘記我。」', '\
-「我只是希望能永遠和你在一起。」', '\
-「啊啊…為什麼會在這種時候、想起了那些無聊的事呢？」', '\
-「能遇見你真是太好了。」', '\
-「我終於…為你們報仇了！」', '\
-「等到一切結束後，我有些話想跟妳說！」', '\
-「這段時間我過的很開心啊。」', '\
-把自己的寶物借給其他人，然後說「待一切結束後記得還給我。」', '\
-「真希望這份幸福可以永遠持續下去。」', '\
-「我們三個人要永永遠遠在一起！」', '\
-「這是我女兒的照片，很可愛吧？」', '\
-「請告訴他/她，我永遠愛他/她」', '\
-「聽好，在我回來之前絕不要亂走動哦」', '\
-「要像一個乖孩子一樣等著我回來」', '\
-「我去去就來」', '\
-「快逃！」', '\
-「對方只有一個人，大家一起上啊」', '\
-「我就不信，這麼多人還殺不了他一個！」', '\
-「幹，幹掉了嗎？」', '\
-「身體好輕」', '\
-「可惡！你給我看著！（逃跑）」', '\
-「躲在這裡就應該不會被發現了吧。」', '\
-「我不會讓任何人死的。」', '\
-「可惡！原來是這麼回事！」', '\
-「跑這麼遠應該就行了。」', '\
-「我已經甚麼都不怕了」', '\
-「這XXX是什麼，怎麼之前沒見過」', '\
-「什麼聲音……？就去看一下吧」', '\
-「是我的錯覺嗎？/果然是錯覺/錯覺吧/可能是我（看/聽）錯了」', '\
-「二十年後又是一條好漢！」', '\
-「大人/將軍武運昌隆」', '\
-「這次工作的報酬是以前無法比較的」', '\
-「我才不要和罪犯呆在一起，我回自己的房間去了！」', '\
-「其實我知道事情的真相…（各種廢話）…犯人就是……」', '\
-「我已經天下無敵了~~」', '\
-「大人！這邊就交給小的吧，請快離開這邊吧」', '\
-「XX，這就是我們流派的最終奧義。這一招我只會演示一次，你看好了！」', '\
-「誰敢殺我？」', '\
-「從來沒有人能越過我的劍圍。」', '\
-「就算殺死也沒問題吧？」', '\
-「看我塔下強殺！」', '\
-「騙人的吧，我們不是朋友嗎？」', '\
-「我老爸是....你有種就....」', '\
-「我可以好好利用這件事」'];
-
-    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-}
-
-
-function randomLuck(TEXT) {
-    let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
-    return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-}
-
-////////////////////////////////////////
-//////////////// Others
-////////////////////////////////////////
-
-function SortIt(input, mainMsg) {
-
-    let a = input.replace(mainMsg[0], '').match(/\S+/ig);
-    for (var i = a.length - 1; i >= 0; i--) {
-        var randomIndex = Math.floor(Math.random() * (i + 1));
-        var itemAtIndex = a[randomIndex];
-        a[randomIndex] = a[i];
-        a[i] = itemAtIndex;
-    }
-    return mainMsg[0] + ' → [' + a + ']';
-}
-
-function choice(input, str) {
-    let a = input.replace(str[0], '').match(/\S+/ig);
-    return str[0] + '[' + a + '] → ' + a[Dice(a.length) - 1];
-}
-
-function simpleStringify (object){
-    //var simpleObject = {};
-    var simpleObject = '';
-    for (var prop in object ){
-        if (!object.hasOwnProperty(prop)){
-            continue;
-        }
-        if (typeof(object[prop]) == 'object'){
-            continue;
-        }
-        if (typeof(object[prop]) == 'function'){
-            continue;
-        }
-        //simpleObject[prop] = object[prop];
-	simpleObject += object[prop];
-    }
-    //return JSON.stringify(simpleObject); // returns cleaned up JSON
-    return simpleObject;
 };
 
 ////////////////////////////////////////
