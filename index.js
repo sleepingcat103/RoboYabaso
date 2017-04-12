@@ -375,7 +375,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
 		return '你已經在該房間了!';
 	}else if(event.source.type == 'user'){
-	    eval('userToRoom.'+event.source.userId) = {
+	    eval('userToRoom.'+event.source.userId+' = {}');
+	    userToRoom[event.source.userId] = {
 		    GP_MID: mainMsg[1],
 		    displayName: '',
 		    userId: '',
