@@ -50,7 +50,7 @@ app.post('/', jsonParser, function (req, res) {
 	for (var p in userToRoom) {
 	    if( p == event.source.userId ) {
 		for(var r in TRPG){
-		    if(userToRoom[p] == r){
+		    if(userToRoom[p].GP_MID == r){
 			    roomMID = r;
 			    break;
 		    }
@@ -196,9 +196,11 @@ function getUserProfile(p_MID) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
             console.log('Body:' + body);
-	    
-	    //eval('userToRoom.'+p_MID+'.profile = body');
-	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , retBody.displayName + \' 加入群組囉!!\' )');
+	    userToRoom[p_MID].displayName = body.contacts[0].displayName;
+	    userToRoom[p_MID].userId = body.contacts[0].userId;
+	    userToRoom[p_MID].pictureUrl = body.contacts[0].pictureUrl;
+	    userToRoom[p_MID].statusMessage = body.contacts[0].statusMessage;
+	    eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +' , body.contacts[0].displayName + \' 加入群組囉!!\' )');
         });
     });
 
@@ -370,10 +372,16 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'join') {
 	if(event.source.type == 'user' &&
 	   userToRoom.hasOwnProperty(event.source.userId) &&
-	   userToRoom[event.source.userId] == mainMsg[1] ){
+	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
 		return '你已經在該房間了!';
 	}else if(event.source.type == 'user'){
-	    eval('userToRoom.'+event.source.userId + ' = \''+mainMsg[1]+'\'');
+	    eval('userToRoom.'+event.source.userId) = {
+		    GP_MID: mainMsg[1],
+		    displayName: '',
+		    userId: '',
+		    pictureUrl: '',
+		    statusMessage: ''
+	    };
 	    getUserProfile(event.source.userId)
 	    return '你已經加入' + mainMsg[1];
 	}else{
@@ -485,6 +493,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
         //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
+    }else if(trigger == 'getprofile'){
+	return userToRoom[event.source.userId].displayName;
     }
 }
 
