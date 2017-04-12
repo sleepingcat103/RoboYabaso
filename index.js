@@ -685,7 +685,7 @@ function ccd( roomMID, chack, text) {
 		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
 	    }else if(event.source.type == 'user' && event.source.userId != TRPG[roomMID].players[i].getVal('uid')){
 		outType = 'text';
-		replyMsgToLine('push',userToRoom[p_MID].KP_MID , userToRoom[p_MID].displayName + '再亂用別人角色的CCD!!');
+		replyMsgToLine('push', TRPG[roomMID].KP_MID , userToRoom[event.source.userId].displayName + '再亂用別人角色的CCD!!');
 		return '這隻角色不是你的唷 !!! ';
 	    }
 	    return Meow();
