@@ -676,13 +676,13 @@ function ccd( roomMID, chack, text) {
         if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
 	    if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
 		outType = 'kp_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
 	    }else if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid')){
 		outType = 'pl_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
 	    }else if(event.source.type == 'group'){
 		outType = 'gp_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
 	    }else if(event.source.type == 'user' && event.source.userId != TRPG[roomMID].players[i].getVal('uid')){
 		outType = 'text';
 		replyMsgToLine('push',userToRoom[p_MID].KP_MID , userToRoom[p_MID].displayName + '再亂用別人角色的CCD!!');
