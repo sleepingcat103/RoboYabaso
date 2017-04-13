@@ -20,8 +20,8 @@ var TRPG = {
 	players : []
     }
 };
-TRPG.createRoom = function(p_mid,p_room){
-    eval('TRPG.'+p_mid+' = p_room');
+TRPG.createRoom = function(p_mid,room_Obj){
+    eval('TRPG.'+p_mid+' = room_Obj');
 }
 
 // 紀錄使用者的資訊，以及進入的房間
@@ -40,12 +40,9 @@ app.post('/', jsonParser, function (req, res) {
     event = req.body.events[0];
     let type = event.type;
 	
-    if(type == 'leave'){
-	if(TRPG.hasOwnProperty(event.source.groupId)){
-	    //console.log('delete '+event.source.groupId);
-    	    eval('delete TRPG.'+event.source.groupId);
-	    //console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
-	}
+    if(type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)){
+    	eval('delete TRPG.'+event.source.groupId);
+	console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
     }
 	
     let msgType = event.message.type;
@@ -212,7 +209,7 @@ function getUserProfile(p_MID) {
 	    userToRoom[p_MID].pictureUrl = newBody.pictureUrl;
 	    userToRoom[p_MID].statusMessage = newBody.statusMessage;
 	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , newBody.displayName + \' 加入群組囉!!\' )');
-	    replyMsgToLine('push',userToRoom[p_MID].GP_MID , userToRoom[p_MID].displayName + ' 加入群組囉!!');
+	    replyMsgToLine('push',userToRoom[p_MID].GP_MID , userToRoom[p_MID].displayName + ' 加入房間囉!!');
 	    newBody = null;
         });
     });
@@ -387,9 +384,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == '角色' || trigger == 'char') {
 	if(roomMID == 'first'){
 	    if(event.source.type =='user'){
-		return '你尚未進入房間哦!!!';
+		return '你還沒進入房間喵!!!';
 	    }else{
-		return '房間還沒有建立!!\n請輸入  setgp';
+		return '房間還沒有建立!!\n請先輸入  setgp';
 	    }
     	}else{
 	    return CharacterControll(roomMID,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
@@ -399,7 +396,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	if(event.source.type == 'user' &&
 	   userToRoom.hasOwnProperty(event.source.userId) &&
 	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
-		return '你已經在該房間了!';
+		return '你已經在房間裡了喵!';
 	}else if(event.source.type == 'user'){
 	    eval('userToRoom.'+event.source.userId+' = {}');
 	    userToRoom[event.source.userId] = {
@@ -410,9 +407,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
 		    statusMessage: ''
 	    };
 	    getUserProfile(event.source.userId)	    
-	    return '請到該群組確認是否有成功加入';
+	    return '加入房間喵!\n請到群組確認加入訊息~';
 	}else{
-	    return '請自己合併群組哦~~~';
+	    return '你想幹嘛啦~~~';
 	}
     }
     else if (trigger == '貓咪') {
@@ -445,8 +442,10 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'getkp') {
 	if(TRPG[roomMID].KP_MID != ''){
            return TRPG[roomMID].KP_MID;
+	}else if (event.source.type != 'group'){
+	   return '在群組才能使用唷!!!';
 	}else{
-	   return '你所在的房間沒有KP哦!!!';
+	   return '目前沒有設置KP喵!!!';
 	}
     }
     else if (trigger == 'setkp') {
@@ -456,9 +455,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
 			return '你還沒有進入房間';
 		}
 		TRPG[roomMID].KP_MID = event.source.userId;
-            	return '已經設定完成，KP的MID是\n' + TRPG[roomMID].KP_MID;
+            	return '設定完成喵';	//，KP的MID是\n' + TRPG[roomMID].KP_MID;
 	    }else{
-		return '如果要更換KP，請現任KP先下"killkp"之後，才能重新"setkp"';
+		return '如果要更換KP，請現任KP先卸任之後，才能重新"setkp"';
 	    }
         } else {
             return '私密BOT才能設定KP哦!!!';
@@ -467,14 +466,14 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if(trigger == 'killkp'){
 	if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId){
 	   TRPG[roomMID].KP_MID = '';
-	   return 'KP已經重製了';
+	   return '已經沒有KP了喵';
 	}else{
 	   if(TRPG[roomMID].KP_MID!=''){
 		return '只有KP在私下密語才能使用這個功能哦!';
 	   }else if(roomMID=='first'){
 		return '你還沒有進入房間';
 	   }else{
-		return '現在沒有KP。';
+		return '現在沒有KP喵~';
 	   }
 	}
     }
@@ -488,7 +487,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'setgp') {
 	if(event.source.type == 'group'){
 	    if(TRPG.hasOwnProperty(event.source.groupId)){
-		return '此群組已經開啟房間了!';
+		return '在群組開啟了遊戲房間!!!';
 	    }else{
 		TRPG.createRoom(event.source.groupId,createNewRoom(event.source.groupId));
 		return '房間建立成功，請PL私密輸入\njoin '+event.source.groupId;
@@ -499,11 +498,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
     else if(trigger == 'getuid'){
 	if(event.source.type == 'user' )
-	   return '你的uid是' + event.source.userId;
+	   return '你的uid是:' + event.source.userId;
 	//else if(event.source.type =='group')
 	//   return '群組的uid是' + event.source.groupId;
 	else
-	   return eval('\'群組的uid是 \' + event.source.+'+event.source.type+'Id');
+	   return eval('\'群組的uid是: \' + event.source.+'+event.source.type+'Id');
     }
         //生科火大圖指令開始於此
     else if (trigger == '生科') {
@@ -1173,45 +1172,10 @@ char_section10_1_field1: '克蘇魯神話'
 ////////////////////////////////////////
 
 function Help() {
-    return '【擲骰BOT】 貓咪改\
-		\n 本BOT為COC6內部跑團工具\
-		\n 其他功能有用到再考慮寫進去\
-		\n \
-		\n == 基本擲骰功能 ==\
-		\n 支援四則運算，可以加上空白後發言\
-		\n 範例輸入:\
-		\n 1d10\
-		\n 2d6+3d4\
-		\n 3d6 鐵拳攻擊\
-		\n \
-		\n 另外還有複數擲骰功能\
-		\n 範例輸入:\
-		\n 5 3D6\
-		\n \
-		\n == coc技能骰 ==\
-		\n 輸入 ccb 成功率 (技能)\
-		\n 範例輸入:\
-		\n ccb 50\
-		\n ccb 30 抓兔子\
-		\n \
-		\n == DB查詢 ==\
-		\n DB為STR+SIZE的傷害加權\
-		\n 啟動語: db 數值\
-		\n \
-		\n == coc創角功能 ==\
-		\n 啟動語: coc創角\
-		\n \
-		\n == 其他功能 ==\
-		\n 以下為娛樂功能\
-		\n 字句中有關鍵字就會啟動\
-		\n \
-		\n 1.選擇功能: choice/隨機/選項/幫我選\
-		\n 	範例: 隨機選顏色 紅 黃 藍\
-		\n 2.隨機排序: 排序\
-		\n 	範例: 吃東西排序 羊肉 牛肉 豬肉\
-		\n 3.占卜功能: 運氣/運勢\
-		\n 	範例: 今日運勢\
-		\n 4.死亡FLAG: 立Flag/死亡flag\
+    return '【擲骰BOT】 貓咪&小伙伴‧改\
+		\n 支援角卡、房間、KP、暗骰等功能\
+		\n 使用說明:\
+		\n https://github.com/sleepingcat103/RoboYabaso/blob/master/README.txt\
 		';
 }
 
@@ -1223,7 +1187,7 @@ function Meow() {
     let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
-喵屁喵', '喵三小?有病?'];
+喵喵!', '喵喵....喵?', '喵!!!', '喵~喵~', '喵屁喵', '喵三小?', '玩不膩喵?'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
 
@@ -1231,6 +1195,6 @@ function Cat() {
     let rplyArr = ['喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
-衝三小', '87玩夠沒', '生科ㄎㄎ'];
+喵喵!', '喵喵....喵?', '喵!!!', '喵~喵~', '衝三小', '87玩夠沒', '生ㄎㄎㄎㄎㄎㄎ'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
