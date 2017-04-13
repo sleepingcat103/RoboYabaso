@@ -39,13 +39,6 @@ app.get('/', function (req, res) {
 app.post('/', jsonParser, function (req, res) {
     event = req.body.events[0];
     let type = event.type;
-    let msgType = event.message.type;
-    let msg = event.message.text;
-    let rplyToken = event.replyToken;
-
-    let rplyVal = null;
-
-    var roomMID = 'first';
 	
     if(type == 'leave'){
 	if(TRPG.hasOwnProperty(event.source.groupId)){
@@ -54,6 +47,15 @@ app.post('/', jsonParser, function (req, res) {
 	    console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
 	}
     }
+	
+    let msgType = event.message.type;
+    let msg = event.message.text;
+    let rplyToken = event.replyToken;
+
+    let rplyVal = null;
+
+    var roomMID = 'first';
+	
     // 先找是否已經進入房間
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
