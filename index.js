@@ -47,7 +47,7 @@ app.post('/', jsonParser, function (req, res) {
 
     var roomMID = 'first';
 	
-    if(event.type == 'leave'){
+    if(type == 'leave'){
 	if(TRPG.hasOwnProperty(event.source.groupId)){
 	    console.log('delete '+event.source.groupId);
     	    eval('delete TRPG['+event.source.groupId+']');
