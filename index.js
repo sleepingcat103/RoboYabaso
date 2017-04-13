@@ -43,7 +43,7 @@ app.post('/', jsonParser, function (req, res) {
     if(type == 'leave'){
 	if(TRPG.hasOwnProperty(event.source.groupId)){
 	    console.log('delete '+event.source.groupId);
-    	    eval('delete TRPG['+event.source.groupId+']');
+    	    eval('delete TRPG.'+event.source.groupId);
 	    console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
 	}
     }
