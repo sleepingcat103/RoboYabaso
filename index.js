@@ -47,6 +47,13 @@ app.post('/', jsonParser, function (req, res) {
 
     var roomMID = 'first';
 	
+    if(event.type == 'leave'){
+	if(TRPG.hasOwnProperty(event.source.groupId)){
+	    console.log('delete '+event.source.groupId);
+    	    eval('delete TRPG['+event.source.groupId+']');
+	    console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
+	}
+    }
     // 先找是否已經進入房間
     if(event.source.type == 'user'){
 	for (var p in userToRoom) {
