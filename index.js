@@ -46,11 +46,11 @@ app.post('/', jsonParser, function (req, res) {
     	    eval('delete TRPG.'+event.source.groupId);
 	    //console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
 	}
-    }else{
-        let msgType = event.message.type;
-        let msg = event.message.text;
-        let rplyToken = event.replyToken;
     }
+	
+    let msgType = event.message.type;
+    let msg = event.message.text;
+    let rplyToken = event.replyToken;
 
     let rplyVal = null;
 
