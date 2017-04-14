@@ -492,7 +492,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	    return '必須是群組才能開房間唷 <3 ';
 	}
     }
-    else if(trigger == 'leaveroom' || type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)){
+    else if(trigger == 'leaveroom' || (type == 'leave' && TRPG.hasOwnProperty(event.source.groupId))){
     	eval('delete TRPG.'+event.source.groupId);
 	console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
 	return '已經刪除房間資訊了喵~';
