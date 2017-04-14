@@ -496,6 +496,11 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	    return '必須是群組才能開房間唷 <3 ';
 	}
     }
+    else if(trigger == 'leave' || type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)){
+    	eval('delete TRPG.'+event.source.groupId);
+	console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
+	return '已刪除房間資訊';
+    }
     else if(trigger == 'getuid'){
 	if(event.source.type == 'user' )
 	   return '你的uid是:' + event.source.userId;
