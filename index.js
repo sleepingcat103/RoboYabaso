@@ -91,16 +91,7 @@ app.post('/', jsonParser, function (req, res) {
     }
 	
     if (rplyVal) {
-        if (outType == 'kp_ccd') {
-            replyMsgToLine('text', rplyToken, rplyVal);
-            replyMsgToLine('push', TRPG[roomMID].GP_MID, '剛剛好像發生了什麼事');
-        }else if(outType == 'pl_ccd') {
-            replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
-        }else if(outType == 'gp_ccd') {
-            replyMsgToLine('text', rplyToken, '成功執行暗骰');
-            replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
-        }else if (outType == 'ccd') {
+        if (outType == 'ccd') {
             replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
         }else {
             replyMsgToLine(outType, rplyToken, rplyVal);
@@ -431,8 +422,13 @@ function parseInput(roomMID,rplyToken, inputStr) {
         return ccb(roomMID,mainMsg[1], mainMsg[2]);
     }   //ccd指令開始於此
     else if (trigger == 'ccd') {
-	if(TRPG[roomMID].KP_MID != ''){ //
-           return ccd(roomMID,mainMsg[1], mainMsg[2]);
+	for (i = 0; i < TRPG[roomMID].players.length; i++) {
+	    if (mainMsg[1].toString() == TRPG[roomMID].players[i].getVal('name'))
+	    	return CharacterControll( roomMID, mainMsg[1], mainMsg[0], mainMsg[2],mainMsg[3]);
+	}
+	if(TRPG[roomMID].KP_MID != ''){
+	   replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(str3,str1,str2));
+           return '成功執行暗骰';
 	}else if(roomMID == 'first'){ // 房間還沒創或是沒進入房間
 	   return '你還沒進入房間';
 	}else{
@@ -576,14 +572,12 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
 	    else if (str1 == 'ccd'){
 		if(TRPG[roomMID].KP_MID != ''){
 		   if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
-			outType = 'kp_ccd';
+			replyMsgToLine('push', TRPG[roomMID].GP_MID, '剛剛好像發生了什麼事');
 			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
-		   }else if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid')){
-			outType = 'pl_ccd';
-			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
-		   }else if(event.source.type == 'group'){
-			outType = 'gp_ccd';
-			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
+		   }else if(event.source.type == 'group' ||
+			   (event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid'))){
+			replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2));
+			return '成功執行暗骰';
 		   }
 		   return Meow();
 		}else{
@@ -683,31 +677,11 @@ function ccb( roomMID, chack, text) {
     }
 }
 
-function ccd( roomMID, chack, text) {
-    var val_status = chack;
-    for (i = 0; i < TRPG[roomMID].players.length; i++) {
-        if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
-	    if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
-		outType = 'kp_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
-	    }else if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid')){
-		outType = 'pl_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
-	    }else if(event.source.type == 'group'){
-		outType = 'gp_ccd';
-		return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(text), text);
-	    }else if(event.source.type == 'user' && event.source.userId != TRPG[roomMID].players[i].getVal('uid')){
-		outType = 'text';
-		replyMsgToLine('push', TRPG[roomMID].KP_MID , userToRoom[event.source.userId].displayName + '再亂用別人角色的CCD!!');
-		return '這隻角色不是你的唷 !!! ';
-	    }
-	    return Meow();
-        }
-    }
-    if (val_status <= 99) {
-        return coc6(val_status, text);
+function ccd(chack, text, who) {
+    if (chack <= 99) {
+	return ccd_dice(who,chack,text)
     } else {
-        return '**Error**\n找不到該角色或者輸入錯誤';
+        return '**Error**\n輸入錯誤';
     }
 }
 
