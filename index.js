@@ -427,7 +427,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	    	return CharacterControll( roomMID, mainMsg[1], mainMsg[0], mainMsg[2],mainMsg[3]);
 	}
 	if(TRPG[roomMID].KP_MID != ''){
-	   replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(mainMsg[1],mainMsg[2],mainMsg[3]));
+	   replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(mainMsg[3],mainMsg[1],mainMsg[2]));
            return '成功執行暗骰';
 	}else if(roomMID == 'first'){ // 房間還沒創或是沒進入房間
 	   return '你還沒進入房間';
