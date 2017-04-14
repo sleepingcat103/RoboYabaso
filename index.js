@@ -436,7 +436,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	}else if(roomMID == 'first'){ // 房間還沒創或是沒進入房間
 	   return '你還沒進入房間';
 	}else{
-	   return '現在房間沒有KP，你想傳給誰呢 <3 ';
+	   return '現在房間沒有KP，你想傳給誰喵?';
 	}
     }    //房間相關指令開始於此
     else if (trigger == 'getkp') {
