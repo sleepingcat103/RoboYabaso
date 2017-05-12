@@ -278,8 +278,7 @@ function createChar(p_name,p_uid){
 	return result;
      };
      player.show = function() {
-	var temp = parseInt(this.getVal('con'))+parseInt(this.getVal('siz'));
-	var MaxHP = temp%2==0 ? temp/2 : temp/2+0.5;
+	var MaxHP = Math.round(parseInt(this.getVal('con')) + parseInt(this.getVal('siz')) / 2);
 	var MaxMP = this.getVal('pow');
 	var MaxSan = this.getVal('san');
 	var tempstr = '+=====================+\n';
