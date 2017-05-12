@@ -278,6 +278,9 @@ function createChar(p_name,p_uid){
 	return result;
      };
      player.show = function() {
+	var MaxHP = (this.getVal('con')+0+this.getVal('siz'))%2==0 ? (this.getVal('con')+0+this.getVal('siz'))/2 : (this.getVal('con')+0+this.getVal('siz'))/2+1;
+	var MaxMP = this.getVal('pow');
+	var MaxSan = this.getVal('san');
 	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
 	tempstr += this.getVal('職業') + '\n';
@@ -285,7 +288,9 @@ function createChar(p_name,p_uid){
 	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),3) + padRight('APP:',4) + padRight(this.getVal('app'),3) + padRight('INT:',4) + padRight(this.getVal('int'),3) + '\n';
 	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),3) + padRight('EDU:',4) + padRight(this.getVal('edu'),3) + padRight('DB:',4)  + padRight(this.getVal('db'),3) + '\n';
 	tempstr += '+=====================+\n';
-	tempstr += padRight('HP:',4) + padRight(this.getVal('hp'),3)   + padRight('MP:',4)  + padRight(this.getVal('mp'),3)  + padRight('SAN:',4) + padRight(this.getVal('san'),3) + '\n';
+	tempstr += padRight('HP:',4)  + padRight(this.getVal('hp'),3)  + '/' + MaxHP + '\n';
+	tempstr += padRight('MP:',4)  + padRight(this.getVal('mp'),3)  + '/' + MaxMP + '\n';
+	tempstr += padRight('SAN:',4) + padRight(this.getVal('san'),3) + '/' + MaxSan + '\n';
 	tempstr += padRight('STATUS:',8) + this.getVal('status') + '\n';
 	tempstr += padRight('ITEM:',8)  + this.getVal('item') + '\n';
 	tempstr += '+=====================+';
