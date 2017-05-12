@@ -248,16 +248,18 @@ function createChar(p_name,p_uid){
 	return eval('this.status.'+p_sta);
      };
      player.setVal = function(p_sta,p_val){
-	if(isNaN(Number(p_val))){
-	   eval('this.status.'+p_sta+' = \''+p_val+'\'');
+	if(p_sta == 'name'){
+	       this.status.name = p_val;
+	}else if(isNaN(Number(p_val))){
+	    eval('this.status.'+p_sta+' = \''+p_val+'\'');
 	}else{
-	   if(Number(p_val)<0){
+	    if(Number(p_val)<0){
 		eval('this.status.'+p_sta+' = \''+0+'\'');
-	   }else if(Number(p_val)>99){
+	    }else if(Number(p_val)>99){
 		eval('this.status.'+p_sta+' = \''+99+'\'');
-	   }else{
+	    }else{
 		eval('this.status.'+p_sta+' = \''+p_val+'\'');
-	   }
+	    }
 	}
      };
      player.delVal = function(p_sta){
