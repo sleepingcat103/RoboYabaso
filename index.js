@@ -280,7 +280,7 @@ function createChar(p_name,p_uid){
      player.show = function() {
 	var MaxHP = Math.round((parseInt(this.getVal('con')) + parseInt(this.getVal('siz'))) / 2);
 	var MaxMP = this.getVal('pow');
-	var MaxSan = this.getVal('san');
+	var MaxSan = 99-parseInt(this.getVal('克蘇魯神話'));
 	var tempstr = '+=====================+\n';
 	tempstr += this.getVal('name') + '\n';
 	tempstr += this.getVal('職業') + '\n';
