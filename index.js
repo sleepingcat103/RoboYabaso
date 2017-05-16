@@ -248,7 +248,7 @@ function createChar(p_name,p_uid){
 	return eval('this.status.'+p_sta);
      };
      player.setVal = function(p_sta,p_val){
-	if(p_sta == 'name'){
+	if(p_sta == 'name' || p_sta == '職業'){
 	       this.status.name = p_val;
 	}else if(isNaN(Number(p_val))){
 	    eval('this.status.'+p_sta+' = \''+p_val+'\'');
