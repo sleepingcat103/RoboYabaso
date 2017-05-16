@@ -132,7 +132,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
                   text: rplyVal
               }
             ]
-        }
+        }//
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
