@@ -133,33 +133,6 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
               }
             ]
         }//
-    } else if (outType == 'template') {
-	v_path = '/v2/bot/message/reply';
-        rplyObj = {
-	    replyToken: rplyToken,
-	    messages: [
-		{
-		  "type": "template",
-		  "altText": "this is a buttons template",
-		  "template": {
-		      "type": "buttons",
-		      "text": "Please select",
-		      "actions": [
-			  {
-			    "type": "message",
-			    "label": "test 1d6",
-			    "text": "zz"
-			  },
-			  {
-			    "type": "message",
-			    "label": "message",
-			    "text": "return message"
-			  }
-		      ]
-		  }
-		}
-            ]
-        }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
@@ -565,7 +538,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
     }else if(trigger == 'template'){
-	replyMsgToLine('template', rplyToken,'');    
+	//replyMsgToLine('template', rplyToken,'');    
     }
 }
 
