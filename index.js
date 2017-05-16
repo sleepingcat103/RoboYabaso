@@ -132,7 +132,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
                   text: rplyVal
               }
             ]
-        }//
+        }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
@@ -537,6 +537,8 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	       userToRoom[event.source.userId].userId + '\n'+
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
+    }else if(trigger == 'template'){
+	//replyMsgToLine('template', rplyToken,'');    
     }
 }
 
