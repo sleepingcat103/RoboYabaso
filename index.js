@@ -133,33 +133,6 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
               }
             ]
         }
-    } else if (outType == 'template') {
-	v_path = '/v2/bot/message/reply';
-        rplyObj = {
-	    replyToken: rplyToken,
-	    messages: [
-		{
-		  "type": "template",
-		  "altText": "this is a buttons template",
-		  "template": {
-		      "type": "buttons",
-		      "text": "Please select",
-		      "actions": [
-			  {
-			    "type": "message",
-			    "label": "test 1d6",
-			    "data": RollDice("3d6"),
-			  },
-			  {
-			    "type": "message",
-			    "label": "message",
-			    "data": "return message"
-			  }
-		      ]
-		  }
-		}
-            ]
-        }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
