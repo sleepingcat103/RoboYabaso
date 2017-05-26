@@ -9,7 +9,7 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
-var timerFlag = 'on';
+var timerFlag = 'off';
 var timerID;
 
 // 房間入口
@@ -551,15 +551,15 @@ function parseInput(roomMID,rplyToken, inputStr) {
 ////////////////////////////////////////
 
 function timer(action){
-    if (timerFlag == 'on'){
-	if(action == 'on'){
+    if (action == 'on'){
+	if(timerFlag == 'on'){
 	    return 'timer working';
 	}else{
 	    timerID = setInterval(function(){console.log('timer log')},60000);
 	    timerFlag = 'on';
 	    return 'timer on';
 	}
-    }else if(timerFlag == 'off'){
+    }else if(action == 'off'){
 	clearInterval(timerID);
 	timerFlag = 'off';
 	return 'timer off';
