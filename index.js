@@ -537,13 +537,27 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	       userToRoom[event.source.userId].userId + '\n'+
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
-    }else if(trigger == 'template'){
+    }else if(trigger == 'timer'){
+	timer(mainMsg[1]);
+	    
+	//else if(trigger == 'template'){
 	//replyMsgToLine('template', rplyToken,'');    
+    }
+}
+////////////////////////////////////////
+//////////////// 定時動作 test
+////////////////////////////////////////
+
+function timer(period){
+    if (isNaN(Number(period))){
+    	setInterval(function(){
+	    console.log('timer log')
+    	},period);	
     }
 }
 
 ////////////////////////////////////////
-//////////////// 角色卡 測試功能
+//////////////// 角色卡
 ////////////////////////////////////////
 
 function CharacterControll(roomMID,trigger, str1, str2, str3) {
