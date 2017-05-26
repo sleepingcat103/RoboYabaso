@@ -9,6 +9,8 @@ var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
+var timerFlag = 'on';
+var timerID;
 
 // 房間入口
 // key:value
@@ -538,7 +540,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
     }else if(trigger == 'timer'){
-	timer(mainMsg[1]);
+	return timer(mainMsg[1]);
 	    
 	//else if(trigger == 'template'){
 	//replyMsgToLine('template', rplyToken,'');    
@@ -548,11 +550,21 @@ function parseInput(roomMID,rplyToken, inputStr) {
 //////////////// 定時動作 test
 ////////////////////////////////////////
 
-function timer(period){
-    if (isNaN(Number(period))){
-    	setInterval(function(){
-	    console.log('timer log')
-    	},period);	
+function timer(action){
+    if (timerFlag == 'on'){
+	if(action == 'on'){
+	    return 'timer working';
+	}else{
+	    timerID = setInterval(function(){console.log('timer log')},60000);
+	    timerFlag = 'on';
+	    return 'timer on';
+	}
+    }else if(timerFlag == 'off'){
+	clearInterval(timerID);
+	timerFlag = 'off';
+	return 'timer off';
+    }else{
+	return 'timer ' + timerFlag;    
     }
 }
 
