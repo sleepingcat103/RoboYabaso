@@ -518,11 +518,17 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	else
 	   return eval('\'群組的uid是: \' + event.source.+'+event.source.type+'Id');
     }
-        //生科火大圖指令開始於此
+        //生科火大圖指令開始於此 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9
     else if (trigger == '生科') {
         outType = 'image';
         return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
     }
+	
+    else if (trigger == '狂' || trigger == '風兒') {
+        outType = 'image';
+        return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
+    }
+	
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
         return choice(inputStr, mainMsg);
