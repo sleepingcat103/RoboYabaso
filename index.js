@@ -26,7 +26,7 @@ TRPG.createRoom = function(p_mid,room_Obj){
     eval('TRPG.'+p_mid+' = room_Obj');
 }
 
-// 紀錄使用者的資訊，以及進入的房間
+// 紀錄使用者的資訊，以及進入的房間 
 // key:value
 // UserMid: {GP_MID,displayName,userId,pictureUrl,statusMessage}
 var userToRoom={};
