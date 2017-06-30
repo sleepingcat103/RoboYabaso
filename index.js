@@ -524,7 +524,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
         return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
     }
 	
-    else if (trigger == '狂' || trigger == '風兒') {
+    else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還'|| trigger == '屁孩' || trigger == '碩文' || trigger == '碩彣') {
         outType = 'image';
         return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F';
     }
