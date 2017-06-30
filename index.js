@@ -526,7 +526,16 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	
     else if (trigger == '狂' || trigger == '風兒') {
         outType = 'image';
-        return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
+        return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F';
+    }
+    else if (trigger == '振宇' || trigger == '王振宇') {
+	let rplyArr = ['\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90','\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
+	outType = 'image';
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        
+        //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
     }
 	
         //choice 指令開始於此
