@@ -525,8 +525,12 @@ function parseInput(roomMID,rplyToken, inputStr) {
     }
 	
     else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還'|| trigger == '屁孩' || trigger == '碩文' || trigger == '碩彣') {
-        outType = 'image';
-        return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F';
+        let rplyArr = ['\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F','\
+https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg','\
+https://drive.google.com/file/d/0B6LHiMjB-bpVVzdhZ2RmM3lGS0U/view?usp=sharing'];
+	outType = 'image';
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
     else if (trigger == '振宇' || trigger == '王振宇') {
 	let rplyArr = ['\
