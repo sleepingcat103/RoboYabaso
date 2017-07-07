@@ -541,6 +541,13 @@ https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_505087041
         
         //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
     }
+	else if (trigger == 'ㄇㄏ' || trigger == '名鴻') {
+	let rplyArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg','\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
+	outType = 'image';
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    }
 	
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
