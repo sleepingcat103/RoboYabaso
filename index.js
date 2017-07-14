@@ -1255,6 +1255,6 @@ function Cat() {
 }
 
 function Bro() {
-    let rplyArr = ['大哥是對的!!','叫本老爺有何貴幹?','還不奉上貓罐罐','大哥你叫的?'];
+    let rplyArr = ['大哥是對的!!','叫本大爺有何貴幹?','幹嘛? 說好的貓罐罐呢?','大哥你叫的?'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
