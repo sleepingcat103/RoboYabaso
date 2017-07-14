@@ -532,7 +532,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
 	outType = 'image';
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
-    else if (trigger == '振宇' || trigger == '王振宇') {
+    else if (trigger == '振宇' || trigger == '王振宇' || trigger = '@王振宇') {
 	let rplyArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90','\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
