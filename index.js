@@ -424,6 +424,9 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'help' || trigger == '幫助') {
         return Help();
     }
+    else if (trigger.match(/大哥/) != null) {
+        return Bro();
+    }
     else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
         return SortIt(inputStr, mainMsg);
     }   //ccb指令開始於此
@@ -1248,5 +1251,10 @@ function Cat() {
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵!', '喵喵....喵?', '喵!!!', '喵~喵~', '衝三小', '87玩夠沒', '生ㄎㄎㄎㄎㄎㄎ'];
+    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+}
+
+function Bro() {
+    let rplyArr = ['大哥是對的!!','叫本老爺有何貴幹?','還不奉上貓罐罐','大哥你叫的?'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
