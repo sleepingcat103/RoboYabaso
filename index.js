@@ -424,7 +424,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
     else if (trigger == 'help' || trigger == '幫助') {
         return Help();
     }
-    else if (trigger.match(/大哥/) != null) {
+    else if (trigger == '大哥') {
         return Bro();
     }
     else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
