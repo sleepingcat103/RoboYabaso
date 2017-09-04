@@ -559,6 +559,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-3.jpg'];
 	outType = 'image';
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
+        else if (trigger == '臭貓') {
+        let rplyArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
+	outType = 'image';
+	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    }
 	
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
