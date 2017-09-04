@@ -559,11 +559,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-3.jpg'];
 	outType = 'image';
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
-        else if (trigger == '翊宸' || trigger == '方翊宸' || trigger == '方董') {
+    else if (trigger == '翊宸' || trigger == '方翊宸' || trigger == '方董') {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
-	outType = 'image';
-	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
 	
         //choice 指令開始於此
