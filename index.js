@@ -555,7 +555,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg','\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg','\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-3.jpg'];
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'image';
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
