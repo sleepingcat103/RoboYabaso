@@ -565,6 +565,10 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
+    else if (trigger.match(/手手/) != null) {
+	outType = 'image';
+        return 'https://imgur.dcard.tw/0cE3QNA.jpg';
+    }
 	
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
