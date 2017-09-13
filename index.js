@@ -412,6 +412,14 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	    return '你想幹嘛啦~~~';
 	}
     }
+	
+    else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董') {
+        let rplyArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    }
+	
     else if (trigger == '貓咪') {
         return MeowHelp();
     }
@@ -558,12 +566,6 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg','\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'image';
 	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    }
-    else if (trigger == '翊宸' || trigger == '方翊宸' || trigger == '方董') {
-        let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
-        outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
     else if (trigger.match(/手手/) != null) {
 	outType = 'image';
