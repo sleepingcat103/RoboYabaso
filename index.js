@@ -413,7 +413,7 @@ function parseInput(roomMID,rplyToken, inputStr) {
 	}
     }
 	
-    else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董') {
+    else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董' || trigger == '@方翊宸') {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
         outType = 'image';
