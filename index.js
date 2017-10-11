@@ -600,8 +600,6 @@ function JP() {
     https.get(
         'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', 
         function(response) {
-		
-		
 	    //response.setEncoding('utf');
             response.on('data', function (body) {
                 /*var xmlDoc = $.parseXML(body);
@@ -613,15 +611,15 @@ function JP() {
 		var $ = cheerio.load(body);
 		let result = [];
 		let fax = $("#inteTable1 > tbody > .tableContent-light");
+		console.log(fax.length);
 		for(let i=0;i<fax.length;i++) {
-			let str = "目前" + fax[i].children["0"].innerText + " 即期匯率為 " + fax[i].children["0"].innerText ;
-			console.log(str);
+			//let str = "目前" + fax[i].children["0"].innerText + " 即期匯率為 " + fax[i].children["0"].innerText ;
+			console.log(fax[i].children);
 			//if(fax[i].children[0].innerText == "日圓(JPY)"){
-				result.push( str );
-				//break;
+			//result.push( str );
+			//break;
 			//}
 		}
- 		console.log(JSON.stringify(result));
             });
 			
 			
