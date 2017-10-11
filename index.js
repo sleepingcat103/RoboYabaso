@@ -151,8 +151,6 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
     let rplyJson = JSON.stringify(rplyObj);
     var options = setOptions();
     var request = https.request(options, function (response) {
-        console.log('Status: ' + response.statusCode);
-        console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
             console.log(body);
@@ -604,7 +602,10 @@ function JP() {
     }, function(response) {
         //var $ = https.cheerio.load(body);
 	//var target = $(".even");
-	console.log(response);
+        response.setEncoding('utf8');
+        response.on('data', function (body) {
+            console.log(body);
+        });
   });
 }
 
