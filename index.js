@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-var crawler = require("request");
+//var crawler = require("request");
 var cheerio = require("cheerio");
 var app = express();
  
@@ -597,12 +597,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
+  /*
   crawler({
     url: "www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
     method: "GET"
-  }, function(e,r,b) { /* Callback 函式 */
-    /* e: 錯誤代碼 */
-    /* b: 傳回的資料內容 */
+  }, function(e,r,b) { 
     if(e || !b) { return; }
     var $ = cheerio.load(b);
     var result = [];
@@ -614,8 +613,8 @@ function JP() {
       }
     }
     console.log(JSON.stringify(result));
-  });
-/*
+  });*/
+
     https.get(
         'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', 
         function(response) {
@@ -624,13 +623,23 @@ function JP() {
 	
             response.setEncoding('utf8');
             response.on('data', function (body) {
-                console.log(body);
+                //console.log(body);
+		    var $ = cheerio.load(body);
+		    var result = [];
+		    var fax = $("#inteTable1 > tbody > .tableContent-light");
+		    for(var i=0;i<fax.length;i++) {
+		      if(fax[i].children[0].innerText == "日圓(JPY)"){
+			result.push( "目前" + fax[i].children[0].innerText + " 即期匯率為 " + fax[i].children[2].innerText );
+			break;
+		      }
+		    }
+		    console.log(JSON.stringify(result));
             });
         }).on('error', function (e) {
             console.log('Request error: ' + e.message);
         }
     );
-    */
+    
 }
 
 ////////////////////////////////////////
