@@ -601,7 +601,7 @@ function JP() {
         function(response) {
 		
 		
-			response.setEncoding('utf');
+	    //response.setEncoding('utf');
             response.on('data', function (body) {
                 var xmlDoc = $.parseXML(body);
 		console.log('parseXML');
