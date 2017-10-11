@@ -602,9 +602,9 @@ function JP() {
         //var $ = https.cheerio.load(body);
 	//var target = $(".even");
 	
-	response.on('error', (e) => {
+	response.on('error', function(e){
             console.error(e);
-	    return;
+	    return e;
         });
         response.setEncoding('utf8');
         response.on('data', function (body) {
