@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-var cheerio = require("cheerio");
 var app = express();
  
 var jsonParser = bodyParser.json();
@@ -605,7 +604,7 @@ function JP() {
     if (error || !body) {
       return;
     }else{
-        var $ = cheerio.load(body);
+        var $ = https.cheerio.load(body);
 	var target = $(".even");
 	console.log(target);
     }
