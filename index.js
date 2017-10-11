@@ -613,11 +613,11 @@ function JP() {
 		var $ = cheerio.load(body);
 		var result = [];
 		var fax = $("#inteTable1 > tbody > .tableContent-light");
-		console.log(fax);
-		console.log(JSON.stringify(fax));
 		for(var i=0;i<fax.length;i++) {
+			let str = "目前" + fax[i][0].innerText + " 即期匯率為 " + fax[i][2].innerText ;
+			console.log(str);
 			//if(fax[i].children[0].innerText == "日圓(JPY)"){
-				result.push( "目前" + fax[i].children[0].innerText + " 即期匯率為 " + fax[i].children[2].innerText );
+				result.push( str );
 				//break;
 			//}
 		}
