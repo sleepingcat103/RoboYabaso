@@ -603,8 +603,11 @@ function JP() {
 		
 			response.setEncoding('utf');
             response.on('data', function (body) {
-			
-				$table = $($.parseXML(body)).find("table");
+                var xmlDoc = $.parseXML(body);
+				console.log('parseXML');
+				var $xml = $(xmlDoc),
+				console.log('parseXML2');
+				var $table = $xml.find("table");
 				console.log($table.text());
             });
 			
