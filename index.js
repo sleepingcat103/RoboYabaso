@@ -1,5 +1,3 @@
-require("webduino-js");
-require("webduino-blockly");
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
