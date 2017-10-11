@@ -588,34 +588,29 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	       userToRoom[event.source.userId].userId + '\n'+
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
-    }else if(trigger == 'timer'){
-	return timer(mainMsg[1]);
-	    
-	//else if(trigger == 'template'){
-	//replyMsgToLine('template', rplyToken,'');    
+    }else if(trigger == '!日幣' || trigger == '！日幣' || trigger == '！jp' || trigger == '!jp'){
+	return JP();
     }
 }
 ////////////////////////////////////////
 //////////////// 定時動作 test
 ////////////////////////////////////////
 
-function timer(action){
-    if (action == 'on'){
-	if(timerFlag == 'on'){
-	    return 'timer working';
-	}else{
-	    timerID = setInterval(function(){console.log('timer log')},60000);
-	    timerFlag = 'on';
-	    return 'timer on';
-	}
-    }else if(action == 'off'){
-	clearInterval(timerID);
-	timerFlag = 'off';
-	return 'timer off';
-    }else{
-	return 'timer ' + timerFlag;    
-    }
-}
+function JP() {
+    request({
+        url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+        method: "GET"
+    }, function(error, response, body) {
+        if (error || !body) {
+            return;
+        }else{
+            var $ = cheerio.load(body);
+            var target = $(".even");
+            //console.log(target[15].children[0].data);
+            console.log(target);
+        }
+    });
+};
 
 ////////////////////////////////////////
 //////////////// 角色卡
