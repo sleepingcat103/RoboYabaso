@@ -597,9 +597,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 
 function JP() {
 
-    var request = https.request(
-	new URL('https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates'), 
-	function(response) {
+    var options = new URL('https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates');
+    var request = https.request(options, function(response) {
             //var $ = https.cheerio.load(body);
             //var target = $(".even");
 	
@@ -607,8 +606,7 @@ function JP() {
             response.on('data', function (body) {
                 console.log(body);
             });
-        }
-    );
+        });
     request.on('error', function (e) {
         console.log('Request error: ' + e.message);
     })
