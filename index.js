@@ -597,21 +597,30 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-  request({
-    url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
-    method: "GET"
-  }, function(error, response, body) {
-    if (error || !body) {
-	    
-      console.log('fail');
-      console.log(error);
-      return;
-    } else {
-      var $ = cheerio.load(body);
-      var target = $(".even");
-      console.log(target);
+    var http_request = false;
+    if (window.XMLHttpRequest) {
+	http_request = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+	try {
+	    http_request = new ActiveXObject("Msxm12.XMLHTTP");
+	} catch (e) {
+	    try {
+		http_request = new ActiveXObject("Microsoft.XMLHTTP");
+	    } catch (e) { }
+	}
     }
-  });
+    if (!http_request) {
+	return "Cannot create XMLHTTP instance";
+    }
+    http_request.open('GET', 'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', false);
+    http_request.send(null);
+
+    if (http_request.status = 200) {
+	console.log('success');
+	return http_request.responseText;
+    } else {
+	return 'Server response error: ' + http_request.status;
+    }
 }
 
 ////////////////////////////////////////
