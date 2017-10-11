@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var request = require("request");
+var cheerio = require("cheerio");
 var app = express();
  
 var jsonParser = bodyParser.json();
@@ -597,31 +599,19 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-    var http_request = false;
-    if (window.XMLHttpRequest) {
-	http_request = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-	try {
-	    http_request = new ActiveXObject("Msxm12.XMLHTTP");
-	} catch (e) {
-	    try {
-		http_request = new ActiveXObject("Microsoft.XMLHTTP");
-	    } catch (e) { }
-	}
+  request({
+    url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+    method: "GET"
+  }, function(error, response, body) {
+    if (error || !body) {
+      return;
+    }else{
+        var $ = cheerio.load(body);
+	var target = $(".even");
+	console.log(target);
     }
-    if (!http_request) {
-	return "Cannot create XMLHTTP instance";
-    }
-    http_request.open('GET', 'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', false);
-    http_request.send(null);
-
-    if (http_request.status = 200) {
-	console.log('success');
-	return http_request.responseText;
-    } else {
-	return 'Server response error: ' + http_request.status;
-    }
-}
+  });
+};
 
 ////////////////////////////////////////
 //////////////// 角色卡
