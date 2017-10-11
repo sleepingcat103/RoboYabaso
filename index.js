@@ -1,8 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-//var crawler = require("request");
-var cheerio = require("cheerio");
 var app = express();
  
 var jsonParser = bodyParser.json();
@@ -535,7 +533,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
         return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
     }
 	
-    else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還'|| trigger == '屁孩' || trigger == '碩文' || trigger == '碩彣' || trigger == '@碩文') {
+    else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還'|| trigger == '屁孩' || trigger == '碩文' || trigger == '碩?' || trigger == '@碩文') {
         let rplyArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F','\
 https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg','\
@@ -597,44 +595,20 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-  /*
-  crawler({
-    url: "www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
-    method: "GET"
-  }, function(e,r,b) { 
-    if(e || !b) { return; }
-    var $ = cheerio.load(b);
-    var result = [];
-    var fax = $("#inteTable1 > tbody > .tableContent-light");
-    for(var i=0;i<fax.length;i++) {
-      if(fax[i].children[0].innerText == "日圓(JPY)"){
-      	result.push( "目前" + fax[i].children[0].innerText + " 即期匯率為 " + fax[i].children[2].innerText );
-	break;
-      }
-    }
-    console.log(JSON.stringify(result));
-  });*/
 
     https.get(
         'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', 
         function(response) {
-            //var $ = https.cheerio.load(body);
-            //var target = $(".even");
-	
-            response.setEncoding('utf8');
+		
+		
+			response.setEncoding('utf');
             response.on('data', function (body) {
-                //console.log(body);
-		    var $ = cheerio.load(body);
-		    var result = [];
-		    var fax = $("#inteTable1 > tbody > .tableContent-light");
-		    for(var i=0;i<fax.length;i++) {
-		      if(fax[i].children[0].innerText == "日圓(JPY)"){
-			result.push( "目前" + fax[i].children[0].innerText + " 即期匯率為 " + fax[i].children[2].innerText );
-			break;
-		      }
-		    }
-		    console.log(JSON.stringify(result));
+			
+				$table = $($.parseXML(body)).find("table");
+				console.log($table.text());
             });
+			
+			
         }).on('error', function (e) {
             console.log('Request error: ' + e.message);
         }
