@@ -597,8 +597,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-    crawler();
-    request({
+    crawler({
     url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
     method: "GET"
   }, function(e,r,b) {
@@ -611,7 +610,7 @@ function JP() {
 	console.log(fax[i].children);
       //result.push($(fax[i]).text());
     }
-    fs.writeFileSync("result.json", JSON.stringify(result));
+    //fs.writeFileSync("result.json", JSON.stringify(result));
   });
 	/*
     https.get(
