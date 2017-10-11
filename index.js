@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var crawler = require("request");
 var cheerio = require("cheerio");
 var app = express();
  
@@ -596,18 +597,28 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-
+    crawler();
+    request({
+    url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+    method: "GET"
+  }, function(e,r,b) {
+    if(e || !b) { return; }
+    var $ = cheerio.load(b);
+    var result = [];
+    var fax = $("#inteTable1 > tbody > .tableContent-light");
+    console.log(fax.length);
+    for(var i=0;i<fax.length;i++) {
+	console.log(fax[i].children);
+      //result.push($(fax[i]).text());
+    }
+    fs.writeFileSync("result.json", JSON.stringify(result));
+  });
+	/*
     https.get(
         'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', 
         function(response) {
 	    //response.setEncoding('utf');
             response.on('data', function (body) {
-                /*var xmlDoc = $.parseXML(body);
-		console.log('parseXML');
-		var $xml = $(xmlDoc);
-		console.log('parseXML2');
-		var $table = $xml.find("table");
-		console.log($table.text());*/
 		var $ = cheerio.load(body);
 		let result = [];
 		let fax = $("#inteTable1 > tbody > .tableContent-light");
@@ -621,12 +632,13 @@ function JP() {
 			//}
 		}
             });
-			
+		
 			
         }).on('error', function (e) {
             console.log('Request error: ' + e.message);
         }
     );
+    */
     
 }
 
