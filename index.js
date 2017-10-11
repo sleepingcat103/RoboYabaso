@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var cheerio = require("cheerio");
 var app = express();
  
 var jsonParser = bodyParser.json();
@@ -603,12 +604,22 @@ function JP() {
 		
 	    //response.setEncoding('utf');
             response.on('data', function (body) {
-                var xmlDoc = $.parseXML(body);
+                /*var xmlDoc = $.parseXML(body);
 		console.log('parseXML');
 		var $xml = $(xmlDoc);
 		console.log('parseXML2');
 		var $table = $xml.find("table");
-		console.log($table.text());
+		console.log($table.text());*/
+		var $ = cheerio.load(body);
+		var result = [];
+		var fax = $("#inteTable1 > tbody > .tableContent-light");
+		for(var i=0;i<fax.length;i++) {
+			if(fax[i].children[0].innerText == "日圓(JPY)"){
+				result.push( "目前" + fax[i].children[0].innerText + " 即期匯率為 " + fax[i].children[2].innerText );
+				break;
+			}
+		}
+ 		console.log(JSON.stringify(result));
             });
 			
 			
