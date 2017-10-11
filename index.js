@@ -593,24 +593,26 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     }
 }
 ////////////////////////////////////////
-//////////////// 定時動作 test
+//////////////// jp
 ////////////////////////////////////////
 
 function JP() {
-    request({
-        url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
-        method: "GET"
-    }, function(error, response, body) {
-        if (error || !body) {
-            return;
-        }else{
-            var $ = cheerio.load(body);
-            var target = $(".even");
-            //console.log(target[15].children[0].data);
-            console.log(target);
-        }
-    });
-};
+  request({
+    url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+    method: "GET"
+  }, function(error, response, body) {
+    if (error || !body) {
+	    
+      console.log('fail');
+      console.log(error);
+      return;
+    } else {
+      var $ = cheerio.load(body);
+      var target = $(".even");
+      console.log(target);
+    }
+  });
+}
 
 ////////////////////////////////////////
 //////////////// 角色卡
