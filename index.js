@@ -600,14 +600,10 @@ function JP() {
     var request = https.request({
         url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
         method: "GET"
-    }, function(response, body) {
-    if (!body) {
-      return;
-    }else{
-        var $ = https.cheerio.load(body);
-	var target = $(".even");
-	console.log(target);
-    }
+    }, function(response) {
+        //var $ = https.cheerio.load(body);
+	//var target = $(".even");
+	console.log(response);
   });
 };
 
