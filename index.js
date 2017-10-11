@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-var request = require("request");
 var cheerio = require("cheerio");
 var app = express();
  
@@ -599,10 +598,10 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-  request({
-    url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
-    method: "GET"
-  }, function(error, response, body) {
+    var request = https.request({
+        url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+        method: "GET"
+    }, function(error, response, body) {
     if (error || !body) {
       return;
     }else{
