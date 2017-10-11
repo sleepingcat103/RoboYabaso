@@ -607,7 +607,7 @@ function JP() {
     var fax = $("#inteTable1 > tbody > .tableContent-light");
     console.log(fax.length);
     for(var i=0;i<fax.length;i++) {
-	console.log(fax[i].children);
+	console.log(fax[i].children["0"].innerText);
       //result.push($(fax[i]).text());
     }
     //fs.writeFileSync("result.json", JSON.stringify(result));
