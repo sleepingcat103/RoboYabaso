@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-var URL = require('url');
+const { URL } = require('url');
 var app = express();
  
 var jsonParser = bodyParser.json();
