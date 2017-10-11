@@ -614,7 +614,7 @@ function JP() {
 		let result = [];
 		let fax = $("#inteTable1 > tbody > .tableContent-light");
 		for(let i=0;i<fax.length;i++) {
-			let str = "目前" + $(fax[i][0]).text() + " 即期匯率為 " + $(fax[i][2]).text() ;
+			let str = "目前" + fax[i].children["0"].innerText + " 即期匯率為 " + fax[i].children["0"].innerText ;
 			console.log(str);
 			//if(fax[i].children[0].innerText == "日圓(JPY)"){
 				result.push( str );
