@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var URL = require('url');
 var app = express();
  
 var jsonParser = bodyParser.json();
@@ -595,6 +596,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
+
     var request = https.request(
 	new URL('https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates'), 
 	function(response) {
