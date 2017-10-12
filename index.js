@@ -610,8 +610,6 @@ console.log(fax[3].children[3].type);
 console.log(fax[3].children[3].name);
 console.log(fax[3].children[3].namespace);
 console.log(fax[3].children[3].attribs);
-console.log(fax[3].children[3].x-attribsNamespace);
-console.log(fax[3].children[3].x-attribsPrefix);
 console.log(fax[3].children[3].children);
 console.log(fax[3].children[3].parent);
 console.log(fax[3].children[3].prev);
