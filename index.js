@@ -598,7 +598,6 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-  var str;
   crawler({
     url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
     method: "GET"
@@ -607,11 +606,9 @@ function JP() {
     var $ = cheerio.load(b);
     var result = [];
     var fax = $("#inteTable1 > tbody > .tableContent-light");
-    str = "玉山銀行目前日幣(JPY)的即期匯率為 " + fax[3].children[3].children[0].data + " 換起來! ヽ(`Д´)ノ";
-    console.log(str);
+    var str = "玉山銀行目前日幣(JPY)的即期匯率為 " + fax[3].children[3].children[0].data + " 換起來! ヽ(`Д´)ノ";
+    return str;
   });
-	
-  return str;
 }
 
 ////////////////////////////////////////
