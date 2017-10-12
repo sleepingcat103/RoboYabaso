@@ -606,7 +606,7 @@ function JP() {
     var result = [];
     var fax = $("#inteTable1 > tbody > .tableContent-light");
 
-console.log(fax[3].children[3].children.data);
+console.log(fax[3].children[3].children[0].data);
     //fs.writeFileSync("result.json", JSON.stringify(result));
   });
 	/*
