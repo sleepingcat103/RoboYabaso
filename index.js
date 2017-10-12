@@ -1,7 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-var crawler = require("request");
+//var crawler = require("request");
+var rp = require('request-promise');
 var cheerio = require("cheerio");
 var app = express();
  
@@ -598,7 +599,27 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-  crawler({
+     var options = {
+        uri: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
+        transform: function (body) {
+            return cheerio.load(body);
+        }
+    };
+    rp(options)
+    .then(function ($) {
+        var fax = $("#inteTable1 > tbody > .tableContent-light");
+        var str = "玉山銀行目前"+fax[3].children[1].children[2].children[0].data+"的匯率資訊 換起來! ヽ(`Д´)ノ";
+        str += "\r\n"+fax[3].children[3].attribs["data-name"] + "  " +fax[3].children[3].children[0].data;
+        str += "\r\n"+fax[3].children[5].attribs["data-name"] + "  " +fax[3].children[5].children[0].data;
+        str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
+        str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
+        console.log(str);
+	return str;
+    })
+    .catch(function (err) {
+        return "error!!!";
+    });
+  /*crawler({
     url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
     method: "GET"
   }, function(e,r,b) {
@@ -608,7 +629,7 @@ function JP() {
     var fax = $("#inteTable1 > tbody > .tableContent-light");
     var str = "玉山銀行目前日幣(JPY)的即期匯率為 " + fax[3].children[3].children[0].data + " 換起來! ヽ(`Д´)ノ";
     return str;
-  });
+  });*/
 }
 
 ////////////////////////////////////////
