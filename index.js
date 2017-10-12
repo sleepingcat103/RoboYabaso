@@ -609,11 +609,11 @@ function JP(replyToken) {
     rp(options)
     .then(function ($) {
         var fax = $("#inteTable1 > tbody > .tableContent-light");
-        var str = "玉山銀行目前"+fax[3].children[1].children[2].children[0].data+"的匯率資訊 換起來! ヽ(`Д´)ノ";
-        str += "\r\n"+fax[3].children[3].attribs["data-name"] + "  " +fax[3].children[3].children[0].data;
-        str += "\r\n"+fax[3].children[5].attribs["data-name"] + "  " +fax[3].children[5].children[0].data;
-        str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
-        str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
+        var str = "玉山銀行目前日幣的即期賣出匯率為 " + fax[3].children[5].children[0].data + " 換起來! ヽ(`Д´)ノ";
+        //str += "\r\n"+fax[3].children[3].attribs["data-name"] + "  " +fax[3].children[3].children[0].data;
+        //str += "\r\n"+fax[3].children[5].attribs["data-name"] + "  " +fax[3].children[5].children[0].data;
+        //str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
+        //str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
         console.log(str);
 	replyMsgToLine(outType, replyToken, str);
 	//return str;
