@@ -605,7 +605,7 @@ function JP() {
     var $ = cheerio.load(b);
     var result = [];
     var fax = $("#inteTable1 > tbody > .tableContent-light");
-	console.log(fax[3].children[3].toString());
+	console.log(JSON.stringify(fax[3].children));
     //fs.writeFileSync("result.json", JSON.stringify(result));
   });
 	/*
