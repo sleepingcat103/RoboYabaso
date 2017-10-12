@@ -611,7 +611,7 @@ function JP() {
     console.log(str);
   });
 	
-  return(str);
+  return str;
 }
 
 ////////////////////////////////////////
