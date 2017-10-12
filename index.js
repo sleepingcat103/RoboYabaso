@@ -591,14 +591,15 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	       userToRoom[event.source.userId].pictureUrl + '\n'+
 	       userToRoom[event.source.userId].statusMessage;
     }else if(trigger == '!日幣' || trigger == '！日幣' || trigger == '！jp' || trigger == '!jp'){
-	return JP();
+	//return JP();
+	    JP(rplyToken);
     }
 }
 ////////////////////////////////////////
 //////////////// jp
 ////////////////////////////////////////
 
-function JP() {
+function JP(replyToken) {
      var options = {
         uri: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
         transform: function (body) {
@@ -614,7 +615,8 @@ function JP() {
         str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
         str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
         console.log(str);
-	return str;
+	replyMsgToLine(outType, replyToken, str);
+	//return str;
     })
     .catch(function (err) {
         return "error!!!";
