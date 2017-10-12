@@ -597,7 +597,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP() {
-    crawler({
+  crawler({
     url: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
     method: "GET"
   }, function(e,r,b) {
@@ -605,37 +605,11 @@ function JP() {
     var $ = cheerio.load(b);
     var result = [];
     var fax = $("#inteTable1 > tbody > .tableContent-light");
-
-console.log(fax[3].children[3].children[0].data);
-    //fs.writeFileSync("result.json", JSON.stringify(result));
+    let str = "玉山銀行目前日幣(JPY)的即期匯率為 " + fax[3].children[3].children[0].data + " 換起來! ヽ(`Д´)ノ";
+    console.log(str);
+    return(str);
   });
-	/*
-    https.get(
-        'https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates', 
-        function(response) {
-	    //response.setEncoding('utf');
-            response.on('data', function (body) {
-		var $ = cheerio.load(body);
-		let result = [];
-		let fax = $("#inteTable1 > tbody > .tableContent-light");
-		console.log(fax.length);
-		for(let i=0;i<fax.length;i++) {
-			//let str = "目前" + fax[i].children["0"].innerText + " 即期匯率為 " + fax[i].children["0"].innerText ;
-			console.log(fax[i].children);
-			//if(fax[i].children[0].innerText == "日圓(JPY)"){
-			//result.push( str );
-			//break;
-			//}
-		}
-            });
-		
-			
-        }).on('error', function (e) {
-            console.log('Request error: ' + e.message);
-        }
-    );
-    */
-    
+	
 }
 
 ////////////////////////////////////////
