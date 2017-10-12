@@ -87,6 +87,7 @@ app.post('/', jsonParser, function (req, res) {
     if (type == 'message' && msgType == 'text') {
         try {
             rplyVal = parseInput(roomMID,rplyToken, msg);
+	    console.log('rplyVal: ' + rplyVal);
         }
         catch (e) {
             console.log('catch error');
