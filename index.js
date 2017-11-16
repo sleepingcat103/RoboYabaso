@@ -574,6 +574,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
     }
     else if (trigger.match(/QQ|QAQ/) != null){
+	    
+        console.log('GET Q');
 	outType = 'image';
 	return 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/Biblethump.png';
     }
