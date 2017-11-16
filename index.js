@@ -1472,5 +1472,5 @@ mcaT: '35063',
 panicBasket: '22998',
 pastaThat: '112289',
 riPepperonis: '62833',
-twitchRaid: '62836',
+twitchRaid: '62836'
 };
