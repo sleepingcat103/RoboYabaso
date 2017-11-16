@@ -573,19 +573,13 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'image';
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
     }
-    else if (trigger.match(/QQ|QAQ/) != null){
-	    
-        console.log('GET Q');
+    else if (trigger.match(/qq|qaq/gi) != null){
 	outType = 'image';
 	return 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/Biblethump.png';
     }
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
         return choice(inputStr, mainMsg);
-    }
-        //tarot 指令
-    else if (trigger.match(/tarot|塔羅牌|塔羅/) != null) {
-        return NomalDrawTarot();
     }
         //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
