@@ -573,9 +573,9 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'image';
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
     }
-    else if(trigger.match(/QQ/) != null || trigger.match(/QAQ/) != null){
+    else if (trigger.match(/QQ/) != null || trigger.match(/QAQ/) != null){
 	outType = 'image';
-	return 'https://ih0.redbubble.net/image.417930604.2410/flat,800x800,075,t.u2.jpg';
+	return 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/Biblethump.png';
     }
         //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
