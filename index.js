@@ -592,7 +592,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     }else if(trigger == '!日幣' || trigger == '！日幣' || trigger == '！jp' || trigger == '!jp'){
 	//return JP();
 	JP(rplyToken);
-    }else if(twitchEmoji.hasOwnProperty(trigger)){
+    }else if(Emoji.hasOwnProperty(trigger)){
 	outType = 'image';
 	return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
     }
@@ -1473,3 +1473,4 @@ var twitchEmoji = {'4Head': '354',
 'riPepperonis': '62833',
 'twitchRaid': '62836'
 };
+var Emoji = JSON.stringify(twitchEmoji);
