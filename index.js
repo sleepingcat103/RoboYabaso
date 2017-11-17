@@ -15,6 +15,8 @@ var v_path = '/v2/bot/message/reply';
 var timerFlag = 'off';
 var timerID;
 
+var twitchEmoji = require('./JsonData/twitchEmoji.json');
+
 // 房間入口
 // key:value
 // GroupMid : room Object
@@ -1299,7 +1301,8 @@ function Bro() {
     let rplyArr = ['大哥是對的!!', '叫本大爺有何貴幹?', '幹嘛? 說好的貓罐罐呢?', '大哥你叫的?', '大哥永遠是對的!!!!'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
-var twitchEmoji = {
+
+/*var twitchEmoji = {
 	"4head": "354",
 	"amptroppunch": "110785",
 	"anele": "3792",
@@ -1492,5 +1495,5 @@ var twitchEmoji = {
 	"pastathat": "112289",
 	"ripepperonis": "62833",
 	"twitchraid": "62836"
-};
+};*/
 var Emoji = JSON.stringify(twitchEmoji);
