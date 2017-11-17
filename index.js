@@ -593,7 +593,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	//return JP();
 	JP(rplyToken);
     //}else if(Emoji.hasOwnProperty(trigger)){
-    }else if(twitchEmoji[trigger] != undefined){
+    }else if(twitchEmoji.hasOwnProperty(trigger)){
 	outType = 'image';
 	//return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
 	return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
