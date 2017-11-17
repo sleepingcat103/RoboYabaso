@@ -5,7 +5,7 @@ var https = require('https');
 var rp = require('request-promise');
 var cheerio = require("cheerio");
 var app = express();
- 
+
 var jsonParser = bodyParser.json();
 
 var outType = 'text';
@@ -14,26 +14,25 @@ var v_path = '/v2/bot/message/reply';
 
 var timerFlag = 'off';
 var timerID;
-var twitchEmoji;
 
 // 房間入口
 // key:value
 // GroupMid : room Object
-var TRPG = { 
-    first : {
-	KP_MID: '',
-	GP_MID: '',
-	players : []
+var TRPG = {
+    first: {
+        KP_MID: '',
+        GP_MID: '',
+        players: []
     }
 };
-TRPG.createRoom = function(p_mid,room_Obj){
-    eval('TRPG.'+p_mid+' = room_Obj');
+TRPG.createRoom = function (p_mid, room_Obj) {
+    eval('TRPG.' + p_mid + ' = room_Obj');
 }
 
 // 紀錄使用者的資訊，以及進入的房間
 // key:value
 // UserMid: {GP_MID,displayName,userId,pictureUrl,statusMessage}
-var userToRoom={};
+var userToRoom = {};
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -45,12 +44,12 @@ app.get('/', function (req, res) {
 app.post('/', jsonParser, function (req, res) {
     event = req.body.events[0];
     let type = event.type;
-	
-    if(type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)){
-    	eval('delete TRPG.'+event.source.groupId);
-	console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
+
+    if (type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)) {
+        eval('delete TRPG.' + event.source.groupId);
+        console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
     }
-	
+
     let msgType = event.message.type;
     let msg = event.message.text;
     let rplyToken = event.replyToken;
@@ -58,49 +57,48 @@ app.post('/', jsonParser, function (req, res) {
     let rplyVal = null;
 
     var roomMID = 'first';
-	
+
     // 先找是否已經進入房間
-    if(event.source.type == 'user'){
-	for (var p in userToRoom) {
-	    if( p == event.source.userId ) {
-		for(var r in TRPG){
-		    if(userToRoom[p].GP_MID == r){
-			    roomMID = r;
-			    break;
-		    }
-		}
-	    }
-	    if(roomMID != 'first'){
-		break;
-	    }
-	}
-    }else if(event.source.type == 'group'){
-	for(var r in TRPG){
-	    if(r == event.source.groupId ){
-		roomMID = r;
-		break;
-	    }
-	}
+    if (event.source.type == 'user') {
+        for (var p in userToRoom) {
+            if (p == event.source.userId) {
+                for (var r in TRPG) {
+                    if (userToRoom[p].GP_MID == r) {
+                        roomMID = r;
+                        break;
+                    }
+                }
+            }
+            if (roomMID != 'first') {
+                break;
+            }
+        }
+    } else if (event.source.type == 'group') {
+        for (var r in TRPG) {
+            if (r == event.source.groupId) {
+                roomMID = r;
+                break;
+            }
+        }
     }
-	
+
     outType = 'text';
 
     console.log(msg);
     if (type == 'message' && msgType == 'text') {
         try {
-            rplyVal = parseInput(roomMID,rplyToken, msg);
-	    console.log('rplyVal: ' + rplyVal);
-        }
-        catch (e) {
+            rplyVal = parseInput(roomMID, rplyToken, msg);
+            console.log('rplyVal: ' + rplyVal);
+        } catch (e) {
             console.log('catch error');
-	    console.log(e.toString());
+            console.log(e.toString());
         }
     }
-	
+
     if (rplyVal) {
         if (outType == 'ccd') {
             replyMsgToLine('push', TRPG[roomMID].KP_MID, rplyVal);
-        }else {
+        } else {
             replyMsgToLine(outType, rplyToken, rplyVal);
         }
     } else {
@@ -121,35 +119,29 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
-            messages: [
-              {
-                  type: "image",
-                  originalContentUrl: rplyVal,
-                  previewImageUrl: rplyVal
-              }
-            ]
+            messages: [{
+                type: "image",
+                originalContentUrl: rplyVal,
+                previewImageUrl: rplyVal
+            }]
         }
     } else if (outType == 'push') {
         v_path = '/v2/bot/message/push';
         rplyObj = {
             to: rplyToken,
-            messages: [
-              {
-                  type: "text",
-                  text: rplyVal
-              }
-            ]
+            messages: [{
+                type: "text",
+                text: rplyVal
+            }]
         }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
-            messages: [
-              {
-                  type: "text",
-                  text: rplyVal
-              }
-            ]
+            messages: [{
+                type: "text",
+                text: rplyVal
+            }]
         }
     }
 
@@ -183,7 +175,7 @@ function setOptions() {
 
 function getUserProfile(p_MID) {
 
-    v_path = '/v2/bot/profile/'+p_MID;
+    v_path = '/v2/bot/profile/' + p_MID;
     var options = {
         host: 'api.line.me',
         port: 443,
@@ -199,14 +191,14 @@ function getUserProfile(p_MID) {
         console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
-	    var newBody = MyJSONStringify(body);
-	    userToRoom[p_MID].displayName = newBody.displayName;
-	    userToRoom[p_MID].userId = newBody.userId;
-	    userToRoom[p_MID].pictureUrl = newBody.pictureUrl;
-	    userToRoom[p_MID].statusMessage = newBody.statusMessage;
-	    //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , newBody.displayName + \' 加入群組囉!!\' )');
-	    replyMsgToLine('push',userToRoom[p_MID].GP_MID , userToRoom[p_MID].displayName + ' 加入房間囉!!');
-	    newBody = null;
+            var newBody = MyJSONStringify(body);
+            userToRoom[p_MID].displayName = newBody.displayName;
+            userToRoom[p_MID].userId = newBody.userId;
+            userToRoom[p_MID].pictureUrl = newBody.pictureUrl;
+            userToRoom[p_MID].statusMessage = newBody.statusMessage;
+            //eval('replyMsgToLine(\'push\', userToRoom.'+ p_MID +'.GP_MID , newBody.displayName + \' 加入群組囉!!\' )');
+            replyMsgToLine('push', userToRoom[p_MID].GP_MID, userToRoom[p_MID].displayName + ' 加入房間囉!!');
+            newBody = null;
         });
     });
 
@@ -220,143 +212,210 @@ function getUserProfile(p_MID) {
 /////////////////角色功能///////////////
 ///////////////////////////////////////
 
-function createChar(p_name,p_uid){
-     var player = {
-	status:{
-	name: p_name,	uid: p_uid,	db: '0',	item: '無',
-	status: '正常',	str: '0',	dex: '0',	con: '0',
-	pow: '0',	app: '0',	int: '0',	siz: '0',
-	edu: '0',	hp: '0',	mp: '0',	san: '0',
-	luck: '0',	職業: '無',	
-	靈感: '75',	知識: '75',	信用: '0',	魅惑: '15',
-	恐嚇: '15',	說服: '10',	話術: '5',	心理學: '10',
-	心理分析: '1',	調查: '25',	聆聽: '20',	圖書館使用: '20',
-	追蹤: '10',	急救: '30',	醫學: '30',	鎖匠: '1',
-	手上功夫: '10',	隱密行動: '10',	生存: '10',	閃避: '0',
-	攀爬: '20',	跳躍: '20',	游泳: '20',	駕駛: '20',
-	領航: '10',	騎術: '5',	自然學: '10',	神秘學: '5',
-	歷史: '5',	會計: '5',	估價: '5',	法律: '5',
-	喬裝: '5',	電腦使用: '5',	電器維修: '10',	機械維修: '10',
-	重機械操作: '1',	數學: '10',	化學: '1',	藥學: '1',
-	人類學: '1',	考古學: '1',	電子學: '1',	物理學: '1',
-	工程學: '1',	密碼學: '1',	天文學: '1',	地質學: '1',
-	生物學: '1',	動物學: '1',	植物學: '1',	物證學: '1',
-	投擲: '20',	鬥毆: '25',	劍: '20',	矛: '20',
-	斧頭: '15',	絞殺: '15',	電鋸: '10',	連枷: '10',
-	鞭子: '5',	弓箭: '15',	手槍: '20',	步槍: '25',
-	衝鋒槍: '15',	機關槍: '10',	重武器: '10',	火焰噴射器: '10',
-	美術: '5',	演技: '5',	偽造: '5',	攝影: '5',
-	克蘇魯神話: '0'
-	}
-     };
-     player.getVal = function(p_sta) {
-	return eval('this.status.'+p_sta);
-     };
-     player.setVal = function(p_sta,p_val){
-	if(p_sta == 'name' || p_sta == '職業'){
-	       this.status.name = p_val;
-	}else if(isNaN(Number(p_val))){
-	    eval('this.status.'+p_sta+' = \''+p_val+'\'');
-	}else{
-	    if(Number(p_val)<0){
-		eval('this.status.'+p_sta+' = \''+0+'\'');
-	    }else if(Number(p_val)>99){
-		eval('this.status.'+p_sta+' = \''+99+'\'');
-	    }else{
-		eval('this.status.'+p_sta+' = \''+p_val+'\'');
-	    }
-	}
-     };
-     player.delVal = function(p_sta){
-	eval('delete this.status.'+p_sta);
-     };
-     player.showAll = function(){
-	var result = "";
-	var v_cnt = 0;
-	for (var p in this.status) {
-	    if( this.status.hasOwnProperty(p) ) {
-		v_cnt = Number(v_cnt)+1;
-		if( v_cnt%3 == 0)
-		   result += p + ": " + this.status[p] + "\n";
-		else
-		   result += p + ": " + this.status[p] + "\t";
-	    } 
-	};
-	return result;
-     };
-     player.show = function() {
-	var MaxHP = Math.round((parseInt(this.getVal('con')) + parseInt(this.getVal('siz'))) / 2);
-	var MaxMP = this.getVal('pow');
-	var MaxSan = 99-parseInt(this.getVal('克蘇魯神話'));
-	var tempstr = '+=====================+\n';
-	tempstr += this.getVal('name') + '\n';
-	tempstr += this.getVal('職業') + '\n';
-	tempstr += padRight('STR:',4) + padRight(this.getVal('str'),3) + padRight('DEX:',4) + padRight(this.getVal('dex'),3) + padRight('CON:',4) + padRight(this.getVal('con'),3) + '\n';
-	tempstr += padRight('POW:',4) + padRight(this.getVal('pow'),3) + padRight('APP:',4) + padRight(this.getVal('app'),3) + padRight('INT:',4) + padRight(this.getVal('int'),3) + '\n';
-	tempstr += padRight('SIZ:',4) + padRight(this.getVal('siz'),3) + padRight('EDU:',4) + padRight(this.getVal('edu'),3) + padRight('DB:',4)  + padRight(this.getVal('db'),3) + '\n';
-	tempstr += '+=====================+\n';
-	tempstr += padRight('HP:',4)  + padRight(this.getVal('hp'),3)  + '/' + MaxHP + '\n';
-	tempstr += padRight('MP:',4)  + padRight(this.getVal('mp'),3)  + '/' + MaxMP + '\n';
-	tempstr += padRight('SAN:',4) + padRight(this.getVal('san'),3) + '/' + MaxSan + '\n';
-	tempstr += padRight('STATUS:',8) + this.getVal('status') + '\n';
-	tempstr += padRight('ITEM:',8)  + this.getVal('item') + '\n';
-	tempstr += '+=====================+';
-	return tempstr;
-     };
-     player.export = function() {
-	var retStr = JSON.stringify(this.status);
-	return retStr;
-     };
-     player.import = function(p_str) {
-	var newChar = JSON.parse(p_str);
-	var oriName = this.getVal('name');
-	this.status = newChar;
-	this.setVal('name',oriName);
-	return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
-     };
-     player.importFromTRPG = function(p_str){
-	var tempChar = JSON.parse(p_str);
-	var newChar = tempChar.skill;
-	for (var p in newChar){
-	   if(this.status.hasOwnProperty(JSONmapping[p])){
-		eval('this.status.'+ JSONmapping[p] +'=\''+ newChar[p] +'\'');
-	   }
-	}
-	return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
-	//return JSON.stringify(newChar);
-     };
-     return player;
+function createChar(p_name, p_uid) {
+    var player = {
+        status: {
+            name: p_name,
+            uid: p_uid,
+            db: '0',
+            item: '無',
+            status: '正常',
+            str: '0',
+            dex: '0',
+            con: '0',
+            pow: '0',
+            app: '0',
+            int: '0',
+            siz: '0',
+            edu: '0',
+            hp: '0',
+            mp: '0',
+            san: '0',
+            luck: '0',
+            職業: '無',
+            靈感: '75',
+            知識: '75',
+            信用: '0',
+            魅惑: '15',
+            恐嚇: '15',
+            說服: '10',
+            話術: '5',
+            心理學: '10',
+            心理分析: '1',
+            調查: '25',
+            聆聽: '20',
+            圖書館使用: '20',
+            追蹤: '10',
+            急救: '30',
+            醫學: '30',
+            鎖匠: '1',
+            手上功夫: '10',
+            隱密行動: '10',
+            生存: '10',
+            閃避: '0',
+            攀爬: '20',
+            跳躍: '20',
+            游泳: '20',
+            駕駛: '20',
+            領航: '10',
+            騎術: '5',
+            自然學: '10',
+            神秘學: '5',
+            歷史: '5',
+            會計: '5',
+            估價: '5',
+            法律: '5',
+            喬裝: '5',
+            電腦使用: '5',
+            電器維修: '10',
+            機械維修: '10',
+            重機械操作: '1',
+            數學: '10',
+            化學: '1',
+            藥學: '1',
+            人類學: '1',
+            考古學: '1',
+            電子學: '1',
+            物理學: '1',
+            工程學: '1',
+            密碼學: '1',
+            天文學: '1',
+            地質學: '1',
+            生物學: '1',
+            動物學: '1',
+            植物學: '1',
+            物證學: '1',
+            投擲: '20',
+            鬥毆: '25',
+            劍: '20',
+            矛: '20',
+            斧頭: '15',
+            絞殺: '15',
+            電鋸: '10',
+            連枷: '10',
+            鞭子: '5',
+            弓箭: '15',
+            手槍: '20',
+            步槍: '25',
+            衝鋒槍: '15',
+            機關槍: '10',
+            重武器: '10',
+            火焰噴射器: '10',
+            美術: '5',
+            演技: '5',
+            偽造: '5',
+            攝影: '5',
+            克蘇魯神話: '0'
+        }
+    };
+    player.getVal = function (p_sta) {
+        return eval('this.status.' + p_sta);
+    };
+    player.setVal = function (p_sta, p_val) {
+        if (p_sta == 'name' || p_sta == '職業') {
+            this.status.name = p_val;
+        } else if (isNaN(Number(p_val))) {
+            eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
+        } else {
+            if (Number(p_val) < 0) {
+                eval('this.status.' + p_sta + ' = \'' + 0 + '\'');
+            } else if (Number(p_val) > 99) {
+                eval('this.status.' + p_sta + ' = \'' + 99 + '\'');
+            } else {
+                eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
+            }
+        }
+    };
+    player.delVal = function (p_sta) {
+        eval('delete this.status.' + p_sta);
+    };
+    player.showAll = function () {
+        var result = "";
+        var v_cnt = 0;
+        for (var p in this.status) {
+            if (this.status.hasOwnProperty(p)) {
+                v_cnt = Number(v_cnt) + 1;
+                if (v_cnt % 3 == 0)
+                    result += p + ": " + this.status[p] + "\n";
+                else
+                    result += p + ": " + this.status[p] + "\t";
+            }
+        };
+        return result;
+    };
+    player.show = function () {
+        var MaxHP = Math.round((parseInt(this.getVal('con')) + parseInt(this.getVal('siz'))) / 2);
+        var MaxMP = this.getVal('pow');
+        var MaxSan = 99 - parseInt(this.getVal('克蘇魯神話'));
+        var tempstr = '+=====================+\n';
+        tempstr += this.getVal('name') + '\n';
+        tempstr += this.getVal('職業') + '\n';
+        tempstr += padRight('STR:', 4) + padRight(this.getVal('str'), 3) + padRight('DEX:', 4) + padRight(this.getVal('dex'), 3) + padRight('CON:', 4) + padRight(this.getVal('con'), 3) + '\n';
+        tempstr += padRight('POW:', 4) + padRight(this.getVal('pow'), 3) + padRight('APP:', 4) + padRight(this.getVal('app'), 3) + padRight('INT:', 4) + padRight(this.getVal('int'), 3) + '\n';
+        tempstr += padRight('SIZ:', 4) + padRight(this.getVal('siz'), 3) + padRight('EDU:', 4) + padRight(this.getVal('edu'), 3) + padRight('DB:', 4) + padRight(this.getVal('db'), 3) + '\n';
+        tempstr += '+=====================+\n';
+        tempstr += padRight('HP:', 4) + padRight(this.getVal('hp'), 3) + '/' + MaxHP + '\n';
+        tempstr += padRight('MP:', 4) + padRight(this.getVal('mp'), 3) + '/' + MaxMP + '\n';
+        tempstr += padRight('SAN:', 4) + padRight(this.getVal('san'), 3) + '/' + MaxSan + '\n';
+        tempstr += padRight('STATUS:', 8) + this.getVal('status') + '\n';
+        tempstr += padRight('ITEM:', 8) + this.getVal('item') + '\n';
+        tempstr += '+=====================+';
+        return tempstr;
+    };
+    player.export = function () {
+        var retStr = JSON.stringify(this.status);
+        return retStr;
+    };
+    player.import = function (p_str) {
+        var newChar = JSON.parse(p_str);
+        var oriName = this.getVal('name');
+        this.status = newChar;
+        this.setVal('name', oriName);
+        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+    };
+    player.importFromTRPG = function (p_str) {
+        var tempChar = JSON.parse(p_str);
+        var newChar = tempChar.skill;
+        for (var p in newChar) {
+            if (this.status.hasOwnProperty(JSONmapping[p])) {
+                eval('this.status.' + JSONmapping[p] + '=\'' + newChar[p] + '\'');
+            }
+        }
+        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+        //return JSON.stringify(newChar);
+    };
+    return player;
 }
 
 ////////////////////////////////////////
 //////////////// 創房間 ////////////////
 ////////////////////////////////////////
 
-function createNewRoom(p_Mid){
-     var room = {
-	GP_MID: p_Mid,
-	KP_MID:'',
-	players: []
-     };
-     room.setkp = function(p_Mid){
-	this.KP_MID = p_Mid;
-     };
-     room.getGPMid = function(){
-	return this.GP_MID;
-     };
-     room.getKPMid = function(){
-	return this.KP_MID;
-     };
-     room.newChar = function(p_char){
-	this.players.push(p_char);
-     };
-     return room;
+function createNewRoom(p_Mid) {
+    var room = {
+        GP_MID: p_Mid,
+        KP_MID: '',
+        players: []
+    };
+    room.setkp = function (p_Mid) {
+        this.KP_MID = p_Mid;
+    };
+    room.getGPMid = function () {
+        return this.GP_MID;
+    };
+    room.getKPMid = function () {
+        return this.KP_MID;
+    };
+    room.newChar = function (p_char) {
+        this.players.push(p_char);
+    };
+    return room;
 }
 
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
-function parseInput(roomMID,rplyToken, inputStr) {
+function parseInput(roomMID, rplyToken, inputStr) {
 
     console.log('InputStr: ' + inputStr);
     _isNaN = function (obj) {
@@ -368,238 +427,211 @@ function parseInput(roomMID,rplyToken, inputStr) {
 
     //角卡功能快速入口//
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
-	if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name'))
-		return CharacterControll( roomMID, mainMsg[0], mainMsg[1], mainMsg[2],mainMsg[3]);
+        if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name'))
+            return CharacterControll(roomMID, mainMsg[0], mainMsg[1], mainMsg[2], mainMsg[3]);
     }
 
     if (trigger.match(/運氣|運勢/) != null) {
         return randomLuck(mainMsg); //占卜運氣
-    }
-    else if (trigger.match(/立flag|死亡flag/) != null) {
+    } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
-    }
-    else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
+    } else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
         return build6char(mainMsg[1]);
-    }
-    else if (trigger == 'db') {
+    } else if (trigger == 'db') {
         return db(mainMsg[1], 1);
-    }
-    else if (trigger == '角色' || trigger == 'char') {
-	if(roomMID == 'first'){
-	    if(event.source.type =='user'){
-		return '你還沒進入房間喵!!!';
-	    }else{
-		return '房間還沒有建立!!\n請先輸入  setgp';
-	    }
-    	}else{
-	    return CharacterControll(roomMID,mainMsg[1], mainMsg[2], mainMsg[3],mainMsg[4]);
-	}
-    }
-    else if (trigger == 'join') {
-	if(event.source.type == 'user' &&
-	   userToRoom.hasOwnProperty(event.source.userId) &&
-	   userToRoom[event.source.userId].GP_MID == mainMsg[1] ){
-		return '你已經在房間裡了喵!';
-	}else if(event.source.type == 'user'){
-	    eval('userToRoom.'+event.source.userId+' = {}');
-	    userToRoom[event.source.userId] = {
-		    GP_MID: mainMsg[1],
-		    displayName: '',
-		    userId: '',
-		    pictureUrl: '',
-		    statusMessage: ''
-	    };
-	    getUserProfile(event.source.userId)	    
-	    return '加入房間喵!\n請到群組確認加入訊息~';
-	}else{
-	    return '你想幹嘛啦~~~';
-	}
-    }
-	
-    else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董' || trigger == '@方翊宸') {
+    } else if (trigger == '角色' || trigger == 'char') {
+        if (roomMID == 'first') {
+            if (event.source.type == 'user') {
+                return '你還沒進入房間喵!!!';
+            } else {
+                return '房間還沒有建立!!\n請先輸入  setgp';
+            }
+        } else {
+            return CharacterControll(roomMID, mainMsg[1], mainMsg[2], mainMsg[3], mainMsg[4]);
+        }
+    } else if (trigger == 'join') {
+        if (event.source.type == 'user' &&
+            userToRoom.hasOwnProperty(event.source.userId) &&
+            userToRoom[event.source.userId].GP_MID == mainMsg[1]) {
+            return '你已經在房間裡了喵!';
+        } else if (event.source.type == 'user') {
+            eval('userToRoom.' + event.source.userId + ' = {}');
+            userToRoom[event.source.userId] = {
+                GP_MID: mainMsg[1],
+                displayName: '',
+                userId: '',
+                pictureUrl: '',
+                statusMessage: ''
+            };
+            getUserProfile(event.source.userId)
+            return '加入房間喵!\n請到群組確認加入訊息~';
+        } else {
+            return '你想幹嘛啦~~~';
+        }
+    } else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董' || trigger == '@方翊宸') {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    }
-	
-    else if (trigger == '貓咪') {
+    } else if (trigger == '貓咪') {
         return MeowHelp();
-    }
-    else if (trigger.match(/喵/) != null) {
+    } else if (trigger.match(/喵/) != null) {
         return Meow();
-    }
-    else if (trigger.match(/貓/) != null) {
+    } else if (trigger.match(/貓/) != null) {
         return Cat();
-    }
-    else if (trigger == 'help' || trigger == '幫助') {
+    } else if (trigger == 'help' || trigger == '幫助') {
         return Help();
-    }
-    else if (trigger == '大哥') {
+    } else if (trigger == '大哥') {
         return Bro();
-    }
-    else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
+    } else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
         return SortIt(inputStr, mainMsg);
-    }   //ccb指令開始於此
+    } //ccb指令開始於此
     else if (trigger == 'ccb') {
-        return ccb(roomMID,mainMsg[1], mainMsg[2]);
-    }   //ccd指令開始於此
+        return ccb(roomMID, mainMsg[1], mainMsg[2]);
+    } //ccd指令開始於此
     else if (trigger == 'ccd') {
-	for (i = 0; i < TRPG[roomMID].players.length; i++) {
-	    if (mainMsg[1].toString() == TRPG[roomMID].players[i].getVal('name'))
-	    	return CharacterControll( roomMID, mainMsg[1], mainMsg[0], mainMsg[2],mainMsg[3]);
-	}
-	if(TRPG[roomMID].KP_MID != ''){
-	   replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(mainMsg[3],mainMsg[1],mainMsg[2]));
-           if (TRPG[roomMID].KP_MID == event.source.userId){
-	       replyMsgToLine('push',TRPG[roomMID].GP_MID,'')
-	   }else{
-	       return '成功執行暗骰';
-	   }
-	}else if(roomMID == 'first'){ // 房間還沒創或是沒進入房間
-	   return '你還沒進入房間';
-	}else{
-	   return '現在房間沒有KP，你想傳給誰喵?';
-	}
-    }    //房間相關指令開始於此
+        for (i = 0; i < TRPG[roomMID].players.length; i++) {
+            if (mainMsg[1].toString() == TRPG[roomMID].players[i].getVal('name'))
+                return CharacterControll(roomMID, mainMsg[1], mainMsg[0], mainMsg[2], mainMsg[3]);
+        }
+        if (TRPG[roomMID].KP_MID != '') {
+            replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(mainMsg[3], mainMsg[1], mainMsg[2]));
+            if (TRPG[roomMID].KP_MID == event.source.userId) {
+                replyMsgToLine('push', TRPG[roomMID].GP_MID, '')
+            } else {
+                return '成功執行暗骰';
+            }
+        } else if (roomMID == 'first') { // 房間還沒創或是沒進入房間
+            return '你還沒進入房間';
+        } else {
+            return '現在房間沒有KP，你想傳給誰喵?';
+        }
+    } //房間相關指令開始於此
     else if (trigger == 'getkp') {
-	if(TRPG[roomMID].KP_MID != ''){
-           return TRPG[roomMID].KP_MID;
-	}else if (event.source.type != 'group'){
-	   return '在群組才能使用唷!!!';
-	}else{
-	   return '目前沒有設置KP喵!!!';
-	}
-    }
-    else if (trigger == 'setkp') {
+        if (TRPG[roomMID].KP_MID != '') {
+            return TRPG[roomMID].KP_MID;
+        } else if (event.source.type != 'group') {
+            return '在群組才能使用唷!!!';
+        } else {
+            return '目前沒有設置KP喵!!!';
+        }
+    } else if (trigger == 'setkp') {
         if (event.source.type == 'user') {
-	    if( TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId ){
-		if(roomMID=='first'){
-			return '你還沒有進入房間';
-		}
-		TRPG[roomMID].KP_MID = event.source.userId;
-            	return '設定完成喵';	//，KP的MID是\n' + TRPG[roomMID].KP_MID;
-	    }else{
-		return '如果要更換KP，請現任KP先卸任之後，才能重新"setkp"';
-	    }
+            if (TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId) {
+                if (roomMID == 'first') {
+                    return '你還沒有進入房間';
+                }
+                TRPG[roomMID].KP_MID = event.source.userId;
+                return '設定完成喵'; //，KP的MID是\n' + TRPG[roomMID].KP_MID;
+            } else {
+                return '如果要更換KP，請現任KP先卸任之後，才能重新"setkp"';
+            }
         } else {
             return '私密BOT才能設定KP哦!!!';
         }
+    } else if (trigger == 'killkp') {
+        if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId) {
+            TRPG[roomMID].KP_MID = '';
+            return '已經沒有KP了喵';
+        } else {
+            if (TRPG[roomMID].KP_MID != '') {
+                return '只有KP在私下密語才能使用這個功能哦!';
+            } else if (roomMID == 'first') {
+                return '你還沒有進入房間';
+            } else {
+                return '現在沒有KP喵~';
+            }
+        }
+    } else if (trigger == 'getgp') {
+        if (TRPG[roomMID].GP_MID != '') {
+            return TRPG[roomMID].GP_MID;
+        } else {
+            return '你還沒有進房間哦!!!';
+        }
+    } else if (trigger == 'setgp') {
+        if (event.source.type == 'group') {
+            if (TRPG.hasOwnProperty(event.source.groupId)) {
+                return '在群組開啟了遊戲房間!!!';
+            } else {
+                TRPG.createRoom(event.source.groupId, createNewRoom(event.source.groupId));
+                return '房間建立成功，請PL私密輸入\njoin ' + event.source.groupId;
+            }
+        } else {
+            return '必須是群組才能開房間唷 <3 ';
+        }
+    } else if ((trigger == 'leaveroom' || event.type == 'leave') && TRPG.hasOwnProperty(event.source.groupId)) {
+        eval('delete TRPG.' + event.source.groupId);
+        console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
+        return '已經刪除房間資訊了喵~';
+    } else if (trigger == 'getuid') {
+        if (event.source.type == 'user')
+            return '你的uid是:' + event.source.userId;
+        //else if(event.source.type =='group')
+        //   return '群組的uid是' + event.source.groupId;
+        else
+            return eval('\'群組的uid是: \' + event.source.+' + event.source.type + 'Id');
     }
-    else if(trigger == 'killkp'){
-	if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId){
-	   TRPG[roomMID].KP_MID = '';
-	   return '已經沒有KP了喵';
-	}else{
-	   if(TRPG[roomMID].KP_MID!=''){
-		return '只有KP在私下密語才能使用這個功能哦!';
-	   }else if(roomMID=='first'){
-		return '你還沒有進入房間';
-	   }else{
-		return '現在沒有KP喵~';
-	   }
-	}
-    }
-    else if (trigger == 'getgp') {
-	if(TRPG[roomMID].GP_MID != ''){
-           return TRPG[roomMID].GP_MID;
-	}else{
-	   return '你還沒有進房間哦!!!';
-	}
-    }
-    else if (trigger == 'setgp') {
-	if(event.source.type == 'group'){
-	    if(TRPG.hasOwnProperty(event.source.groupId)){
-		return '在群組開啟了遊戲房間!!!';
-	    }else{
-		TRPG.createRoom(event.source.groupId,createNewRoom(event.source.groupId));
-		return '房間建立成功，請PL私密輸入\njoin '+event.source.groupId;
-	    }
-	}else{
-	    return '必須是群組才能開房間唷 <3 ';
-	}
-    }
-    else if((trigger == 'leaveroom' || event.type == 'leave') && TRPG.hasOwnProperty(event.source.groupId)){
-    	eval('delete TRPG.'+event.source.groupId);
-	console.log('room existance: '+TRPG.hasOwnProperty(event.source.groupId));
-	return '已經刪除房間資訊了喵~';
-    }
-    else if(trigger == 'getuid'){
-	if(event.source.type == 'user' )
-	   return '你的uid是:' + event.source.userId;
-	//else if(event.source.type =='group')
-	//   return '群組的uid是' + event.source.groupId;
-	else
-	   return eval('\'群組的uid是: \' + event.source.+'+event.source.type+'Id');
-    }
-        //生科火大圖指令開始於此 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9
+    //生科火大圖指令開始於此 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9
     else if (trigger == '生科') {
         outType = 'image';
-        return 'https://i.imgur.com/jYxRe8wl.jpg';//coc6(mainMsg[1],mainMsg[2]);
-    }
-	
-    else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還'|| trigger == '屁孩' || trigger == '碩文' || trigger == '碩彣' || trigger == '@碩文') {
+        return 'https://i.imgur.com/jYxRe8wl.jpg'; //coc6(mainMsg[1],mainMsg[2]);
+    } else if (trigger == '狂' || trigger == '風兒' || trigger == '屁還' || trigger == '屁孩' || trigger == '碩文' || trigger == '碩彣' || trigger == '@碩文') {
         let rplyArr = ['\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F','\
-https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg','\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
+https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
-	outType = 'image';
-	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    }
-    else if (trigger == '振宇' || trigger == '王振宇' || trigger == '@王振宇') {
-	let rplyArr = ['\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90','\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
-	outType = 'image';
-	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-        
-        //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
-    }
-    else if (trigger == 'ㄇㄏ' || trigger == '名鴻' || trigger == '@名鴻') {
-	let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg','\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
-	outType = 'image';
-	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    }
-    else if (trigger == '良丞' || trigger == '良成' || trigger == '@王良丞') {
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    } else if (trigger == '振宇' || trigger == '王振宇' || trigger == '@王振宇') {
         let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg','\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg','\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90', '\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+
+        //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
+    } else if (trigger == 'ㄇㄏ' || trigger == '名鴻' || trigger == '@名鴻') {
+        let rplyArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    } else if (trigger == '良丞' || trigger == '良成' || trigger == '@王良丞') {
+        let rplyArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
-	outType = 'image';
-	return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    }
-    else if (trigger.match(/手手/) != null) {
-	outType = 'image';
+        outType = 'image';
+        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    } else if (trigger.match(/手手/) != null) {
+        outType = 'image';
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
+    } else if (trigger.match(/qq|qaq/gi) != null) {
+        outType = 'image';
+        return 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/Biblethump.png';
     }
-    else if (trigger.match(/qq|qaq/gi) != null){
-	outType = 'image';
-	return 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/Biblethump.png';
-    }
-        //choice 指令開始於此
+    //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
         return choice(inputStr, mainMsg);
     }
-        //普通ROLL擲骰判定
+    //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
-    }else if(trigger == 'getprofile' && event.source.type =='user'){
-	return userToRoom[event.source.userId].displayName + '\n'+
-	       userToRoom[event.source.userId].userId + '\n'+
-	       userToRoom[event.source.userId].pictureUrl + '\n'+
-	       userToRoom[event.source.userId].statusMessage;
-    }else if(trigger == '!日幣' || trigger == '！日幣' || trigger == '！jp' || trigger == '!jp'){
-	//return JP();
-	JP(rplyToken);
-    //}else if(Emoji.hasOwnProperty(trigger)){
-    }else if(twitchEmoji.hasOwnProperty(trigger)){
-	outType = 'image';
-	//return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
-	var tempStr = 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
-	console.log(tempStr);
-	return tempStr;
+    } else if (trigger == 'getprofile' && event.source.type == 'user') {
+        return userToRoom[event.source.userId].displayName + '\n' +
+            userToRoom[event.source.userId].userId + '\n' +
+            userToRoom[event.source.userId].pictureUrl + '\n' +
+            userToRoom[event.source.userId].statusMessage;
+    } else if (trigger == '!日幣' || trigger == '！日幣' || trigger == '！jp' || trigger == '!jp') {
+        //return JP();
+        JP(rplyToken);
+        //}else if(Emoji.hasOwnProperty(trigger)){
+    } else if (twitchEmoji.hasOwnProperty(trigger)) {
+        outType = 'image';
+        //return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
+        var tempStr = 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+        console.log(tempStr);
+        return tempStr;
     }
 }
 ////////////////////////////////////////
@@ -607,140 +639,131 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 ////////////////////////////////////////
 
 function JP(replyToken) {
-     var options = {
+    var options = {
         uri: "https://www.esunbank.com.tw/bank/personal/deposit/rate/forex/foreign-exchange-rates",
         transform: function (body) {
             return cheerio.load(body);
         }
     };
     rp(options)
-    .then(function ($) {
-        var fax = $("#inteTable1 > tbody > .tableContent-light");
-        var str = "玉山銀行目前日幣的即期賣出匯率為 " + fax[3].children[5].children[0].data + " 換起來! ヽ(`Д´)ノ";
-        //str += "\r\n"+fax[3].children[3].attribs["data-name"] + "  " +fax[3].children[3].children[0].data;
-        //str += "\r\n"+fax[3].children[5].attribs["data-name"] + "  " +fax[3].children[5].children[0].data;
-        //str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
-        //str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
-        console.log(str);
-	replyMsgToLine(outType, replyToken, str);
-	//return str;
-    })
-    .catch(function (err) {
-        return "error!!!";
-    });
+        .then(function ($) {
+            var fax = $("#inteTable1 > tbody > .tableContent-light");
+            var str = "玉山銀行目前日幣的即期賣出匯率為 " + fax[3].children[5].children[0].data + " 換起來! ヽ(`Д´)ノ";
+            //str += "\r\n"+fax[3].children[3].attribs["data-name"] + "  " +fax[3].children[3].children[0].data;
+            //str += "\r\n"+fax[3].children[5].attribs["data-name"] + "  " +fax[3].children[5].children[0].data;
+            //str += "\r\n"+fax[3].children[7].attribs["data-name"] + "  " +fax[3].children[7].children[0].data;
+            //str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
+            console.log(str);
+            replyMsgToLine(outType, replyToken, str);
+            //return str;
+        })
+        .catch(function (err) {
+            return "error!!!";
+        });
 }
 
 ////////////////////////////////////////
 //////////////// 角色卡
 ////////////////////////////////////////
 
-function CharacterControll(roomMID,trigger, str1, str2, str3) {
+function CharacterControll(roomMID, trigger, str1, str2, str3) {
     if (trigger == undefined || trigger == null || trigger == '') {
         return Meow() + '請輸入更多資訊';
     }
-	
+
     //建立新角
     if (trigger == 'new' || trigger == '建立') {
         if (str1 == undefined || str1 == null || str1 == '') return '沒有輸入名稱喵!';
         for (i = 0; i < TRPG[roomMID].players.length; i++) {
             if (TRPG[roomMID].players[i].getVal('name') == str1) return '已經有同名的角色了!';
         }
-	var newPlayer;
-	if(event.source.type == 'user'){
-	   newPlayer = createChar(str1,event.source.userId);
-	}else{
-	   newPlayer = createChar(str1,'');
-	}
-	TRPG[roomMID].players.push(newPlayer);
-	if(str2 == undefined || str2 == null || str2 == ''){
-	    return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
-	}else if (str2 == 'trpg'){
-	    return newPlayer.importFromTRPG(str3);
-	}else{
-	    return newPlayer.import(str2);
-	}
+        var newPlayer;
+        if (event.source.type == 'user') {
+            newPlayer = createChar(str1, event.source.userId);
+        } else {
+            newPlayer = createChar(str1, '');
+        }
+        TRPG[roomMID].players.push(newPlayer);
+        if (str2 == undefined || str2 == null || str2 == '') {
+            return '成功建立角色 ' + str1 + ' 請補充他/她的能力值!';
+        } else if (str2 == 'trpg') {
+            return newPlayer.importFromTRPG(str3);
+        } else {
+            return newPlayer.import(str2);
+        }
     }
 
     //角色設定(特定狀態查詢) 刪除 查看
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
         if (trigger == TRPG[roomMID].players[i].getVal('name')) {
             if (str1 == 'debug') {
-                return TRPG[roomMID].players[i].debug(str1);//players[i].show();
-            }
-            else if (str1 == 'ccb') {
+                return TRPG[roomMID].players[i].debug(str1); //players[i].show();
+            } else if (str1 == 'ccb') {
                 return coc6(TRPG[roomMID].players[i].getVal(str2), str2);
-            }
-	    else if (str1 == 'ccd'){
-		if(TRPG[roomMID].KP_MID != ''){
-		   if(event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID){
-			replyMsgToLine('push', TRPG[roomMID].GP_MID, '剛剛好像發生了什麼事');
-			return ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2);
-		   }else if(event.source.type == 'group' ||
-			   (event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid'))){
-			replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(TRPG[roomMID].players[i].getVal('name'),TRPG[roomMID].players[i].getVal(str2), str2));
-			return '成功執行暗骰';
-		   }
-		   return Meow();
-		}else{
-			return '現在沒有KP，你是想傳給誰辣';
-		}
-	    }
-            else if (str1 == 'skills') {
+            } else if (str1 == 'ccd') {
+                if (TRPG[roomMID].KP_MID != '') {
+                    if (event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID) {
+                        replyMsgToLine('push', TRPG[roomMID].GP_MID, '剛剛好像發生了什麼事');
+                        return ccd_dice(TRPG[roomMID].players[i].getVal('name'), TRPG[roomMID].players[i].getVal(str2), str2);
+                    } else if (event.source.type == 'group' ||
+                        (event.source.type == 'user' && event.source.userId == TRPG[roomMID].players[i].getVal('uid'))) {
+                        replyMsgToLine('push', TRPG[roomMID].KP_MID, ccd_dice(TRPG[roomMID].players[i].getVal('name'), TRPG[roomMID].players[i].getVal(str2), str2));
+                        return '成功執行暗骰';
+                    }
+                    return Meow();
+                } else {
+                    return '現在沒有KP，你是想傳給誰辣';
+                }
+            } else if (str1 == 'skills') {
                 return TRPG[roomMID].players[i].showAll();
-            }
-            else if (str1 == 'addskill') {
-		if(TRPG[roomMID].players[i].status.hasOwnProperty(str2)){
-		   return '該技能之前就學過了';
-		}else{
-		   if(str3 == '' || str3 == undefined){
-			TRPG[roomMID].players[i].setVal(str2,'0')
-		   }else{
-			TRPG[roomMID].players[i].setVal(str2,str3)
-		   }
-		}
-		return TRPG[roomMID].players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
-            }
-            else if (str1 == 'deleteskill') {
-		if(TRPG[roomMID].players[i].status.hasOwnProperty(str2)){
-		   TRPG[roomMID].players[i].delVal(str2)
-                   return '已經刪除技能: '+str2 + '.';
-		}else{
-		   return '你沒有這個技能.';
-		}
-            }
-            else if (str1 == 'output') {
+            } else if (str1 == 'addskill') {
+                if (TRPG[roomMID].players[i].status.hasOwnProperty(str2)) {
+                    return '該技能之前就學過了';
+                } else {
+                    if (str3 == '' || str3 == undefined) {
+                        TRPG[roomMID].players[i].setVal(str2, '0')
+                    } else {
+                        TRPG[roomMID].players[i].setVal(str2, str3)
+                    }
+                }
+                return TRPG[roomMID].players[i].getVal('name') + ' 學會了 ' + str2 + ' !!! ';
+            } else if (str1 == 'deleteskill') {
+                if (TRPG[roomMID].players[i].status.hasOwnProperty(str2)) {
+                    TRPG[roomMID].players[i].delVal(str2)
+                    return '已經刪除技能: ' + str2 + '.';
+                } else {
+                    return '你沒有這個技能.';
+                }
+            } else if (str1 == 'output') {
                 return TRPG[roomMID].players[i].export();
-            }
-            else if (str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
+            } else if (str1 == undefined || str1 == '' || str1 == '狀態' || str1 == '屬性') {
                 return TRPG[roomMID].players[i].show();
-            }
-            else if (str1 == 'delete' || str1 == '刪除') {
-		TRPG[roomMID].players.splice(i,1);
+            } else if (str1 == 'delete' || str1 == '刪除') {
+                TRPG[roomMID].players.splice(i, 1);
                 return '已刪除 ' + trigger + ' 角色資料喵~';
-            }
-            else {
+            } else {
                 try {
                     if (str2 == undefined || str2 == null || str2 == '') {
                         return trigger + ': ' + str1 + '[' + TRPG[roomMID].players[i].getVal(str1) + ']';
                     } else {
-			if( TRPG[roomMID].players[i].status.hasOwnProperty(str1) &&
-			   (event.source.type == 'group' ||
-			    (event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID)||
-			    (event.source.type == 'user' && TRPG[roomMID].KP_MID == '')
-			   )
-			){
-			   var tempVal = TRPG[roomMID].players[i].getVal(str1);
-			   var afterVal = str2;
-			   if(afterVal.charAt(0) == '+' && str1 != 'db'){
-				afterVal = Number(tempVal) + Number(afterVal.substring(1));
-			   }else if(afterVal.charAt(0) == '-' && str1 != 'db'){
-				afterVal = Number(tempVal) - Number(afterVal.substring(1));
-			   }
-			   TRPG[roomMID].players[i].setVal(str1,afterVal);
-                           return trigger + ': ' + str1 + '[' + tempVal + '->' + TRPG[roomMID].players[i].getVal(str1) + ']';
-			}else{
-				return Meow();
-			}
+                        if (TRPG[roomMID].players[i].status.hasOwnProperty(str1) &&
+                            (event.source.type == 'group' ||
+                                (event.source.type == 'user' && event.source.userId == TRPG[roomMID].KP_MID) ||
+                                (event.source.type == 'user' && TRPG[roomMID].KP_MID == '')
+                            )
+                        ) {
+                            var tempVal = TRPG[roomMID].players[i].getVal(str1);
+                            var afterVal = str2;
+                            if (afterVal.charAt(0) == '+' && str1 != 'db') {
+                                afterVal = Number(tempVal) + Number(afterVal.substring(1));
+                            } else if (afterVal.charAt(0) == '-' && str1 != 'db') {
+                                afterVal = Number(tempVal) - Number(afterVal.substring(1));
+                            }
+                            TRPG[roomMID].players[i].setVal(str1, afterVal);
+                            return trigger + ': ' + str1 + '[' + tempVal + '->' + TRPG[roomMID].players[i].getVal(str1) + ']';
+                        } else {
+                            return Meow();
+                        }
                     }
                 } catch (err) {
                     return err.toString();
@@ -751,7 +774,7 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
     //列出所有角色
     if (trigger == 'list' || trigger == '清單') {
         var tempstr = '角色清單:\n';
-        for (i = 1; i < TRPG[roomMID].players.length+1; i++) {
+        for (i = 1; i < TRPG[roomMID].players.length + 1; i++) {
             tempstr += i + '. ' + TRPG[roomMID].players[i - 1].getVal('name') + '\n';
         }
         return tempstr;
@@ -763,12 +786,12 @@ function CharacterControll(roomMID,trigger, str1, str2, str3) {
 ////////////////////////////////////////
 //////////////// COC6 CCB成功率骰
 ////////////////////////////////////////
-function ccb( roomMID, chack, text) {
+function ccb(roomMID, chack, text) {
     var val_status = chack;
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
         if (val_status.toString() == TRPG[roomMID].players[i].getVal('name')) {
-	    val_status = TRPG[roomMID].players[i].getVal(text);
-	    break;
+            val_status = TRPG[roomMID].players[i].getVal(text);
+            break;
         }
     }
     if (val_status <= 99) {
@@ -780,7 +803,7 @@ function ccb( roomMID, chack, text) {
 
 function ccd(chack, text, who) {
     if (chack <= 99) {
-	return ccd_dice(who,chack,text)
+        return ccd_dice(who, chack, text)
     } else {
         return '**Error**\n輸入錯誤';
     }
@@ -794,34 +817,31 @@ function coc6(chack, text) {
         if (temp <= chack) {
             if (temp <= 5) return 'ccb<=' + chack + ' ' + temp + ' → 喔喔！大成功！';
             else return 'ccb<=' + chack + ' ' + temp + ' → 成功';
-        }
-        else return 'ccb<=' + chack + ' ' + temp + ' → 失敗';
+        } else return 'ccb<=' + chack + ' ' + temp + ' → 失敗';
     } else {
         if (temp > 95) return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
         if (temp <= chack) {
             if (temp <= 5) return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 大成功！';
             else return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 成功';
-        }
-        else return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
+        } else return 'ccb<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
     }
 }
-function ccd_dice(p_name,chack, text) {
+
+function ccd_dice(p_name, chack, text) {
 
     let temp = Dice(100);
     if (text == null) {
-        if (temp > 95) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 大失敗！哈哈哈！';
+        if (temp > 95) return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → 大失敗！哈哈哈！';
         if (temp <= chack) {
-            if (temp <= 5) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 喔喔！大成功！';
-            else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 成功';
-        }
-        else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → 失敗';
+            if (temp <= 5) return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → 喔喔！大成功！';
+            else return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → 成功';
+        } else return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → 失敗';
     } else {
-        if (temp > 95) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
+        if (temp > 95) return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大失敗！哈哈哈！';
         if (temp <= chack) {
-            if (temp <= 5) return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大成功！';
-            else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 成功';
-        }
-        else return p_name+'做了'+'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
+            if (temp <= 5) return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 大成功！';
+            else return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 成功';
+        } else return p_name + '做了' + 'ccd<=' + chack + ' ' + temp + ' → ' + text + ' 失敗';
     }
 }
 
@@ -881,7 +901,7 @@ function nomalDiceRoller(inputStr, text0, text1, text2) {
         }
         if (mutiOrNot > 30) return '不支援30次以上的複數擲骰。';
 
-        for (i = 1 ; i <= mutiOrNot ; i++) {
+        for (i = 1; i <= mutiOrNot; i++) {
             let DiceToRoll = text1.toLowerCase();
             if (DiceToRoll.match('d') == null) return undefined;
 
@@ -1030,8 +1050,8 @@ function db(value, flag) {
     //return restr;	
     if (flag == 0) return restr;
     if (flag == 1) return 'db -> ' + restr;
-}	
-	
+}
+
 ////////////////////////////////////////
 //////////////// 占卜&其他
 ////////////////////////////////////////
@@ -1123,128 +1143,129 @@ function choice(input, str) {
     return str[0] + '[' + a + '] → ' + a[Dice(a.length) - 1];
 }
 
-function MyJSONStringify (object){
+function MyJSONStringify(object) {
     var simpleObject = '';
-    for (var prop in object ){
-        if (!object.hasOwnProperty(prop)){
+    for (var prop in object) {
+        if (!object.hasOwnProperty(prop)) {
             continue;
         }
-        if (typeof(object[prop]) == 'object'){
+        if (typeof (object[prop]) == 'object') {
             continue;
         }
-        if (typeof(object[prop]) == 'function'){
+        if (typeof (object[prop]) == 'function') {
             continue;
         }
         //simpleObject[prop] = object[prop];
-	simpleObject += object[prop];
+        simpleObject += object[prop];
     }
     return JSON.parse(simpleObject);
 };
 
-function padLeft(str,length){
-    if(str.length >= length)
+function padLeft(str, length) {
+    if (str.length >= length)
         return str;
     else
-        return padLeft('　' + str,length);
+        return padLeft('　' + str, length);
 }
-function padRight(str,length){
-    if(str.length >= length)
+
+function padRight(str, length) {
+    if (str.length >= length)
         return str;
     else
-        return padRight(str+'　',length);
+        return padRight(str + '　', length);
 }
 
 var JSONmapping = {
-character_name: 'name',
-char_section0_1_field1: 'hp',
-char_section0_1_field3: 'mp',
-char_section0_1_field5: 'san',
-char_section0_1_field7: 'luck',
-char_section0_1_field9: 'status',
-char_section0_1_field10: '職業',
-char_section1_1_field1: 'str',
-char_section1_1_field2: 'con',
-char_section1_1_field3: 'dex',
-char_section1_1_field4: 'app',
-char_section1_1_field5: 'pow',
-char_section1_1_field6: 'int',
-char_section1_1_field7: 'siz',
-char_section1_1_field8: 'edu',
-char_section2_1_field1: '母語',
-char_section2_1_field8: '靈感',
-char_section2_1_field10: '知識',
-char_section3_1_field1: '信用',
-char_section3_1_field2: '魅惑',
-char_section3_1_field3: '恐嚇',
-char_section3_1_field4: '說服',
-char_section3_1_field5: '話術',
-char_section3_1_field6: '心理學',
-char_section3_1_field7: '心理分析',
-char_section4_1_field1: '調查',
-char_section4_1_field2: '聆聽',
-char_section4_1_field3: '圖書館使用',
-char_section4_1_field4: '追蹤',
-char_section4_1_field5: '急救',
-char_section4_1_field6: '醫學',
-char_section4_1_field7: '鎖匠',
-char_section4_1_field8: '手上功夫',
-char_section4_1_field9: '隱密行動',
-char_section4_1_field10: '生存',
-char_section5_1_field1: '閃避',
-char_section5_1_field2: '攀爬',
-char_section5_1_field3: '跳躍',
-char_section5_1_field4: '游泳',
-char_section5_1_field5: '駕駛',
-char_section5_1_field6: '領航',
-char_section5_1_field7: '騎術',
-char_section6_1_field1: '自然學',
-char_section6_1_field2: '神祕學',
-char_section6_1_field3: '歷史',
-char_section6_1_field4: '會計',
-char_section6_1_field5: '估價',
-char_section6_1_field6: '法律',
-char_section6_1_field7: '喬裝',
-char_section6_1_field8: '電腦使用',
-char_section6_1_field9: '電器維修',
-char_section6_1_field10: '機械維修',
-char_section6_1_field11: '重機械操作',
-char_section7_1_field1: '數學',
-char_section7_1_field2: '化學',
-char_section7_1_field3: '藥學',
-char_section7_1_field4: '人類學',
-char_section7_1_field5: '考古學',
-char_section7_1_field6: '電子學',
-char_section7_1_field7: '物理學',
-char_section7_1_field8: '工程學',
-char_section7_1_field9: '密碼學',
-char_section7_1_field10: '天文學',
-char_section7_1_field11: '地質學',
-char_section7_1_field12: '生物學',
-char_section7_1_field13: '動物學',
-char_section7_1_field14: '植物學',
-char_section7_1_field15: '物證學',
-char_section8_1_field1: '投擲',
-char_section8_1_field2: '鬥毆',
-char_section8_1_field3: '劍',
-char_section8_1_field4: '矛',
-char_section8_1_field5: '斧頭',
-char_section8_1_field6: '絞殺',
-char_section8_1_field7: '電鋸',
-char_section8_1_field8: '連枷',
-char_section8_1_field9: '鞭子',
-char_section8_1_field10: '弓箭',
-char_section8_1_field11: '手槍',
-char_section8_1_field12: '步槍',
-char_section8_1_field13: '衝鋒槍',
-char_section8_1_field14: '機關槍',
-char_section8_1_field15: '重武器',
-char_section8_1_field16: '火焰噴射器',
-char_section9_1_field1: '美術',
-char_section9_1_field2: '演技',
-char_section9_1_field3: '偽造',
-char_section9_1_field4: '攝影',
-char_section10_1_field1: '克蘇魯神話'
-//,char_section11_1_field1: 'item'
+    character_name: 'name',
+    char_section0_1_field1: 'hp',
+    char_section0_1_field3: 'mp',
+    char_section0_1_field5: 'san',
+    char_section0_1_field7: 'luck',
+    char_section0_1_field9: 'status',
+    char_section0_1_field10: '職業',
+    char_section1_1_field1: 'str',
+    char_section1_1_field2: 'con',
+    char_section1_1_field3: 'dex',
+    char_section1_1_field4: 'app',
+    char_section1_1_field5: 'pow',
+    char_section1_1_field6: 'int',
+    char_section1_1_field7: 'siz',
+    char_section1_1_field8: 'edu',
+    char_section2_1_field1: '母語',
+    char_section2_1_field8: '靈感',
+    char_section2_1_field10: '知識',
+    char_section3_1_field1: '信用',
+    char_section3_1_field2: '魅惑',
+    char_section3_1_field3: '恐嚇',
+    char_section3_1_field4: '說服',
+    char_section3_1_field5: '話術',
+    char_section3_1_field6: '心理學',
+    char_section3_1_field7: '心理分析',
+    char_section4_1_field1: '調查',
+    char_section4_1_field2: '聆聽',
+    char_section4_1_field3: '圖書館使用',
+    char_section4_1_field4: '追蹤',
+    char_section4_1_field5: '急救',
+    char_section4_1_field6: '醫學',
+    char_section4_1_field7: '鎖匠',
+    char_section4_1_field8: '手上功夫',
+    char_section4_1_field9: '隱密行動',
+    char_section4_1_field10: '生存',
+    char_section5_1_field1: '閃避',
+    char_section5_1_field2: '攀爬',
+    char_section5_1_field3: '跳躍',
+    char_section5_1_field4: '游泳',
+    char_section5_1_field5: '駕駛',
+    char_section5_1_field6: '領航',
+    char_section5_1_field7: '騎術',
+    char_section6_1_field1: '自然學',
+    char_section6_1_field2: '神祕學',
+    char_section6_1_field3: '歷史',
+    char_section6_1_field4: '會計',
+    char_section6_1_field5: '估價',
+    char_section6_1_field6: '法律',
+    char_section6_1_field7: '喬裝',
+    char_section6_1_field8: '電腦使用',
+    char_section6_1_field9: '電器維修',
+    char_section6_1_field10: '機械維修',
+    char_section6_1_field11: '重機械操作',
+    char_section7_1_field1: '數學',
+    char_section7_1_field2: '化學',
+    char_section7_1_field3: '藥學',
+    char_section7_1_field4: '人類學',
+    char_section7_1_field5: '考古學',
+    char_section7_1_field6: '電子學',
+    char_section7_1_field7: '物理學',
+    char_section7_1_field8: '工程學',
+    char_section7_1_field9: '密碼學',
+    char_section7_1_field10: '天文學',
+    char_section7_1_field11: '地質學',
+    char_section7_1_field12: '生物學',
+    char_section7_1_field13: '動物學',
+    char_section7_1_field14: '植物學',
+    char_section7_1_field15: '物證學',
+    char_section8_1_field1: '投擲',
+    char_section8_1_field2: '鬥毆',
+    char_section8_1_field3: '劍',
+    char_section8_1_field4: '矛',
+    char_section8_1_field5: '斧頭',
+    char_section8_1_field6: '絞殺',
+    char_section8_1_field7: '電鋸',
+    char_section8_1_field8: '連枷',
+    char_section8_1_field9: '鞭子',
+    char_section8_1_field10: '弓箭',
+    char_section8_1_field11: '手槍',
+    char_section8_1_field12: '步槍',
+    char_section8_1_field13: '衝鋒槍',
+    char_section8_1_field14: '機關槍',
+    char_section8_1_field15: '重武器',
+    char_section8_1_field16: '火焰噴射器',
+    char_section9_1_field1: '美術',
+    char_section9_1_field2: '演技',
+    char_section9_1_field3: '偽造',
+    char_section9_1_field4: '攝影',
+    char_section10_1_field1: '克蘇魯神話'
+    //,char_section11_1_field1: 'item'
 };
 
 ////////////////////////////////////////
@@ -1280,202 +1301,201 @@ function Cat() {
 }
 
 function Bro() {
-    let rplyArr = ['大哥是對的!!','叫本大爺有何貴幹?','幹嘛? 說好的貓罐罐呢?','大哥你叫的?','大哥永遠是對的!!!!'];
+    let rplyArr = ['大哥是對的!!', '叫本大爺有何貴幹?', '幹嘛? 說好的貓罐罐呢?', '大哥你叫的?', '大哥永遠是對的!!!!'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
-
-
-twitchEmoji = {'4Head': '354',
-'AMPTropPunch': '110785',
-'ANELE': '3792',
-'AngryJack': '551866',
-'ArgieB8': '51838',
-'ArigatoNas': '160393',
-'ArsonNoSexy': '50',
-'AsianGlow': '74',
-'BCWarrior': '30',
-'BJBlazkowicz': '206495',
-'BabyRage': '22639',
-'BatChest': '115234',
-'BegWan': '160394',
-'BibleThump': '86',
-'BigBrother': '1904',
-'BigPhish': '160395',
-'BlargNaut': '114738',
-'BlessRNG': '153556',
-'BloodTrail': '69',
-'BrainSlug': '115233',
-'BrokeBack': '4057',
-'BudStar': '97856',
-'BuddhaBar': '27602',
-'CarlSmile': '166266',
-'ChefFrank': '90129',
-'CoolCat': '58127',
-'CoolStoryBob': '123171',
-'CorgiDerp': '49106',
-'CrreamAwk': '191313',
-'CurseLit': '116625',
-'DAESuppy': '973',
-'DBstyle': '73',
-'DansGame': '33',
-'DarkMode': '461298',
-'DatSheffy': '111700',
-'DendiFace': '58135',
-'DogFace': '114835',
-'DoritosChip': '102242',
-'DxCat': '110734',
-'EleGiggle': '4339',
-'EntropyWins': '376765',
-'FUNgineer': '244',
-'FailFish': '360',
-'FrankerZ': '65',
-'FreakinStinkin': '117701',
-'FunRun': '48',
-'FutureMan': '98562',
-'GingerPower': '32',
-'GivePLZ': '112291',
-'GrammarKing': '3632',
-'GreenTeam': '530890',
-'HSCheers': '444572',
-'HSLight': '444567',
-'HSVoid': '444568',
-'HSWP': '446979',
-'HappyJack': '551865',
-'HassaanChop': '20225',
-'HassanChop': '68',
-'HeyGuys': '30259',
-'HotPokket': '357',
-'HumbleLife': '46881',
-'InuyoFace': '160396',
-'ItsBoshyTime': '133468',
-'JKanStyle': '15',
-'Jebaited': '114836',
-'JonCarnage': '26',
-'KAPOW': '133537',
-'Kappa': '25',
-'KappaClaus': '74510',
-'KappaPride': '55338',
-'KappaRoss': '70433',
-'KappaWealth': '81997',
-'Kappu': '160397',
-'Keepo': '1902',
-'KevinTurtle': '40',
-'Kippa': '1901',
-'KonCha': '160400',
-'Kreygasm': '41',
-'LUL': '425618',
-'MVGame': '142140',
-'Mau5': '30134',
-'MikeHogu': '81636',
-'MingLee': '68856',
-'MorphinTime': '156787',
-'MrDestructoid': '28',
-'NinjaGrumpy': '138325',
-'NomNom': '90075',
-'NotATK': '34875',
-'NotLikeThis': '58765',
-'OSfrog': '81248',
-'OSkomodo': '81273',
-'OSsloth': '81249',
-'OhMyDog': '81103',
-'OneHand': '66',
-'OpieOP': '100590',
-'OptimizePrime': '16',
-'PJSalt': '36',
-'PJSugar': '102556',
-'PMSTwin': '92',
-'PRChase': '28328',
-'PanicVis': '3668',
-'PartyTime': '135393',
-'PeoplesChamp': '3412',
-'PermaSmug': '27509',
-'PeteZaroll': '508742',
-'PicoMause': '111300',
-'PipeHype': '4240',
-'PogChamp': '88',
-'Poooound': '117484',
-'PowerUpL': '425688',
-'PowerUpR': '425671',
-'PraiseIt': '38586',
-'PrimeMe': '115075',
-'PunOko': '160401',
-'PunchTrees': '47',
-'QuadDamage': '206494',
-'RaccAttack': '114870',
-'RalpherZ': '1900',
-'RedCoat': '22',
-'RedTeam': '530888',
-'ResidentSleeper': '245',
-'RitzMitz': '4338',
-'RlyTho': '134256',
-'RuleFive': '107030',
-'SMOrc': '52',
-'SSSsss': '46',
-'SabaPing': '160402',
-'SeemsGood': '64138',
-'ShadyLulu': '52492',
-'ShazBotstix': '87',
-'SmoocherZ': '89945',
-'SoBayed': '1906',
-'SoonerLater': '134472',
-'Squid1': '191762',
-'Squid2': '191763',
-'Squid3': '191764',
-'Squid4': '191767',
-'StinkyCheese': '90076',
-'StoneLightning': '17',
-'StrawBeary': '114876',
-'SuperVinlin': '118772',
-'SwiftRage': '34',
-'TBAngel': '143490',
-'TBCrunchy': '200208',
-'TBTacoBag': '200211',
-'TBTacoProps': '200212',
-'TF2John': '1899',
-'TPFufun': '508650',
-'TPcrunchyroll': '323914',
-'TTours': '38436',
-'TakeNRG': '112292',
-'TearGlove': '160403',
-'TehePelo': '160404',
-'ThankEgg': '160392',
-'TheIlluminati': '145315',
-'TheRinger': '18',
-'TheTarFu': '111351',
-'TheThing': '7427',
-'ThunBeast': '1898',
-'TinyFace': '111119',
-'TooSpicy': '114846',
-'TotinosRecruit': '508741',
-'TotinosRing': '508740',
-'TriHard': '120232',
-'TwitchLit': '166263',
-'TwitchRPG': '191747',
-'TwitchUnity': '196892',
-'TwitchVotes': '479745',
-'UWot': '134255',
-'UnSane': '111792',
-'UncleNox': '114856',
-'VaultBoy': '206490',
-'VoHiYo': '81274',
-'VoteNay': '106294',
-'VoteYea': '106293',
-'WTRuck': '114847',
-'WholeWheat': '1896',
-'WutFace': '28087',
-'XboxBlack': '536878',
-'XboxElite': '536876',
-'YouDontSay': '134254',
-'YouWHY': '4337',
-'bleedPurple': '62835',
-'cmonBruh': '84608',
-'copyThis': '112288',
-'duDudu': '62834',
-'imGlitch': '112290',
-'mcaT': '35063',
-'panicBasket': '22998',
-'pastaThat': '112289',
-'riPepperonis': '62833',
-'twitchRaid': '62836'
+var twitchEmoji = {
+    "4Head": "354",
+    "AMPTropPunch": "110785",
+    "ANELE": "3792",
+    "AngryJack": "551866",
+    "ArgieB8": "51838",
+    "ArigatoNas": "160393",
+    "ArsonNoSexy": "50",
+    "AsianGlow": "74",
+    "BCWarrior": "30",
+    "BJBlazkowicz": "206495",
+    "BabyRage": "22639",
+    "BatChest": "115234",
+    "BegWan": "160394",
+    "BibleThump": "86",
+    "BigBrother": "1904",
+    "BigPhish": "160395",
+    "BlargNaut": "114738",
+    "BlessRNG": "153556",
+    "BloodTrail": "69",
+    "BrainSlug": "115233",
+    "BrokeBack": "4057",
+    "BudStar": "97856",
+    "BuddhaBar": "27602",
+    "CarlSmile": "166266",
+    "ChefFrank": "90129",
+    "CoolCat": "58127",
+    "CoolStoryBob": "123171",
+    "CorgiDerp": "49106",
+    "CrreamAwk": "191313",
+    "CurseLit": "116625",
+    "DAESuppy": "973",
+    "DBstyle": "73",
+    "DansGame": "33",
+    "DarkMode": "461298",
+    "DatSheffy": "111700",
+    "DendiFace": "58135",
+    "DogFace": "114835",
+    "DoritosChip": "102242",
+    "DxCat": "110734",
+    "EleGiggle": "4339",
+    "EntropyWins": "376765",
+    "FUNgineer": "244",
+    "FailFish": "360",
+    "FrankerZ": "65",
+    "FreakinStinkin": "117701",
+    "FunRun": "48",
+    "FutureMan": "98562",
+    "GingerPower": "32",
+    "GivePLZ": "112291",
+    "GrammarKing": "3632",
+    "GreenTeam": "530890",
+    "HSCheers": "444572",
+    "HSLight": "444567",
+    "HSVoid": "444568",
+    "HSWP": "446979",
+    "HappyJack": "551865",
+    "HassaanChop": "20225",
+    "HassanChop": "68",
+    "HeyGuys": "30259",
+    "HotPokket": "357",
+    "HumbleLife": "46881",
+    "InuyoFace": "160396",
+    "ItsBoshyTime": "133468",
+    "JKanStyle": "15",
+    "Jebaited": "114836",
+    "JonCarnage": "26",
+    "KAPOW": "133537",
+    "Kappa": "25",
+    "KappaClaus": "74510",
+    "KappaPride": "55338",
+    "KappaRoss": "70433",
+    "KappaWealth": "81997",
+    "Kappu": "160397",
+    "Keepo": "1902",
+    "KevinTurtle": "40",
+    "Kippa": "1901",
+    "KonCha": "160400",
+    "Kreygasm": "41",
+    "LUL": "425618",
+    "MVGame": "142140",
+    "Mau5": "30134",
+    "MikeHogu": "81636",
+    "MingLee": "68856",
+    "MorphinTime": "156787",
+    "MrDestructoid": "28",
+    "NinjaGrumpy": "138325",
+    "NomNom": "90075",
+    "NotATK": "34875",
+    "NotLikeThis": "58765",
+    "OSfrog": "81248",
+    "OSkomodo": "81273",
+    "OSsloth": "81249",
+    "OhMyDog": "81103",
+    "OneHand": "66",
+    "OpieOP": "100590",
+    "OptimizePrime": "16",
+    "PJSalt": "36",
+    "PJSugar": "102556",
+    "PMSTwin": "92",
+    "PRChase": "28328",
+    "PanicVis": "3668",
+    "PartyTime": "135393",
+    "PeoplesChamp": "3412",
+    "PermaSmug": "27509",
+    "PeteZaroll": "508742",
+    "PicoMause": "111300",
+    "PipeHype": "4240",
+    "PogChamp": "88",
+    "Poooound": "117484",
+    "PowerUpL": "425688",
+    "PowerUpR": "425671",
+    "PraiseIt": "38586",
+    "PrimeMe": "115075",
+    "PunOko": "160401",
+    "PunchTrees": "47",
+    "QuadDamage": "206494",
+    "RaccAttack": "114870",
+    "RalpherZ": "1900",
+    "RedCoat": "22",
+    "RedTeam": "530888",
+    "ResidentSleeper": "245",
+    "RitzMitz": "4338",
+    "RlyTho": "134256",
+    "RuleFive": "107030",
+    "SMOrc": "52",
+    "SSSsss": "46",
+    "SabaPing": "160402",
+    "SeemsGood": "64138",
+    "ShadyLulu": "52492",
+    "ShazBotstix": "87",
+    "SmoocherZ": "89945",
+    "SoBayed": "1906",
+    "SoonerLater": "134472",
+    "Squid1": "191762",
+    "Squid2": "191763",
+    "Squid3": "191764",
+    "Squid4": "191767",
+    "StinkyCheese": "90076",
+    "StoneLightning": "17",
+    "StrawBeary": "114876",
+    "SuperVinlin": "118772",
+    "SwiftRage": "34",
+    "TBAngel": "143490",
+    "TBCrunchy": "200208",
+    "TBTacoBag": "200211",
+    "TBTacoProps": "200212",
+    "TF2John": "1899",
+    "TPFufun": "508650",
+    "TPcrunchyroll": "323914",
+    "TTours": "38436",
+    "TakeNRG": "112292",
+    "TearGlove": "160403",
+    "TehePelo": "160404",
+    "ThankEgg": "160392",
+    "TheIlluminati": "145315",
+    "TheRinger": "18",
+    "TheTarFu": "111351",
+    "TheThing": "7427",
+    "ThunBeast": "1898",
+    "TinyFace": "111119",
+    "TooSpicy": "114846",
+    "TotinosRecruit": "508741",
+    "TotinosRing": "508740",
+    "TriHard": "120232",
+    "TwitchLit": "166263",
+    "TwitchRPG": "191747",
+    "TwitchUnity": "196892",
+    "TwitchVotes": "479745",
+    "UWot": "134255",
+    "UnSane": "111792",
+    "UncleNox": "114856",
+    "VaultBoy": "206490",
+    "VoHiYo": "81274",
+    "VoteNay": "106294",
+    "VoteYea": "106293",
+    "WTRuck": "114847",
+    "WholeWheat": "1896",
+    "WutFace": "28087",
+    "XboxBlack": "536878",
+    "XboxElite": "536876",
+    "YouDontSay": "134254",
+    "YouWHY": "4337",
+    "bleedPurple": "62835",
+    "cmonBruh": "84608",
+    "copyThis": "112288",
+    "duDudu": "62834",
+    "imGlitch": "112290",
+    "mcaT": "35063",
+    "panicBasket": "22998",
+    "pastaThat": "112289",
+    "riPepperonis": "62833",
+    "twitchRaid": "62836"
 };
 var Emoji = JSON.stringify(twitchEmoji);
