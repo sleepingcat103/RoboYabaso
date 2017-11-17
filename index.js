@@ -14,6 +14,7 @@ var v_path = '/v2/bot/message/reply';
 
 var timerFlag = 'off';
 var timerID;
+var twitchEmoji;
 
 // 房間入口
 // key:value
@@ -1284,7 +1285,7 @@ function Bro() {
 };
 
 
-var twitchEmoji = {'4Head': '354',
+twitchEmoji = {'4Head': '354',
 'AMPTropPunch': '110785',
 'ANELE': '3792',
 'AngryJack': '551866',
