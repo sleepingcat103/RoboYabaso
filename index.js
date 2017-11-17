@@ -596,7 +596,9 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     }else if(twitchEmoji.hasOwnProperty(trigger)){
 	outType = 'image';
 	//return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
-	return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+	var tempStr = 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+	console.log(tempStr);
+	return tempStr;
     }
 }
 ////////////////////////////////////////
