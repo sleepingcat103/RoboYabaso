@@ -626,10 +626,10 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         //return JP();
         JP(rplyToken);
         //}else if(Emoji.hasOwnProperty(trigger)){
-    } else if (twitchEmoji.hasOwnProperty(trigger)) {
+    } else if (twitchEmoji.hasOwnProperty(mainMsg[0].toString())) {
         outType = 'image';
         //return 'https://static-cdn.jtvnw.net/emoticons/v1/' + eval('twitchEmoji.'+trigger) + '/1.0';
-        var tempStr = 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+        var tempStr = 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[mainMsg[0].toString()] + '/1.0';
         console.log(tempStr);
         return tempStr;
     }
