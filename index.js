@@ -51,8 +51,8 @@ app.post('/', jsonParser, function (req, res) {
         eval('delete TRPG.' + event.source.groupId);
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
     }
-
     let msgType = event.message.type;
+    console.log(msgType);
     let msg = event.message.text;
     let rplyToken = event.replyToken;
 
