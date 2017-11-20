@@ -639,7 +639,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
-    }else if(trigger == '打架'){
+    }else if(trigger == '打架' || trigger == '互相傷害啊!' || trigger == '互相傷害' || trigger == '來互相傷害'){
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
