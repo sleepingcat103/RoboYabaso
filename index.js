@@ -641,7 +641,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
     }else if(trigger == 'sticker'){
 	outType = 'sticker';
-	reutrn;
+	reutrn "send sticker";
     }
 }
 ////////////////////////////////////////
