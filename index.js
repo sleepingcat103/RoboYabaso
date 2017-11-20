@@ -643,8 +643,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
-	    packageId: "7153",
-	    stickerId: "13041716"
+	    packageId: "1",
+	    stickerId: "108"
 	};
 	return stk;
     }
