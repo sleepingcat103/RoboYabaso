@@ -639,12 +639,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
-    }else if(trigger == 'sticker'){
+    }else if(trigger == '打架'){
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
-	    packageId: "1",
-	    stickerId: "108"
+	    packageId: "2",
+	    stickerId: "517"
 	};
 	return stk;
     }
