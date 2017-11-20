@@ -131,7 +131,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
-            message: [{
+            messages: [{
 		    type: "sticker",
 		    packageId: "1",
 		    stickerId: "108"
