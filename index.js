@@ -127,6 +127,16 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
                 previewImageUrl: rplyVal
             }]
         }
+    } else if (outType == 'sticker') {
+        v_path = '/v2/bot/message/reply';
+        rplyObj = {
+            replyToken: rplyToken,
+            message: {
+		    type: "sticker",
+		    packageId: "1",
+		    stickerId: "108"
+            }
+        }
     } else if (outType == 'push') {
         v_path = '/v2/bot/message/push';
         rplyObj = {
@@ -629,6 +639,9 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+    }else if(trigger == 'sticker'){
+	outType = 'sticker';
+	reutrn;
     }
 }
 ////////////////////////////////////////
