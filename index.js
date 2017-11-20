@@ -647,7 +647,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "517"
 	};
 	return stk;
-    }else if(trigger == '幫QQ' || trigger == '哭哭'){
+    }else if(trigger == '幫QQ' || trigger == '哭哭' || trigger == 'QQ'){
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
