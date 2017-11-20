@@ -131,7 +131,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
-            messages: rplyVal
+            messages: [rplyVal]
         }
     } else if (outType == 'push') {
         v_path = '/v2/bot/message/push';
