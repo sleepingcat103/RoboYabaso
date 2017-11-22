@@ -480,7 +480,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '你想幹嘛啦~~~';
         }
-    } else if (trigger == '臭貓' || trigger == '小方方' || trigger == 'FQ' || trigger == '方董' || trigger == '@方翊宸') {
+    } else if (trigger == '臭貓' || trigger == '小方方' || mainMsg[0] == 'FQ' || trigger == '方董' || trigger == '@方翊宸') {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
         outType = 'image';
@@ -639,7 +639,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
-    }else if(trigger == '打架' || trigger == '互相傷害R' || trigger == '來互相傷害' || trigger == '來互相傷害R'){
+    }else if(trigger == '打架' || mainMsg[0] == '互相傷害R' || trigger == '來互相傷害' || mainMsg[0] == '來互相傷害R'){
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
@@ -647,7 +647,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "517"
 	};
 	return stk;
-    }else if(trigger == '幫QQ' || trigger == '哭哭' || trigger == 'QQ'){
+    }else if(trigger == '幫QQ' || trigger == '哭哭' || mainMsg[0] == 'QQ'){
 	outType = 'sticker';
 	var stk = {
 	    type: "sticker",
