@@ -663,6 +663,14 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "410"
 	};
 	return stk;
+    }else if(trigger == '招財貓'){
+	outType = 'sticker';
+	var stk = {
+	    type: "sticker",
+	    packageId: "4",
+	    stickerId: "607"
+	};
+	return stk;   
     }
 }
 ////////////////////////////////////////
