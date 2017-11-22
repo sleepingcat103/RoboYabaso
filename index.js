@@ -671,6 +671,14 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "607"
 	};
 	return stk;   
+    }else if(trigger == '好冷' || trigger == '很冷' || trigger == '冷爆啦' || trigger == '冷' || trigger == '外面好冷'){
+	outType = 'sticker';
+	var stk = {
+	    type: "sticker",
+	    packageId: "2",
+	    stickerId: "29"
+	};
+	return stk;
     }
 }
 ////////////////////////////////////////
