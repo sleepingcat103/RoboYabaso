@@ -618,9 +618,6 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     } else if (trigger.match(/手手/) != null) {
         outType = 'image';
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
-    } else if (trigger.match(/qq|qaq/gi) != null) {
-        outType = 'image';
-        return 'https://static-cdn.jtvnw.net/emoticons/v1/86/1.0';
     }
     //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
