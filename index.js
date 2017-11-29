@@ -629,9 +629,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	function (error, response, body) {
 	    if (error) {
 		return console.log('error:' + error);
-	    }
+	    }else{
 	    console.log('success');
-	    console.log(body.id);
+	    console.log('body' + body);
+	    console.log('response' + response);
+	    }
 	})
 	
 	//return 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
