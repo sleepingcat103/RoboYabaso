@@ -623,7 +623,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		s = body.id;
 		console.log(s);
 		    
-		replyMsgToLine(outType, replyToken, s);
+		replyMsgToLine(outType, rplyToken, s);
             }
         });
 	    
