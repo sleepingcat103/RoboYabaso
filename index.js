@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
-//var crawler = require("request");
+var request = require("request");
 var rp = require('request-promise');
 var cheerio = require("cheerio");
 var app = express();
@@ -610,24 +610,30 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	voicelength = s.length*300;
  	s = 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
+	
 	    
-	$.ajax({
+	
+	setTimeout(function(){
+	    
+	}, 3000);
+	    
+	request({
 	    url : "https://www.googleapis.com/urlshortener/v1/url",
-	    type : "POST",
-	    data : JSON.stringify({
-	        longUrl: s
-	    }),
-	    contentType : "application/json",
-	    dataType : "json",
-	    success: function(result,status,xhr){
-	        if ( status=="success" )
-	        {
-	            //取得的 result.id 即為轉換後的 短網址
-		    console.log(result.id);
-		    return result.id;
-	        }
+		type : "POST",
+		data : JSON.stringify({
+			longUrl: s
+		}),
+		contentType : "application/json",
+		dataType : "json",
+	},
+	function (error, response, body) {
+	    if (error) {
+		return console.log('error:' + error);
 	    }
-	});
+	    console.log('success');
+	    console.log(body.id);
+	})
+	
 	//return 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
     }
 }
