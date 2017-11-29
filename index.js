@@ -614,7 +614,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	//setTimeout(function(){
 	    
 	//}, 3000);
-        request.post('https://www.googleapis.com/urlshortener/v1/url', {
+        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
             }
