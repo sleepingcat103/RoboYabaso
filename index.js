@@ -609,10 +609,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         let s = inputStr.replace('voice ', '');
 	outType = 'audio';
 	voicelength = s.length*100;
-	setTimeout(function(){ 
-		return 'https://api.cloudconvert.com/convert?apikey=u79J7MEFzGBGi_5TBUc6OyqgMNaX9mo6pV7hRsF6p4RHsHzmOFfCDxazShtLxUeM2KAQVbjd2PC4zyzG2syr-A&inputformat=mp3&outputformat=m4a&input=download&file=https%3A%2F%2Fapi.voicerss.org%2F%3Fkey%3Dad9bb556e281481093e10b10ffc673e5%26hl%3Den-us%26src%3D'+ encodeURIComponent(s)+'%26c%3Dmp3&filename=file.mp3&wait=true&download=inline'; 
-     	}, 1000);
-	
+
+	return 'https://api.cloudconvert.com/convert?apikey=u79J7MEFzGBGi_5TBUc6OyqgMNaX9mo6pV7hRsF6p4RHsHzmOFfCDxazShtLxUeM2KAQVbjd2PC4zyzG2syr-A&inputformat=mp3&outputformat=m4a&input=download&file=https%3A%2F%2Fapi.voicerss.org%2F%3Fkey%3Dad9bb556e281481093e10b10ffc673e5%26hl%3Den-us%26src%3D'+ encodeURIComponent(s)+'%26c%3Dmp3&filename=file.mp3&wait=true&download=inline'; 
 	//return 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
     }
 }
