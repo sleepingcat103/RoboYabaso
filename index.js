@@ -130,7 +130,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
             messages: [{
 	        "type": "audio",
 	        "originalContentUrl": rplyVal,
-	        "duration": 10000
+	        "duration": voicelength
 	    }]
         }
     } else if (outType == 'image') {
@@ -608,7 +608,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '');
 	outType = 'audio';
-	voicelength = s.length*300;
+	voicelength = s.length*500;
 	    
  	s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac';
 	
