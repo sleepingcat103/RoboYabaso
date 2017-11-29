@@ -610,10 +610,6 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	voicelength = s.length*300;
  	s = 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
-	
-	//setTimeout(function(){
-	    
-	//}, 3000);
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
@@ -623,10 +619,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error)
             } else {
                 console.log(response.statusCode, body)
+		return body.id;
             }
         });
 	
-	//return 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac';
+	//https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac
     }
 }
 ////////////////////////////////////////
