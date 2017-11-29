@@ -608,14 +608,18 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '');
 	outType = 'audio';
-	voicelength = s.length*500;
+	
 	if(s.length<200){
+		voicelength = s.length*500;
  	    s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
 	}else if(s.length<400){
+		voicelength = s.length*250;
 	    s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50&speed=2.00';
 	}else if(s.length<600){
+		voicelength = s.length*125;
 	    s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50&speed=3.00';
 	}else{
+		voicelength = s.length*60;
 	    s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50&speed=4.00';
 	}
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
