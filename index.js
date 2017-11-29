@@ -676,6 +676,14 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "29"
 	};
 	return stk;
+    }else if(trigger == '棒' || trigger == '豪棒棒' || trigger == '好棒' || trigger == '最棒' || trigger == '你真棒' || trigger == '你最棒' || trigger == '蚌'){
+	outType = 'sticker';
+	var stk = {
+	    type: "sticker",
+	    packageId: "2000016",
+	    stickerId: "692910"
+	};
+	return stk;
     }
 }
 ////////////////////////////////////////
