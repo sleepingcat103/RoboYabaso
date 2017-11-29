@@ -610,22 +610,25 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	
 	voicelength = s.length*500;
- 	s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
-
-	//console.log('string length: ' + s.length);
-	console.log('voice length: ' + voicelength);
-	    
-        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-            json: {
-                'longUrl': s
-            }
-        }, function (error, response, body) {
+	var dataJson = {
+	     "username":"MA2017",
+	     "password":"MnYrnxhH",
+	     "text" : s,
+	     "speaker_name":"reina_emo",
+	     "ext":"aac",
+	     "volume":"2.00",
+	     "range":"1.50";
+	};
+	//console.log('voice length: ' + voicelength);
+	
+        request.post('https://webapi.aitalk.jp/webapi/v2/ttsget.php', dataJson, function (error, response, body) {
             if(error) {
                 console.log(error);
             } else {
 		s = body.id;
+		console.log('response: ' + response);
+		console.log('body: ' + body);
 		console.log('url: ' + s);
-		    
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
