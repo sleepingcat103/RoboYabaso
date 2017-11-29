@@ -609,7 +609,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         let s = inputStr.replace('voice ', '');
 	outType = 'audio';
 	console.log(s);
-	return 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=mp3';
+	return 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=mp3';
     }
 }
 ////////////////////////////////////////
