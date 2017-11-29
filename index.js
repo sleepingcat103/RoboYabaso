@@ -17,7 +17,7 @@ var timerID;
 
 var twitchEmoji = require('./JsonData/twitchEmoji.json');
 var J_newCharStatus = require('./JsonData/newCharStatus.json');
-var JSONmapping = require('./JsonData/WebFileToJsonMapping.json.json');
+var JSONmapping = require('./JsonData/WebFileToJsonMapping.json');
 
 // 房間入口
 // key:value
