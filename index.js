@@ -123,7 +123,17 @@ app.listen(app.get('port'), function () {
 function replyMsgToLine(outType, rplyToken, rplyVal) {
 
     let rplyObj;
-    if (outType == 'image') {
+    if(outType == 'audio'){
+        v_path = '/v2/bot/message/reply';
+        rplyObj = {
+            replyToken: rplyToken,
+            messages: [{
+	        "type": "audio",
+	        "originalContentUrl": rplyVal,
+	        "duration": 200000
+	    }]
+        }
+    } else if (outType == 'image') {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
@@ -594,6 +604,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "692910"  // NO USE
 	};
 	return stk;
+    }
+    else if(trigger == 'voice'){
+        let s = inputStr.replace('voice ', '');
+	outType = 'audio';
+	console.log(s);
+	return 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=mp3';
     }
 }
 ////////////////////////////////////////
