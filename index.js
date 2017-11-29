@@ -617,7 +617,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	     "speaker_name":"reina_emo",
 	     "ext":"aac",
 	     "volume":"2.00",
-	     "range":"1.50";
+	     "range":"1.50"
 	};
 	//console.log('voice length: ' + voicelength);
 	
