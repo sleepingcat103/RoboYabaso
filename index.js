@@ -130,7 +130,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
             messages: [{
 	        "type": "audio",
 	        "originalContentUrl": rplyVal,
-	        "duration": voicelength
+	        "duration": 10000
 	    }]
         }
     } else if (outType == 'image') {
@@ -621,7 +621,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error);
             } else {
 		s = body.id;
-		console.log(s);
+		console.log('url: ' + s);
 		    
 		replyMsgToLine(outType, rplyToken, s);
             }
