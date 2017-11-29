@@ -622,6 +622,10 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		voicelength = s.length*60;
 	    s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50&speed=4.00';
 	}
+	    
+	console.log('string length: ' + s.length);
+	console.log('voice length: ' + voicelength);
+	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
