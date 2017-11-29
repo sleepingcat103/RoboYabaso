@@ -606,7 +606,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	return stk;
     }
     else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
-        let s = inputStr.toLowerCase().replace(trigger+' ', '');
+        let s = inputStr.toLowerCase().replace(trigger, '');
 	outType = 'audio';
 	voicelength = s.length*300;
 	    
