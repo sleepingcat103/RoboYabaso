@@ -130,7 +130,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
             messages: [{
 	        "type": "audio",
 	        "originalContentUrl": rplyVal,
-	        "duration": 200000
+	        "duration": rplyVal.length*300
 	    }]
         }
     } else if (outType == 'image') {
