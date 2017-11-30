@@ -610,36 +610,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	
 	voicelength = s.length*500;
-	var _data = {
-	  speaker_id: "201",
-	  text: s,
-	  ext: "m4a",
-	  volume: "1.0",
-	  speed: "1.0",
-	  pitch: "1.0",
-	  range: "1.0"
-	};
-	
-	var options = {
-	  method: "POST",
-	  uri: "https://cloud.ai-j.jp/demo/aitalk2webapi_nop.php",
-	  form: _data
-	};
-	rp(options, function(response) {
-	  console.log(response);
-	})
-	  .then(function(_json) {
-		var ret = _json.substr(9, _json.length);
-		ret = ret.substr(0, ret.length - 1);
-		ret = JSON.parse(ret);
-		console.log(ret)
-		var ret_data = "https:"+ret.url;
-		console.log(ret_data)
-		replyMsgToLine(outType, rplyToken, ret_data);
-	  })
-	  .catch(function(err) {
-	    console.log(err);
-        })
+	replyMsgToLine(outType, rplyToken, "https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=ja-jp&src="+s+"&c=ogg");
     }
 }
 ////////////////////////////////////////
