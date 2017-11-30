@@ -620,16 +620,22 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		volume: 2.00,
 		range: 1.50
 	});
+	var rss = GetUrl('https://api.voicerss.org/', {
+		key: 'ad9bb556e281481093e10b10ffc673e5',
+		src: s,
+		hl: 'zh-tw',
+		c: 'ogg'
+	});
 	    
 	//http://www.voicerss.org/api/documentation.aspx
-	s = 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s + '&c=ogg';
+	//s = 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s + '&c=ogg';
 	    
-        console.log('url: ' + s);
+        console.log('url: ' + rss);
 	console.log('voice length: ' + voicelength);
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
-                'longUrl': ss
+                'longUrl': rss
             }
         }, function (error, response, body) {
             if(error) {
