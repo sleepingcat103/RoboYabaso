@@ -610,7 +610,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	
 	voicelength = s.length*500;
-	replyMsgToLine(outType, rplyToken, "https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=ja-jp&src="+s+"&c=ogg");
+	replyMsgToLine(outType, rplyToken, "https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=ja-jp&src="+encodeURIComponent(s)+"&c=ogg");
     }
 }
 ////////////////////////////////////////
