@@ -617,11 +617,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
     }
     else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
+	    
 	outType = 'audio';
-	
 	voicelength = s.length*500;
  	
-	var ss = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
+	s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
 		username: 'MA2017',
 		password: 'MnYrnxhH',
 		text: s,
@@ -631,12 +631,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		range: 1.50
 	});
 	    
-        console.log('url: ' + ss);
+        console.log('url: ' + s);
 	console.log('voice length: ' + voicelength);
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
-                'longUrl': ss
+                'longUrl': s
             }
         }, function (error, response, body) {
             if(error) {
@@ -647,11 +647,14 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
-    }else if(trigger == 'video' || trigger == 'play'){
+    }
+
+	/*
+	else if(trigger == 'video' || trigger == 'play'){
 	    outType = 'audio';
 	    voicelength = 10*500;
 	    replyMsgToLine(outType, rplyToken,"https://www35.online-convert.com/dl/web1/download-file/1293cfa9-bce9-46b6-9213-17d33cd0db0e/Zyry7x.m4a");
-	    /*
+	    
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
 	outType = 'video';
 	
