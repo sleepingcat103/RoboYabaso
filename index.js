@@ -628,12 +628,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	rp(options, function(response) {
 	  console.log(response);
 	})
-	  .then(function($) {
-	    console.log($.url);
-	    console.log($.callback);
-	    console.log($.uri);
-	    console.log("https:"+$);
-	    replyMsgToLine(outType, rplyToken, "https:"+$);
+	  .then(function(_json) {
+	    $.each(_json, function(index, value){
+		console.log(index);
+		console.log(value);
+		replyMsgToLine(outType, rplyToken, "https:"+value);
+	    });
 	  })
 	  .catch(function(err) {
 	    console.log(err);
