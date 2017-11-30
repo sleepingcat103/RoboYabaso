@@ -611,12 +611,22 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	
 	voicelength = s.length*500;
  	
-	s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
+	s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
+		username: 'MA2017',
+		password: 'MnYrnxhH',
+		text: s,
+		speaker_name: 'reina_emo',
+		ext: 'aac',
+		volume: 2.00,
+		range: 1.50
+	});
+	    
+	//s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
 	
 	//http://www.voicerss.org/api/documentation.aspx
 	//s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=ogg';
 	    
-	//console.log('string length: ' + s.length);
+        console.log('url: ' + s);
 	console.log('voice length: ' + voicelength);
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
@@ -628,13 +638,9 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error);
             } else {
 		s = body.id;
-		console.log('url: ' + s);
-		    
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
-	    
-	//https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac
     }
 }
 ////////////////////////////////////////
@@ -1178,6 +1184,19 @@ function padRight(str, length) {
         return padRight(str + '　', length);
 }
 
+function GetUrl(url, data) {
+    if (data === "" && typeof data === "undefined") {
+        var keys = Object.keys(data);
+        for (var i = 0; i < keys.length; i++) {
+            var dataName = keys[i];
+            if (data.hasOwnProperty(dataName)) {
+                url += (i == 0) ? "?" : "&";
+                url += dataName + "=" + data[dataName];
+            }
+        }
+    }
+    return url;
+}
 
 
 ////////////////////////////////////////
