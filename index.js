@@ -1185,7 +1185,7 @@ function padRight(str, length) {
 }
 
 function GetUrl(url, data) {
-    if (data === "" && typeof data === "undefined") {
+    if (data != "" && typeof data != "undefined") {
         var keys = Object.keys(data);
         for (var i = 0; i < keys.length; i++) {
             var dataName = keys[i];
