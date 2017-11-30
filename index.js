@@ -606,7 +606,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	return stk;
     }
     else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
-        let s = inputStr.toLowerCase().replace(trigger, '');
+        let s = inputStr.toLowerCase().replace(trigger, '').trim();
 	outType = 'audio';
 	
 	voicelength = s.length*500;
@@ -629,7 +629,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
-                'longUrl': s
+                'longUrl': ss
             }
         }, function (error, response, body) {
             if(error) {
