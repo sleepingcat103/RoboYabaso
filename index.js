@@ -629,12 +629,13 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	  console.log(response);
 	})
 	  .then(function(_json) {
-		var ret = _json.substr(17, _json.length);
-		ret = ret.substr(0, ret.length - 3);
-		ret = ret.replace('\/','/')
-		ret = "https:"+ret.toString();
+		var ret = _json.substr(9, _json.length);
+		ret = ret.substr(0, ret.length - 1);
+		ret = JSON.parse(ret);
 		console.log(ret)
-		replyMsgToLine(outType, rplyToken, ret);
+		var ret_data = "https:"+ret.url;
+		console.log(ret_data)
+		replyMsgToLine(outType, rplyToken, ret_data);
 	  })
 	  .catch(function(err) {
 	    console.log(err);
