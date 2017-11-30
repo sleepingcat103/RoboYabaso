@@ -631,14 +631,12 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	  .then(function(_json) {
 		var ret = _json.substr(17, _json.length);
 		ret = ret.substr(0, ret.length - 3);
-		replyMsgToLine(outType, rplyToken, "https:"+ret);
+		ret = "https:"+ret;
+		console.log()
+		replyMsgToLine(outType, rplyToken, ret);
 	  })
 	  .catch(function(err) {
 	    console.log(err);
-	  });
-        
-	//replyMsgToLine(outType, rplyToken, s);
-	//https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src='+ encodeURIComponent(s)+'&c=aac
     }
 }
 ////////////////////////////////////////
