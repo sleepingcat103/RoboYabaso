@@ -632,7 +632,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		var ret = _json.substr(17, _json.length);
 		ret = ret.substr(0, ret.length - 3);
 		ret = "https:"+ret;
-		console.log()
+		console.log(ret)
 		replyMsgToLine(outType, rplyToken, ret);
 	  })
 	  .catch(function(err) {
