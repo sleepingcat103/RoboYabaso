@@ -631,6 +631,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	  .then(function(_json) {
 		var ret = _json.substr(17, _json.length);
 		ret = ret.substr(0, ret.length - 3);
+		ret = ret.replace('\/','/')
 		ret = "https:"+ret;
 		console.log(ret)
 		replyMsgToLine(outType, rplyToken, ret);
