@@ -682,8 +682,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		console.log("google url= " + s);
 		replyMsgToLine(outType, rplyToken, s);
             }
-        });*/
-    }
+        });
+    }*/
 }
 ////////////////////////////////////////
 //////////////// jp
