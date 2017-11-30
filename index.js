@@ -123,7 +123,17 @@ app.listen(app.get('port'), function () {
 function replyMsgToLine(outType, rplyToken, rplyVal) {
 
     let rplyObj;
-    if(outType == 'audio'){
+    if(outType == 'video'){
+        v_path = '/v2/bot/message/reply';
+        rplyObj = {
+            replyToken: rplyToken,
+            messages: [{
+	        "type": "video",
+	        "originalContentUrl": rplyVal,
+	        "previewImageUrl": "https://github.com/sleepingcat103/RoboYabaso/raw/master/201542716135.png"
+	    }]
+        }
+    } else if(outType == 'audio'){
         v_path = '/v2/bot/message/reply';
         rplyObj = {
             replyToken: rplyToken,
@@ -620,15 +630,35 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		volume: 2.00,
 		range: 1.50
 	});
+	    
+        console.log('url: ' + ss);
+	console.log('voice length: ' + voicelength);
+	    
+        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+            json: {
+                'longUrl': ss
+            }
+        }, function (error, response, body) {
+            if(error) {
+                console.log(error);
+            } else {
+		s = body.id;
+		console.log("google url= " + s);
+		replyMsgToLine(outType, rplyToken, s);
+            }
+        });
+    }else if(trigger == 'video' || trigger == 'play'){
+        let s = inputStr.toLowerCase().replace(trigger, '').trim();
+	outType = 'video';
+	
+	voicelength = s.length*500;
+ 	
 	var rss = GetUrl('https://api.voicerss.org/', {
 		key: 'ad9bb556e281481093e10b10ffc673e5',
 		src: s,
 		hl: 'zh-tw',
 		c: 'ogg'
 	});
-	    
-	//http://www.voicerss.org/api/documentation.aspx
-	//s = 'https://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s + '&c=ogg';
 	    
         console.log('url: ' + rss);
 	console.log('voice length: ' + voicelength);
