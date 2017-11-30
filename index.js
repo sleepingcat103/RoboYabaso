@@ -649,6 +649,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }else if(trigger == 'video' || trigger == 'play'){
 	    outType = 'audio';
+	    voicelength = 10*500;
 	    replyMsgToLine(outType, rplyToken,"https://www35.online-convert.com/dl/web1/download-file/1293cfa9-bce9-46b6-9213-17d33cd0db0e/Zyry7x.m4a");
 	    /*
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
