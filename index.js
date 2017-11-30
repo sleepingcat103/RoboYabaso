@@ -610,9 +610,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	outType = 'audio';
 	
 	voicelength = s.length*500;
- 	//s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
+ 	
+	s = 'https://webapi.aitalk.jp/webapi/v2/ttsget.php?username=MA2017&password=MnYrnxhH&text='+s+'&speaker_name=reina_emo&ext=aac&volume=2.00&range=1.50';
 	
-	s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=aac'
+	//http://www.voicerss.org/api/documentation.aspx
+	//s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=en-us&src=' + s + '&c=aac'
 	    
 	//console.log('string length: ' + s.length);
 	console.log('voice length: ' + voicelength);
