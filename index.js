@@ -175,7 +175,7 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
     } else if (outType == 'pushsecret') {
         v_path = '/v2/bot/message/push';
         rplyObj = {
-            replyToken: rplyToken,
+            to: rplyToken,
             messages: [{
 	        "type": "audio",
 	        "originalContentUrl": rplyVal,
