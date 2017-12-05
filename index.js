@@ -1,3 +1,6 @@
+//87 group Id: Cf712dd6f2676add8a6997fbeb0587619
+
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
@@ -14,6 +17,7 @@ var v_path = '/v2/bot/message/reply';
 
 var timerFlag = 'off';
 var voicelength = 0;
+var idiotGroup = 'Cf712dd6f2676add8a6997fbeb0587619';
 
 var twitchEmoji = require('./JsonData/twitchEmoji.json');
 var J_newCharStatus = require('./JsonData/newCharStatus.json');
@@ -167,6 +171,16 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
                 type: "text",
                 text: rplyVal
             }]
+        }
+    } else if (outType == 'pushsecret') {
+        v_path = '/v2/bot/message/push';
+        rplyObj = {
+            replyToken: rplyToken,
+            messages: [{
+	        "type": "audio",
+	        "originalContentUrl": rplyVal,
+	        "duration": voicelength
+	    }]
         }
     } else {
         v_path = '/v2/bot/message/reply';
@@ -647,11 +661,39 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
-    }else if (trigger == '87'){
-	//test();
-	console.log(event.source.groupId);    
+    }else if(trigger == 'secret' || trigger == '秘密' || trigger == 'ひみつ'){
+        let s = inputStr.toLowerCase().replace(trigger, '').trim();
+	    
+	outType = 'audio';
+	voicelength = s.length*500;
+ 	
+	s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
+		username: 'MA2017',
+		password: 'MnYrnxhH',
+		text: s,
+		speaker_name: 'reina_emo',
+		ext: 'aac',
+		volume: 2.00,
+		range: 1.50
+	});
+	    
+        console.log('url: ' + s);
+	console.log('voice length: ' + voicelength);
+	    
+        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+            json: {
+                'longUrl': s
+            }
+        }, function (error, response, body) {
+            if(error) {
+                console.log(error);
+            } else {
+		s = body.id;
+		console.log("google url= " + s);
+		replyMsgToLine('pushsecret', idiotGroup, s);
+            }
+        });
     }
-
 	/*
 	else if(trigger == 'video' || trigger == 'play'){
 	    outType = 'audio';
