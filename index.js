@@ -695,7 +695,6 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }else if(trigger == '告訴你'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
- 	outType = 'push';
 	s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
 	    
         //console.log('url: ' + s);
@@ -710,7 +709,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
             } else {
 		s = body.id;
 		console.log("google url= " + s);
-		replyMsgToLine(outType, rplyToken, s);
+		replyMsgToLine('push', idiotGroup, s);
             }
         });
     }
