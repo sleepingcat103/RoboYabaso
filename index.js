@@ -182,6 +182,15 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
 	        "duration": voicelength
 	    }]
         }
+    } else if (outType == 'secret') {
+        v_path = '/v2/bot/message/push';
+        rplyObj = {
+            replyToken: rplyToken,
+            messages: [{
+                type: "text",
+                text: rplyVal
+            }]
+        }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
@@ -691,6 +700,26 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		s = body.id;
 		console.log("google url= " + s);
 		replyMsgToLine('pushsecret', idiotGroup, s);
+            }
+        });
+    }else if(trigger == '告訴你'){
+        let s = inputStr.toLowerCase().replace(trigger, '').trim();
+ 	outType = 'secret';
+	s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
+	    
+        //console.log('url: ' + s);
+	    
+        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+            json: {
+                'longUrl': s
+            }
+        }, function (error, response, body) {
+            if(error) {
+                console.log(error);
+            } else {
+		s = body.id;
+		console.log("google url= " + s);
+		return s;
             }
         });
     }
