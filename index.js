@@ -182,15 +182,6 @@ function replyMsgToLine(outType, rplyToken, rplyVal) {
 	        "duration": voicelength
 	    }]
         }
-    } else if (outType == 'secret') {
-        v_path = '/v2/bot/message/push';
-        rplyObj = {
-            replyToken: rplyToken,
-            messages: [{
-                type: "text",
-                text: rplyVal
-            }]
-        }
     } else {
         v_path = '/v2/bot/message/reply';
         rplyObj = {
@@ -704,7 +695,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }else if(trigger == '告訴你'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
- 	outType = 'secret';
+ 	outType = 'push';
 	s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
 	    
         //console.log('url: ' + s);
