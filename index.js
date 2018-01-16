@@ -695,7 +695,16 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }else if(trigger == '告訴你'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
-	s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
+	//s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
+	    
+    	var regExp = /^[\d|a-zA-Z]+$/;
+    	if (regExp.test(s)){
+		//全是英文
+	    s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-gb&q=' + s;
+	}else{
+		//非全英文
+	    s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh&q=' + s;
+	}
 	    
         //console.log('url: ' + s);
 	    
