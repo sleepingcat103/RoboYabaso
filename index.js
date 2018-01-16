@@ -719,7 +719,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
             } else {
 		s = body.id;
 		console.log("google url= " + s);
-		return s;
+		replyMsgToLine(outType, rplyToken, s);
             }
         });
     }
