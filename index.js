@@ -546,7 +546,7 @@ https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_505087041
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 
         //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
-    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻'] || (IsKeyWord(trigger, '@名鴻') && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (IsKeyWord(trigger, '@名鴻') && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
