@@ -380,10 +380,6 @@ function parseInput(roomMID, rplyToken, inputStr) {
     let msgSplitor = (/\S+/ig);
     let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
-	
-	console.log(IsKeyWord(trigger, '@名鴻'));
-	console.log(mainMsg.length == 1);
-	console.log(IsKeyWord(trigger, '@名鴻') && mainMsg.length == 1);
 
     //角卡功能快速入口//
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
@@ -428,7 +424,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '你想幹嘛啦~~~';
         }
-    } else if (IsKeyWord(trigger, ['臭貓', '小方方', 'FQ', 'FK', '方董']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['臭貓', '小方方', 'FQ', 'FK', '方董']) || (trigger == '@方翊宸' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma,ster/m.jpg'];
         outType = 'image';
@@ -535,14 +531,14 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma,ster/m.jpg'];
     else if (trigger == '生科') {
         outType = 'image';
         return 'https://i.imgur.com/jYxRe8wl.jpg'; //coc6(mainMsg[1],mainMsg[2]);
-    } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (IsKeyWord(trigger, '@碩文') && mainMsg.length == 1) ) {
+    } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
         let rplyArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
 https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (IsKeyWord(trigger, '@王振宇') && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90', '\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
@@ -550,13 +546,13 @@ https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_505087041
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 
         //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
-    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (IsKeyWord(trigger, '@名鴻') && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
-    } else if (IsKeyWord(trigger, ['良丞', '良成']) || (IsKeyWord(trigger, '@王良丞') && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
