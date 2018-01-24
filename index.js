@@ -1,6 +1,5 @@
 //87 group Id: Cf712dd6f2676add8a6997fbeb0587619
 
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
@@ -547,34 +546,15 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
 	return Image('pi');
-//        let rplyArr = ['\
-//https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
-//https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
-//https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
-//        outType = 'image';
-//        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 	    
     } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
-        let rplyArr = ['\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90', '\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
-        outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        return Image('wang');
 
     } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
-        let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
-        outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+	return Image('mh');
 	    
     } else if (IsKeyWord(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
-        let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
-        outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        return Image('lc');
 	    
     } else if (trigger.match(/手手/) != null) {
         outType = 'image';
@@ -711,6 +691,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }
 }
+
 ////////////////////////////////////////
 //////////////// special return (sticker & image)
 ////////////////////////////////////////
@@ -731,6 +712,22 @@ let piArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
 https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
+	
+//振宇
+let wangArr = ['\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90', '\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_5050870415218617870_n.jpg?oh=8d8505efffa318db9b9086b2c35225db&oe=59C7BA94'];
+
+//ㄇㄏ
+let mhArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
+	
+//良承
+let lcArr = ['\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	
     var rplyArr;
     eval('rplyArr = ' + id + 'Arr');
