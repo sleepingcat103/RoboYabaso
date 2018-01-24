@@ -255,118 +255,6 @@ function getUserProfile(p_MID) {
     request.end();
 }
 
-///////////////////////////////////////
-/////////////////角色功能///////////////
-///////////////////////////////////////
-
-function createChar(p_name, p_uid) {
-    var player = J_newCharStatus;
-    player.status.name = p_name;
-    player.status.uid = p_uid;
-    player.getVal = function (p_sta) {
-        return eval('this.status.' + p_sta);
-    };
-    player.setVal = function (p_sta, p_val) {
-        if (p_sta == 'name' || p_sta == '職業') {
-            this.status.name = p_val;
-        } else if (isNaN(Number(p_val))) {
-            eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
-        } else {
-            if (Number(p_val) < 0) {
-                eval('this.status.' + p_sta + ' = \'' + 0 + '\'');
-            } else if (Number(p_val) > 99) {
-                eval('this.status.' + p_sta + ' = \'' + 99 + '\'');
-            } else {
-                eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
-            }
-        }
-    };
-    player.delVal = function (p_sta) {
-        eval('delete this.status.' + p_sta);
-    };
-    player.showAll = function () {
-        var result = "";
-        var v_cnt = 0;
-        for (var p in this.status) {
-            if (this.status.hasOwnProperty(p)) {
-                v_cnt = Number(v_cnt) + 1;
-                if (v_cnt % 3 == 0)
-                    result += p + ": " + this.status[p] + "\n";
-                else
-                    result += p + ": " + this.status[p] + "\t";
-            }
-        };
-        return result;
-    };
-    player.show = function () {
-        var MaxHP = Math.round((parseInt(this.getVal('con')) + parseInt(this.getVal('siz'))) / 2);
-        var MaxMP = this.getVal('pow');
-        var MaxSan = 99 - parseInt(this.getVal('克蘇魯神話'));
-        var tempstr = '+=====================+\n';
-        tempstr += this.getVal('name') + '\n';
-        tempstr += this.getVal('職業') + '\n';
-        tempstr += padRight('STR:', 4) + padRight(this.getVal('str'), 3) + padRight('DEX:', 4) + padRight(this.getVal('dex'), 3) + padRight('CON:', 4) + padRight(this.getVal('con'), 3) + '\n';
-        tempstr += padRight('POW:', 4) + padRight(this.getVal('pow'), 3) + padRight('APP:', 4) + padRight(this.getVal('app'), 3) + padRight('INT:', 4) + padRight(this.getVal('int'), 3) + '\n';
-        tempstr += padRight('SIZ:', 4) + padRight(this.getVal('siz'), 3) + padRight('EDU:', 4) + padRight(this.getVal('edu'), 3) + padRight('DB:', 4) + padRight(this.getVal('db'), 3) + '\n';
-        tempstr += '+=====================+\n';
-        tempstr += padRight('HP:', 4) + padRight(this.getVal('hp'), 3) + '/' + MaxHP + '\n';
-        tempstr += padRight('MP:', 4) + padRight(this.getVal('mp'), 3) + '/' + MaxMP + '\n';
-        tempstr += padRight('SAN:', 4) + padRight(this.getVal('san'), 3) + '/' + MaxSan + '\n';
-        tempstr += padRight('STATUS:', 8) + this.getVal('status') + '\n';
-        tempstr += padRight('ITEM:', 8) + this.getVal('item') + '\n';
-        tempstr += '+=====================+';
-        return tempstr;
-    };
-    player.export = function () {
-        var retStr = JSON.stringify(this.status);
-        return retStr;
-    };
-    player.import = function (p_str) {
-        var newChar = JSON.parse(p_str);
-        var oriName = this.getVal('name');
-        this.status = newChar;
-        this.setVal('name', oriName);
-        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
-    };
-    player.importFromTRPG = function (p_str) {
-        var tempChar = JSON.parse(p_str);
-        var newChar = tempChar.skill;
-        for (var p in newChar) {
-            if (this.status.hasOwnProperty(JSONmapping[p])) {
-                eval('this.status.' + JSONmapping[p] + '=\'' + newChar[p] + '\'');
-            }
-        }
-        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
-        //return JSON.stringify(newChar);
-    };
-    return player;
-}
-
-////////////////////////////////////////
-//////////////// 創房間 ////////////////
-////////////////////////////////////////
-
-function createNewRoom(p_Mid) {
-    var room = {
-        GP_MID: p_Mid,
-        KP_MID: '',
-        players: []
-    };
-    room.setkp = function (p_Mid) {
-        this.KP_MID = p_Mid;
-    };
-    room.getGPMid = function () {
-        return this.GP_MID;
-    };
-    room.getKPMid = function () {
-        return this.KP_MID;
-    };
-    room.newChar = function (p_char) {
-        this.players.push(p_char);
-    };
-    return room;
-}
-
 ////////////////////////////////////////
 //////////////// 分析開始 //////////////
 ////////////////////////////////////////
@@ -385,13 +273,61 @@ function parseInput(roomMID, rplyToken, inputStr) {
         if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name'))
             return CharacterControll(roomMID, mainMsg[0], mainMsg[1], mainMsg[2], mainMsg[3]);
     }
-
-    if (trigger.match(/運氣|運勢/) != null) {
+	
+    //不是很重要的功能
+    if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
+        return SortIt(inputStr, mainMsg);
+	    
+    } else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
+        return choice(inputStr, mainMsg);
+	    
+    } else if (trigger.match(/運氣|運勢/) != null) {
         return randomLuck(mainMsg); //占卜運氣
 	    
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
+    
+    //圖片回應
+    } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
+        return Image('godcat');
 	    
+    } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
+	return Image('pi');
+	    
+    } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
+        return Image('wang');
+
+    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
+	return Image('mh');
+	    
+    } else if (IsKeyWord(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
+        return Image('lc');
+	    
+    } else if (trigger == '生科') {
+        outType = 'image';
+        return 'https://i.imgur.com/jYxRe8wl.jpg'; 
+	    
+    } else if (trigger.match(/手手/) != null) {
+        outType = 'image';
+        return 'https://imgur.dcard.tw/0cE3QNA.jpg';
+	    
+    //貓咪嘴砲
+    } else if (trigger == '貓咪') {
+        return MeowHelp();
+	    
+    } else if (trigger.match(/喵/) != null) {
+        return Meow();
+	    
+    } else if (trigger.match(/貓/) != null) {
+        return Cat();
+	    
+    } else if (IsKeyWord(trigger, ['help', '幫助'])) {
+        return Help();
+	    
+    } else if (trigger == '大哥') {
+        return Bro();
+	    
+    //TRPG相關功能
     } else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
         return build6char(mainMsg[1]);
 	    
@@ -408,6 +344,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return CharacterControll(roomMID, mainMsg[1], mainMsg[2], mainMsg[3], mainMsg[4]);
         }
+	    
     } else if (trigger == 'join') {
         if (event.source.type == 'user' &&
             userToRoom.hasOwnProperty(event.source.userId) &&
@@ -427,34 +364,11 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '你想幹嘛啦~~~';
         }
-    } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
-        let rply = 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg';
-        outType = 'image';
-        return rply;
-	    
-    } else if (trigger == '貓咪') {
-        return MeowHelp();
-	    
-    } else if (trigger.match(/喵/) != null) {
-        return Meow();
-	    
-    } else if (trigger.match(/貓/) != null) {
-        return Cat();
-	    
-    } else if (IsKeyWord(trigger, ['help', '幫助'])) {
-        return Help();
-	    
-    } else if (trigger == '大哥') {
-        return Bro();
-	    
-    } else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
-        return SortIt(inputStr, mainMsg);
 	    
     }else if (trigger == 'ccb') {
         return ccb(roomMID, mainMsg[1], mainMsg[2]);
-    }
-	
-    else if (trigger == 'ccd') {
+	    
+    }else if (trigger == 'ccd') {
         for (i = 0; i < TRPG[roomMID].players.length; i++) {
             if (mainMsg[1].toString() == TRPG[roomMID].players[i].getVal('name'))
                 return CharacterControll(roomMID, mainMsg[1], mainMsg[0], mainMsg[2], mainMsg[3]);
@@ -471,8 +385,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '現在房間沒有KP，你想傳給誰喵?';
         }
-    } //房間相關指令開始於此
-    else if (trigger == 'getkp') {
+	    
+    //TRPG房間相關指令開始於此
+    } else if (trigger == 'getkp') {
         if (TRPG[roomMID].KP_MID != '') {
             return TRPG[roomMID].KP_MID;
         } else if (event.source.type != 'group') {
@@ -539,35 +454,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
         //   return '群組的uid是' + event.source.groupId;
         else
             return eval('\'群組的uid是: \' + event.source.+' + event.source.type + 'Id');
-	    
-    }else if (trigger == '生科') {
-        outType = 'image';
-        return 'https://i.imgur.com/jYxRe8wl.jpg'; 
-	    
-    } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
-	return Image('pi');
-	    
-    } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
-        return Image('wang');
-
-    } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
-	return Image('mh');
-	    
-    } else if (IsKeyWord(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
-        return Image('lc');
-	    
-    } else if (trigger.match(/手手/) != null) {
-        outType = 'image';
-        return 'https://imgur.dcard.tw/0cE3QNA.jpg';
-    }
-	
-    //choice 指令開始於此
-    else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
-        return choice(inputStr, mainMsg);
-    }
 	
     //普通ROLL擲骰判定
-    else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
+    } else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
 	    
     } else if (trigger == 'getprofile' && event.source.type == 'user') {
@@ -575,14 +464,17 @@ function parseInput(roomMID, rplyToken, inputStr) {
             userToRoom[event.source.userId].userId + '\n' +
             userToRoom[event.source.userId].pictureUrl + '\n' +
             userToRoom[event.source.userId].statusMessage;
-	    
+    
+    //匯率
     } else if (IsKeyWord(trigger, ['!日幣', '！日幣', '！jp', '!jp'])) {
         JP(rplyToken);
-	    
+
+    //圖奇表情符號
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
 	    
+    //貼圖
     }else if(IsKeyWord(trigger, ['打架', '互相傷害r', '來互相傷害', '來互相傷害r'])){
 	return Sticker("2", "517");
 	    
@@ -598,6 +490,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
     }else if(IsKeyWord(trigger, ['好冷', '很冷', '冷爆啦', '冷死', '外面好冷'])){
 	return Sticker("2", "29");
 	    
+    //聲音相關
     }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
 	    
@@ -729,6 +622,9 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	
+//神貓
+let godcatArr = ['https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg'];
+	
     var rplyArr;
     eval('rplyArr = ' + id + 'Arr');
 	
@@ -761,6 +657,118 @@ function JP(replyToken) {
         .catch(function (err) {
             return "Fail to get data.";
         });
+}
+
+///////////////////////////////////////
+/////////////////角色功能///////////////
+///////////////////////////////////////
+
+function createChar(p_name, p_uid) {
+    var player = J_newCharStatus;
+    player.status.name = p_name;
+    player.status.uid = p_uid;
+    player.getVal = function (p_sta) {
+        return eval('this.status.' + p_sta);
+    };
+    player.setVal = function (p_sta, p_val) {
+        if (p_sta == 'name' || p_sta == '職業') {
+            this.status.name = p_val;
+        } else if (isNaN(Number(p_val))) {
+            eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
+        } else {
+            if (Number(p_val) < 0) {
+                eval('this.status.' + p_sta + ' = \'' + 0 + '\'');
+            } else if (Number(p_val) > 99) {
+                eval('this.status.' + p_sta + ' = \'' + 99 + '\'');
+            } else {
+                eval('this.status.' + p_sta + ' = \'' + p_val + '\'');
+            }
+        }
+    };
+    player.delVal = function (p_sta) {
+        eval('delete this.status.' + p_sta);
+    };
+    player.showAll = function () {
+        var result = "";
+        var v_cnt = 0;
+        for (var p in this.status) {
+            if (this.status.hasOwnProperty(p)) {
+                v_cnt = Number(v_cnt) + 1;
+                if (v_cnt % 3 == 0)
+                    result += p + ": " + this.status[p] + "\n";
+                else
+                    result += p + ": " + this.status[p] + "\t";
+            }
+        };
+        return result;
+    };
+    player.show = function () {
+        var MaxHP = Math.round((parseInt(this.getVal('con')) + parseInt(this.getVal('siz'))) / 2);
+        var MaxMP = this.getVal('pow');
+        var MaxSan = 99 - parseInt(this.getVal('克蘇魯神話'));
+        var tempstr = '+=====================+\n';
+        tempstr += this.getVal('name') + '\n';
+        tempstr += this.getVal('職業') + '\n';
+        tempstr += padRight('STR:', 4) + padRight(this.getVal('str'), 3) + padRight('DEX:', 4) + padRight(this.getVal('dex'), 3) + padRight('CON:', 4) + padRight(this.getVal('con'), 3) + '\n';
+        tempstr += padRight('POW:', 4) + padRight(this.getVal('pow'), 3) + padRight('APP:', 4) + padRight(this.getVal('app'), 3) + padRight('INT:', 4) + padRight(this.getVal('int'), 3) + '\n';
+        tempstr += padRight('SIZ:', 4) + padRight(this.getVal('siz'), 3) + padRight('EDU:', 4) + padRight(this.getVal('edu'), 3) + padRight('DB:', 4) + padRight(this.getVal('db'), 3) + '\n';
+        tempstr += '+=====================+\n';
+        tempstr += padRight('HP:', 4) + padRight(this.getVal('hp'), 3) + '/' + MaxHP + '\n';
+        tempstr += padRight('MP:', 4) + padRight(this.getVal('mp'), 3) + '/' + MaxMP + '\n';
+        tempstr += padRight('SAN:', 4) + padRight(this.getVal('san'), 3) + '/' + MaxSan + '\n';
+        tempstr += padRight('STATUS:', 8) + this.getVal('status') + '\n';
+        tempstr += padRight('ITEM:', 8) + this.getVal('item') + '\n';
+        tempstr += '+=====================+';
+        return tempstr;
+    };
+    player.export = function () {
+        var retStr = JSON.stringify(this.status);
+        return retStr;
+    };
+    player.import = function (p_str) {
+        var newChar = JSON.parse(p_str);
+        var oriName = this.getVal('name');
+        this.status = newChar;
+        this.setVal('name', oriName);
+        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+    };
+    player.importFromTRPG = function (p_str) {
+        var tempChar = JSON.parse(p_str);
+        var newChar = tempChar.skill;
+        for (var p in newChar) {
+            if (this.status.hasOwnProperty(JSONmapping[p])) {
+                eval('this.status.' + JSONmapping[p] + '=\'' + newChar[p] + '\'');
+            }
+        }
+        return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
+        //return JSON.stringify(newChar);
+    };
+    return player;
+}
+
+////////////////////////////////////////
+//////////////// 創房間 ////////////////
+////////////////////////////////////////
+
+function createNewRoom(p_Mid) {
+    var room = {
+        GP_MID: p_Mid,
+        KP_MID: '',
+        players: []
+    };
+    room.setkp = function (p_Mid) {
+        this.KP_MID = p_Mid;
+    };
+    room.getGPMid = function () {
+        return this.GP_MID;
+    };
+    room.getKPMid = function () {
+        return this.KP_MID;
+    };
+    room.newChar = function (p_char) {
+        this.players.push(p_char);
+    };
+    return room;
 }
 
 ////////////////////////////////////////
