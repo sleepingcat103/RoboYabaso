@@ -425,10 +425,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
             return '你想幹嘛啦~~~';
         }
     } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
-        let rplyArr = ['\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma,ster/m.jpg'];
+        let rply = 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg';
         outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        return rply;
     } else if (trigger == '貓咪') {
         return MeowHelp();
     } else if (trigger.match(/喵/) != null) {
