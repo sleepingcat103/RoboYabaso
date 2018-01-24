@@ -389,12 +389,16 @@ function parseInput(roomMID, rplyToken, inputStr) {
 
     if (trigger.match(/運氣|運勢/) != null) {
         return randomLuck(mainMsg); //占卜運氣
+	    
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
+	    
     } else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
         return build6char(mainMsg[1]);
+	    
     } else if (trigger == 'db') {
         return db(mainMsg[1], 1);
+	    
     } else if (trigger == '角色' || trigger == 'char') {
         if (roomMID == 'first') {
             if (event.source.type == 'user') {
@@ -428,22 +432,29 @@ function parseInput(roomMID, rplyToken, inputStr) {
         let rply = 'https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/m.jpg';
         outType = 'image';
         return rply;
+	    
     } else if (trigger == '貓咪') {
         return MeowHelp();
+	    
     } else if (trigger.match(/喵/) != null) {
         return Meow();
+	    
     } else if (trigger.match(/貓/) != null) {
         return Cat();
+	    
     } else if (IsKeyWord(trigger, ['help', '幫助'])) {
         return Help();
+	    
     } else if (trigger == '大哥') {
         return Bro();
+	    
     } else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
         return SortIt(inputStr, mainMsg);
-    } //ccb指令開始於此
-    else if (trigger == 'ccb') {
+	    
+    }else if (trigger == 'ccb') {
         return ccb(roomMID, mainMsg[1], mainMsg[2]);
-    } //ccd指令開始於此
+    }
+	
     else if (trigger == 'ccd') {
         for (i = 0; i < TRPG[roomMID].players.length; i++) {
             if (mainMsg[1].toString() == TRPG[roomMID].players[i].getVal('name'))
@@ -497,12 +508,14 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 return '現在沒有KP喵~';
             }
         }
+	    
     } else if (trigger == 'getgp') {
         if (TRPG[roomMID].GP_MID != '') {
             return TRPG[roomMID].GP_MID;
         } else {
             return '你還沒有進房間哦!!!';
         }
+	    
     } else if (trigger == 'setgp') {
         if (event.source.type == 'group') {
             if (TRPG.hasOwnProperty(event.source.groupId)) {
@@ -514,10 +527,12 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '必須是群組才能開房間唷 <3 ';
         }
+	    
     } else if ((trigger == 'leaveroom' || event.type == 'leave') && TRPG.hasOwnProperty(event.source.groupId)) {
         eval('delete TRPG.' + event.source.groupId);
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
         return '已經刪除房間資訊了喵~';
+	    
     } else if (trigger == 'getuid') {
         if (event.source.type == 'user')
             return '你的uid是:' + event.source.userId;
@@ -525,18 +540,20 @@ function parseInput(roomMID, rplyToken, inputStr) {
         //   return '群組的uid是' + event.source.groupId;
         else
             return eval('\'群組的uid是: \' + event.source.+' + event.source.type + 'Id');
-    }
-    //生科火大圖指令開始於此 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9
-    else if (trigger == '生科') {
+	    
+    }else if (trigger == '生科') {
         outType = 'image';
-        return 'https://i.imgur.com/jYxRe8wl.jpg'; //coc6(mainMsg[1],mainMsg[2]);
+        return 'https://i.imgur.com/jYxRe8wl.jpg'; 
+	    
     } else if (IsKeyWord(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
-        let rplyArr = ['\
-https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
-https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
-https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
-        outType = 'image';
-        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+	Image('pi');
+//        let rplyArr = ['\
+//https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
+//https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
+//https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
+//        outType = 'image';
+//        return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+	    
     } else if (IsKeyWord(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/17796399_1874499289243029_3191330377913562194_n.jpg?oh=563a8e1a27294de20a5f88941dc72089&oe=59DBCA90', '\
@@ -544,13 +561,13 @@ https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/11422678_849084711833568_505087041
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 
-        //return 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14563560_1155909111151125_9153753693271936692_n.jpg?oh=35581c489789fc070dc26367604d9504&oe=59E2E1D9';
     } else if (IsKeyWord(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-1.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/mh-2.jpg'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+	    
     } else if (IsKeyWord(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-1.jpg', '\
@@ -558,67 +575,49 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-2.jpg', '\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         outType = 'image';
         return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+	    
     } else if (trigger.match(/手手/) != null) {
         outType = 'image';
         return 'https://imgur.dcard.tw/0cE3QNA.jpg';
     }
+	
     //choice 指令開始於此
     else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
         return choice(inputStr, mainMsg);
     }
+	
     //普通ROLL擲骰判定
     else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
         return nomalDiceRoller(inputStr, mainMsg[0], mainMsg[1], mainMsg[2]);
+	    
     } else if (trigger == 'getprofile' && event.source.type == 'user') {
         return userToRoom[event.source.userId].displayName + '\n' +
             userToRoom[event.source.userId].userId + '\n' +
             userToRoom[event.source.userId].pictureUrl + '\n' +
             userToRoom[event.source.userId].statusMessage;
+	    
     } else if (IsKeyWord(trigger, ['!日幣', '！日幣', '！jp', '!jp'])) {
         JP(rplyToken);
+	    
     } else if (twitchEmoji.hasOwnProperty(trigger)) {
         outType = 'image';
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
-    }else if(trigger == '打架' || mainMsg[0] == '互相傷害R' || trigger == '來互相傷害' || mainMsg[0] == '來互相傷害R'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "2",
-	    stickerId: "517"
-	};
-	return stk;
+	    
+    }else if(IsKeyWord(trigger, ['打架', '互相傷害r', '來互相傷害', '來互相傷害r'])){
+	return Sticker("2", "517");
+	    
     }else if(trigger == '幫QQ' || trigger == '哭哭' || mainMsg[0] == 'QQ'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "1",
-	    stickerId: "9"
-	};
-	return stk;
+	return Sticker("1", "9");
+	    
     }else if(trigger == '<3'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "1",
-	    stickerId: "410"
-	};
-	return stk;
+	return Sticker("1", "410");
+	    
     }else if(trigger == '招財貓'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "4",
-	    stickerId: "607"
-	};
-	return stk;   
-    }else if(trigger == '好冷' || trigger == '很冷' || trigger == '冷爆啦' || trigger == '冷' || trigger == '外面好冷'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "2",
-	    stickerId: "29"
-	};
-	return stk;
+	return Sticker("4", "607");
+	    
+    }else if(IsKeyWord(trigger, ['好冷', '很冷', '冷爆啦', '冷死', '外面好冷'])){
+	return Sticker("2", "29");
+	    
     }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
 	    
@@ -712,6 +711,34 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
         });
     }
 }
+////////////////////////////////////////
+//////////////// special return (sticker & image)
+////////////////////////////////////////
+function Sticker(package, sticker){
+	outType = 'sticker';
+	var stk = {
+	    type: "sticker",
+	    packageId: package,
+	    stickerId: sticker
+	};
+	return stk;
+}
+
+function Image(id){
+
+//屁孩
+let piArr = ['\
+https://scontent-tpe1-1.xx.fbcdn.net/v/t1.0-9/14570304_1166680320088981_2520143854908017535_n.jpg?oh=7a58b68d49620d131e47a537a61f1f8a&oe=59CD439F', '\
+https://i.ytimg.com/vi/GvxaQHPoLu8/maxresdefault.jpg', '\
+https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/p.png'];
+	
+    var rplyArr;
+    eval('rplyArr = ' + id + 'Arr');
+	
+    outType = 'image';
+    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];	
+}
+
 ////////////////////////////////////////
 //////////////// jp
 ////////////////////////////////////////
