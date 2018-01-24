@@ -424,7 +424,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '你想幹嘛啦~~~';
         }
-    } else if (IsKeyWord(trigger, ['臭貓', '小方方', 'FQ', 'FK', '方董']) || (trigger == '@方翊宸' && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
         let rplyArr = ['\
 https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma,ster/m.jpg'];
         outType = 'image';
@@ -620,16 +620,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 	    stickerId: "29"
 	};
 	return stk;
-    }else if(trigger == '棒' || trigger == '豪棒棒' || trigger == '好棒' || trigger == '最棒' || trigger == '你真棒' || trigger == '你最棒' || trigger == '蚌'){
-	outType = 'sticker';
-	var stk = {
-	    type: "sticker",
-	    packageId: "2000016",  // NO USE
-	    stickerId: "692910"  // NO USE
-	};
-	return stk;
-    }
-    else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
+    }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
         let s = inputStr.toLowerCase().replace(trigger, '').trim();
 	    
 	outType = 'audio';
@@ -645,8 +636,8 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		range: 1.50
 	});
 	    
-        console.log('url: ' + s);
-	console.log('voice length: ' + voicelength);
+        //console.log('url: ' + s);
+	//console.log('voice length: ' + voicelength);
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
@@ -657,7 +648,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error);
             } else {
 		s = body.id;
-		console.log("google url= " + s);
+		//console.log("google url= " + s);
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
@@ -677,8 +668,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
 		range: 1.50
 	});
 	    
-        console.log('url: ' + s);
-	console.log('voice length: ' + voicelength);
+        //console.log('url: ' + s);
 	    
         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
@@ -689,7 +679,7 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error);
             } else {
 		s = body.id;
-		console.log("google url= " + s);
+		//console.log("google url= " + s);
 		replyMsgToLine('pushsecret', idiotGroup, s);
             }
         });
@@ -717,46 +707,11 @@ https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/lc-0.jpg'];
                 console.log(error);
             } else {
 		s = body.id;
-		console.log("google url= " + s);
+		//console.log("google url= " + s);
 		replyMsgToLine('push', idiotGroup, s);
             }
         });
     }
-	/*
-	else if(trigger == 'video' || trigger == 'play'){
-	    outType = 'audio';
-	    voicelength = 10*500;
-	    replyMsgToLine(outType, rplyToken,"https://www35.online-convert.com/dl/web1/download-file/1293cfa9-bce9-46b6-9213-17d33cd0db0e/Zyry7x.m4a");
-	    
-        let s = inputStr.toLowerCase().replace(trigger, '').trim();
-	outType = 'video';
-	
-	voicelength = s.length*500;
- 	
-	var rss = GetUrl('https://api.voicerss.org/', {
-		key: 'ad9bb556e281481093e10b10ffc673e5',
-		src: s,
-		hl: 'zh-tw',
-		c: 'ogg'
-	});
-	    
-        console.log('url: ' + rss);
-	console.log('voice length: ' + voicelength);
-	    
-        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-            json: {
-                'longUrl': rss
-            }
-        }, function (error, response, body) {
-            if(error) {
-                console.log(error);
-            } else {
-		s = body.id;
-		console.log("google url= " + s);
-		replyMsgToLine(outType, rplyToken, s);
-            }
-        });
-    }*/
 }
 ////////////////////////////////////////
 //////////////// jp
@@ -779,10 +734,9 @@ function JP(replyToken) {
             //str += "\r\n"+fax[3].children[9].attribs["data-name"] + "  " +fax[3].children[9].children[0].data;
             console.log(str);
             replyMsgToLine(outType, replyToken, str);
-            //return str;
         })
         .catch(function (err) {
-            return "error!!!";
+            return "Fail to get data.";
         });
 }
 
@@ -1317,6 +1271,10 @@ function IsKeyWord(target, strs){
     if(target==null||strs==null){
         return false;
     }
+	
+    if(target == strs)
+	return true;
+	
     for(i=0; i<strs.length; i++){
         if(target == strs[i]){
             return true;
