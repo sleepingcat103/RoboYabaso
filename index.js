@@ -449,9 +449,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     } else if (trigger == 'getuid') {
 	    
-	    console.log('event = ' + event);
+	    console.log('event = ' + JSON.stringify(event));
 	    console.log('==============================');
-	    console.log('event.source = ' + event.source);
+	    console.log('event.source = ' + JSON.stringify(event.source));
         if (event.source.type == 'user')
             return '你的uid是:' + event.source.userId;
         //else if(event.source.type =='group')
