@@ -766,7 +766,7 @@ function LoadGame(groupId){
                         
                         //建立角色資訊
                         console.log('set pc');
-                        var newPlayer;
+                        var newPlayer = createChar(id, '');
                         var newPlayerJson = response.rows[i][4];
                         TRPG[groupId].players.push(newPlayer);
                         newPlayer.import(newPlayerJson);
