@@ -716,38 +716,43 @@ function LoadGame(groupId){
 			} else {
 				//製作房間&角色資訊
 				
+				var delay = function(r,s){
+					return new Promise(function(resolve,reject){
+						setTimeout(function(){
+							resolve([r,s]);
+						},s); 
+					});
+				};
+				
 				var KPid = '';
 				var data = response.rows;
 				console.log('find kp');
 				
-				if(data.find(function(element){
-					if(element.cellsArray[3] == 'KP')
-					{
-						console.log('set room');
-						TRPG.createRoom(groupId, createNewRoom(groupId));
-						console.log('found kp');
-						KPid = element.cellsArray[2]
-						TRPG[groupId].KP_MID = KPid;
+				delay().then(function(v){
+					if(data.find(function(element){
+						if(element.cellsArray[3] == 'KP')
+						{
+							console.log('set room');
+							TRPG.createRoom(groupId, createNewRoom(groupId));
+							console.log('found kp');
+							KPid = element.cellsArray[2];
 
-						return element;
+							return element;
+						}
+					})==null) {
+						return '這個房間沒有KP喵~';
 					}
-				})==null) {
-					return '這個房間沒有KP喵~';
-				}
-				
-				for(i=0; i<data.length; i++){
+					return delay();
+					
+				}).then(function(v){
+					TRPG[groupId].KP_MID = KPid;
+					return delay(); 
+					
+				}).then(function(v){
+					for(i=0; i<data.length; i++){
 					var id = data[i].cellsArray[3];
 					if(id != 'KP'){
-						console.log('found pc');
-						eval('userToRoom.' + id + ' = {}');
-						userToRoom[id] = {
-							GP_MID: groupId,
-							displayName: '',
-							userId: '',
-							pictureUrl: '',
-							statusMessage: ''
-						};
-						getUserProfile(id);
+						console.log('found pc '+ id);
 						
 						//建立角色資訊
 						console.log('set pc');
@@ -757,11 +762,14 @@ function LoadGame(groupId){
 						return newPlayer.import(newPlayerJson);
 					}
 				}
+				});
+				
+				
+				
 			}
 		}
 	});
 }
-
 ///////////////////////////////////////
 /////////////////角色功能///////////////
 ///////////////////////////////////////
