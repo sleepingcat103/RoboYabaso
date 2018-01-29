@@ -719,7 +719,7 @@ function LoadGame(groupId){
 				TRPG.createRoom(groupId, createNewRoom(groupId));
 				
 				for(i=0; i<response.rows.length; i++){
-					if('*KP*' == response.rows[i][3]){
+					if('KP' == response.rows[i][3]){
 						//setkp
 						console.log('found kp');
 						TRPG[roomMID].KP_MID = response.rows[i][2];
