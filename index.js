@@ -448,6 +448,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return '已經刪除房間資訊了喵~';
 	    
     } else if (trigger == 'getuid') {
+	    
+	    console.log('event = ' + event);
+	    console.log('==============================');
+	    console.log('event.source = ' + event.source);
         if (event.source.type == 'user')
             return '你的uid是:' + event.source.userId;
         //else if(event.source.type =='group')
