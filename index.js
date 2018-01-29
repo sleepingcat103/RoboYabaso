@@ -715,33 +715,43 @@ function LoadGame(groupId){
 				return "沒有這個房間的資料唷喵~";
 			} else {
 				//製作房間&角色資訊
-				//console.log(response.rows.length);
+				console.log(JSON.stringify(response.rows));
 				TRPG.createRoom(groupId, createNewRoom(groupId));
 				
-				for(i=0; i<response.rows.length; i++){
-					if('KP' == response.rows[i][3]){
-						//setkp
-						console.log('found kp');
-						TRPG[roomMID].KP_MID = response.rows[i][2];
-					}else{
-						//join
+				var data = response.rows;
+				
+				if(id == 'KP'){
+					console.log('found kp');
+					TRPG[roomMID].KP_MID = data[i].cellsArray[2];
+				}
+				if(data.find(function(element){
+					return element.cellsArray[3] == 'KP';})==null)
+				{
+					return;
+				}
+				
+				
+				
+				for(i=0; i<data.length; i++){
+					var id = data[i].cellsArray[3];
+					if(id != 'KP'){
 						console.log('found pc');
-						eval('userToRoom.' + response.rows[i][2] + ' = {}');
-						userToRoom[response.rows[i][2]] = {
+						eval('userToRoom.' + id + ' = {}');
+						userToRoom[id] = {
 							GP_MID: mainMsg[1],
 							displayName: '',
 							userId: '',
 							pictureUrl: '',
 							statusMessage: ''
 						};
-						getUserProfile(response.rows[i][2]);
+						getUserProfile(id);
 						
 						//建立角色資訊
 						var newPlayer;
+						var newPlayerJson = response.rows[i][4];
 						TRPG[roomMID].players.push(newPlayer);
-						return newPlayer.import(response.rows[i][4]);
+						return newPlayer.import(newPlayerJson);
 					}
-					console.log('load success');
 				}
 			}
 		}
