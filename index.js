@@ -717,6 +717,8 @@ function LoadGame(groupId){
 				//製作房間&角色資訊
 				
 				var KPid = '';
+				var data = response.rows;
+				console.log('find kp');
 				
 				if(data.find(function(element){
 					if(element.cellsArray[3] == 'KP')
