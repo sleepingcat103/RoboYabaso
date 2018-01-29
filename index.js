@@ -404,12 +404,12 @@ function parseInput(roomMID, rplyToken, inputStr) {
         }
 	    
     //TRPG房間相關指令開始於此
-	} else if (trigger == 'loadgame') {
+    } else if (trigger == 'loadgame') {
         if (event.source.type == 'group') {
             if (TRPG.hasOwnProperty(event.source.groupId)) {
                 return '已經建立了遊戲房間!!!';
             } else {
-				return SetGame(event.source.groupId);
+                LoadGame(event.source.groupId);
             }
         } else {
             return '要在群組才能開房間喵<3 ';
@@ -704,7 +704,8 @@ function JP(replyToken) {
 ///////////////////////////////////////
 
 //抓取房間資訊
-function SetGame(groupId){
+function LoadGame(groupId){
+	console.log('start loading');
 	var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
 	sheetrock({
 		url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
@@ -720,9 +721,11 @@ function SetGame(groupId){
 				for(i=0; i<response.rows.length; i++){
 					if('*KP*' == response.rows[i][3]){
 						//setkp
+						console.log('found kp');
 						TRPG[roomMID].KP_MID = response.rows[i][2];
 					}else{
 						//join
+						console.log('found pc');
 						eval('userToRoom.' + response.rows[i][2] + ' = {}');
 						userToRoom[response.rows[i][2]] = {
 							GP_MID: mainMsg[1],
@@ -738,6 +741,7 @@ function SetGame(groupId){
 						TRPG[roomMID].players.push(newPlayer);
 						return newPlayer.import(response.rows[i][4]);
 					}
+					console.log('load success');
 				}
 			}
 		}
