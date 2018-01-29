@@ -736,7 +736,7 @@ function LoadGame(groupId){
                         if(element.cellsArray[3] == 'KP')
                         {
                             console.log('set room');
-                            //TRPG.createRoom(groupId, createNewRoom(groupId));
+                            TRPG.createRoom(groupId, createNewRoom(groupId));
                             console.log('found kp');
                             KPid = element.cellsArray[2];
 
@@ -754,7 +754,7 @@ function LoadGame(groupId){
                     return delay('',1000);
                     
                 }).then(function(v){
-                    //TRPG[groupId].KP_MID = KPid;
+                    TRPG[groupId].KP_MID = KPid;
                     return delay('',1000); 
                     
                 }).then(function(v){
@@ -768,8 +768,8 @@ function LoadGame(groupId){
                         console.log('set pc');
                         var newPlayer;
                         var newPlayerJson = response.rows[i][4];
-                        //TRPG[groupId].players.push(newPlayer);
-                        //newPlayer.import(newPlayerJson);
+                        TRPG[groupId].players.push(newPlayer);
+                        newPlayer.import(newPlayerJson);
                     }
                 } });
                 
