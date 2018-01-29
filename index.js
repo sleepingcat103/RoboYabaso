@@ -1,26 +1,47 @@
-//87 group Id: Cf712dd6f2676add8a6997fbeb0587619
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
 var request = require("request");
 var rp = require('request-promise');
 var cheerio = require("cheerio");
+var google = require('googleapis');
+var googleAuth = require('google-auth-library');
+var sheetrock = require('sheetrock');
 var app = express();
+
+
 
 var jsonParser = bodyParser.json();
 
+//normal
 var outType = 'text';
 var event = '';
 var v_path = '/v2/bot/message/reply';
 
-var timerFlag = 'off';
+//voice messages
 var voicelength = 0;
 var idiotGroup = 'Cf712dd6f2676add8a6997fbeb0587619';
 
+//自建設定檔
 var twitchEmoji = require('./JsonData/twitchEmoji.json');
 var J_newCharStatus = require('./JsonData/newCharStatus.json');
 var JSONmapping = require('./JsonData/WebFileToJsonMapping.json');
+
+//google sheet
+//client_secret.json
+var myClientSecret = {"installed":{"client_id":"679508808367-6foqlrkagv2v7qusqua0nkmvo6b424c6.apps.googleusercontent.com","project_id":"my-project-1511956147962","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"1-w0sdtE0LT7ZCWrdVUIdwNy","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}};
+//認證
+var auth = new googleAuth();
+var oauth2Client = new auth.OAuth2(myClientSecret.installed.client_id,myClientSecret.installed.client_secret, myClientSecret.installed.redirect_uris[0]);
+//sheetsapi.json
+oauth2Client.credentials = {"access_token":"ya29.GltNBUPTeXr094wOq6KSEJqYg4DXtkLyvs8hAdA3lDc4Zc6a8GLj3vd69ZAWHy7M7egwIgPpw2LJO9l432puFcErwTfwmp5S3eClJudQi7OBknYVEsKmVjvAqGEx","refresh_token":"1/oZUfFdL0n5tpgs5JPTcQQCCtpI3D-Tyn4CFmFZNfyfI","token_type":"Bearer","expiry_date":1516871850908};
+//試算表的ID
+var mySheetId='1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig';
+var sheets = google.sheets('v4');
+var sheetId = 'COC6_DB';
+
+
+
 
 // 房間入口
 // key:value
@@ -56,15 +77,10 @@ app.post('/', jsonParser, function (req, res) {
         eval('delete TRPG.' + event.source.groupId);
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
     }
+	
     let msgType = event.message.type;
     let msg = event.message.text;
     let rplyToken = event.replyToken;
-	
-    if(msgType=="sticker"){
-	console.log(event.message.packageId);
-	console.log(event.message.stickerId);
-    }
-
     let rplyVal = null;
 
     var roomMID = 'first';
@@ -234,10 +250,11 @@ function getUserProfile(p_MID) {
     };
     v_path = null;
     var request = https.request(options, function (response) {
-        console.log('Status: ' + response.statusCode);
-        console.log('Headers: ' + JSON.stringify(response.headers));
+        //console.log('Status: ' + response.statusCode);
+        //console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
+			console.log(JSON.stringify(body));
             var newBody = MyJSONStringify(body);
             userToRoom[p_MID].displayName = newBody.displayName;
             userToRoom[p_MID].userId = newBody.userId;
@@ -387,6 +404,29 @@ function parseInput(roomMID, rplyToken, inputStr) {
         }
 	    
     //TRPG房間相關指令開始於此
+	} else if (trigger == 'loadgame') {
+        if (event.source.type == 'group') {
+            if (TRPG.hasOwnProperty(event.source.groupId)) {
+                return '已經建立了遊戲房間!!!';
+            } else {
+				return SetGame(event.source.groupId);
+            }
+        } else {
+            return '要在群組才能開房間喵<3 ';
+        }
+		
+	} else if (trigger == 'savegame') {
+        if (event.source.type == 'group') {
+            if (TRPG.hasOwnProperty(event.source.groupId)) {
+                return '已經建立了遊戲房間!!!';
+            } else {
+                TRPG.createRoom(event.source.groupId, createNewRoom(event.source.groupId));
+                return '房間建立成功，請PL私密輸入\njoin ' + event.source.groupId;
+            }
+        } else {
+            return '要在群組才能開房間喵<3 ';
+        }
+		
     } else if (trigger == 'getkp') {
         if (TRPG[roomMID].KP_MID != '') {
             return TRPG[roomMID].KP_MID;
@@ -395,6 +435,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '目前沒有設置KP喵!!!';
         }
+		
     } else if (trigger == 'setkp') {
         if (event.source.type == 'user') {
             if (TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId) {
@@ -409,6 +450,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         } else {
             return '私密BOT才能設定KP哦!!!';
         }
+		
     } else if (trigger == 'killkp') {
         if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId) {
             TRPG[roomMID].KP_MID = '';
@@ -427,19 +469,19 @@ function parseInput(roomMID, rplyToken, inputStr) {
         if (TRPG[roomMID].GP_MID != '') {
             return TRPG[roomMID].GP_MID;
         } else {
-            return '你還沒有進房間哦!!!';
+            return '你還沒有進房間喵 ~ ';
         }
 	    
     } else if (trigger == 'setgp') {
         if (event.source.type == 'group') {
             if (TRPG.hasOwnProperty(event.source.groupId)) {
-                return '在群組開啟了遊戲房間!!!';
+                return '已經建立了遊戲房間!!!';
             } else {
                 TRPG.createRoom(event.source.groupId, createNewRoom(event.source.groupId));
                 return '房間建立成功，請PL私密輸入\njoin ' + event.source.groupId;
             }
         } else {
-            return '必須是群組才能開房間唷 <3 ';
+            return '要在群組才能開房間喵<3';
         }
 	    
     } else if ((trigger == 'leaveroom' || event.type == 'leave') && TRPG.hasOwnProperty(event.source.groupId)) {
@@ -448,16 +490,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return '已經刪除房間資訊了喵~';
 	    
     } else if (trigger == 'getuid') {
-	    
-	    console.log('event = ' + JSON.stringify(event));
-	    console.log('==============================');
-	    console.log('event.source = ' + JSON.stringify(event.source));
         if (event.source.type == 'user')
             return '你的uid是:' + event.source.userId;
-        //else if(event.source.type =='group')
-        //   return '群組的uid是' + event.source.groupId;
-        else
-            return eval('\'群組的uid是: \' + event.source.+' + event.source.type + 'Id');
+        else if(event.source.type =='group')
+            return '群組的uid是' + event.source.groupId;
 	
     //普通ROLL擲骰判定
     } else if (inputStr.match(/\w/) != null && inputStr.toLowerCase().match(/\d+d+\d/) != null) {
@@ -661,6 +697,51 @@ function JP(replyToken) {
         .catch(function (err) {
             return "Fail to get data.";
         });
+}
+
+///////////////////////////////////////
+/////////////googlesheet///////////////
+///////////////////////////////////////
+
+//抓取房間資訊
+function SetGame(groupId){
+	var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
+	sheetrock({
+		url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
+		query: selectQuery,
+		callback: function (error, options, response) {
+			if(error) {
+				return "沒有這個房間的資料唷喵~";
+			} else {
+				//製作房間&角色資訊
+				//console.log(response.rows.length);
+				TRPG.createRoom(groupId, createNewRoom(groupId));
+				
+				for(i=0; i<response.rows.length; i++){
+					if('*KP*' == response.rows[i][3]){
+						//setkp
+						TRPG[roomMID].KP_MID = response.rows[i][2];
+					}else{
+						//join
+						eval('userToRoom.' + response.rows[i][2] + ' = {}');
+						userToRoom[response.rows[i][2]] = {
+							GP_MID: mainMsg[1],
+							displayName: '',
+							userId: '',
+							pictureUrl: '',
+							statusMessage: ''
+						};
+						getUserProfile(response.rows[i][2]);
+						
+						//建立角色資訊
+						var newPlayer;
+						TRPG[roomMID].players.push(newPlayer);
+						return newPlayer.import(response.rows[i][4]);
+					}
+				}
+			}
+		}
+	});
 }
 
 ///////////////////////////////////////
