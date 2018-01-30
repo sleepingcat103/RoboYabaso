@@ -706,12 +706,15 @@ function JP(replyToken) {
 function LoadGame(groupId){
     console.log('start loading');
     var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
+    var returnMsg = '';
     sheetrock({
         url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
         query: selectQuery,
         callback: function (error, options, response) {
             if(error) {
-                return "沒有這個房間的資料唷喵~";
+                returnMsg = "沒有這個房間的資料唷喵~";
+                console.log('no such room');
+		return;
             } else {
                 //製作房間&角色資訊
                 
@@ -726,7 +729,6 @@ function LoadGame(groupId){
                 };
                 
                 var KPid = '';
-                var errMsg = '';
                 var data = response.rows;
                 console.log('finding kp');
                 
@@ -743,7 +745,9 @@ function LoadGame(groupId){
                             return element;
                         }
                    })==null) {
-                        return '這個房間沒有KP喵~';
+                        returnMsg = '這個房間沒有KP喵~';
+                        console.log('no kp data in this room');
+		        return;
                     }
                     
                     //return delay('',1000);
@@ -764,7 +768,7 @@ function LoadGame(groupId){
                             var newPlayer = createChar(id, '');
                             var newPlayerJson = data[i].cellsArray[4];
                             TRPG[groupId].players.push(newPlayer);
-                            newPlayer.import(newPlayerJson);
+                            console.log(newPlayer.import(newPlayerJson));
                         }
                     } 
 		//});
