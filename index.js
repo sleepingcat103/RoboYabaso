@@ -706,7 +706,7 @@ function JP(replyToken) {
 function LoadGame(groupId){
     console.log('start loading');
     var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
-    var returnMsg = '';
+    var returnMsg = '讀檔成功!';
     sheetrock({
         url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
         query: selectQuery,
@@ -776,6 +776,7 @@ function LoadGame(groupId){
             }
         }
     });
+    return returnMsg;
 }
 
 ///////////////////////////////////////
