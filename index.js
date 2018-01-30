@@ -728,9 +728,9 @@ function LoadGame(groupId){
                 var KPid = '';
                 var errMsg = '';
                 var data = response.rows;
-                console.log('find kp');
+                console.log('finding kp');
                 
-                delay().then(function(v){
+                //delay().then(function(v){
                     
                     if(data.find(function(element){
                         if(element.cellsArray[3] == 'KP')
@@ -742,39 +742,33 @@ function LoadGame(groupId){
 
                             return element;
                         }
-                    })==null) {
-                        errMsg = '這個房間沒有KP喵~';
-                        return new Promise.reject(new Error("no kp in data")).then(function(error) {
-                            // 不會被呼叫
-                        }, function(error) {
-                            console.log(error); // Stacktrace
-                        });
+                   })==null) {
+                        return '這個房間沒有KP喵~';
                     }
                     
-                    return delay('',1000);
+                    //return delay('',1000);
                     
-                }).then(function(v){
+                //}).then(function(v){
                     TRPG[groupId].KP_MID = KPid;
-                    return delay('',1000); 
+                   // return delay('',1000); 
                     
-                }).then(function(v){
+                //}).then(function(v){
                     for(i=0; i<data.length; i++){
-                    var id = data[i].cellsArray[3];
-                    if(id != 'KP'){
-                        console.log('found pc '+ id);
+                        var id = data[i].cellsArray[3];
+                        if(id != 'KP'){
+                            console.log('found pc '+ id);
                         
                         
-                        //建立角色資訊
-                        console.log('set pc');
-                        var newPlayer = createChar(id, '');
-                        var newPlayerJson = response.rows[i][4];
-                        TRPG[groupId].players.push(newPlayer);
-                        newPlayer.import(newPlayerJson);
-                    }
-                } });
+                            //建立角色資訊
+                            console.log('set pc');
+                            var newPlayer = createChar(id, '');
+                            var newPlayerJson = data[i].cellsArray[4];
+                            TRPG[groupId].players.push(newPlayer);
+                            newPlayer.import(newPlayerJson);
+                        }
+                    } 
+		//});
                 
-                if(errMsg != '')
-                    return errMsg;
             }
         }
     });
