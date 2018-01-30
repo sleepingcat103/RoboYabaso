@@ -409,7 +409,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
             if (TRPG.hasOwnProperty(event.source.groupId)) {
                 return '已經建立了遊戲房間!!!';
             } else {
-                LoadGame(event.source.groupId);
+                return LoadGame(event.source.groupId);
             }
         } else {
             return '要在群組才能開房間喵<3 ';
