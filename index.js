@@ -409,7 +409,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
             if (TRPG.hasOwnProperty(event.source.groupId)) {
                 return '已經建立了遊戲房間!!!';
             } else {
-                return LoadGame(event.source.groupId);
+                LoadGame(event.source.groupId);
             }
         } else {
             return '要在群組才能開房間喵<3 ';
@@ -707,76 +707,68 @@ function LoadGame(groupId){
     console.log('start loading');
     var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
     var returnMsg = '讀檔成功!';
-    sheetrock({
-        url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
-        query: selectQuery,
-        callback: function (error, options, response) {
-            if(error) {
-                returnMsg = "沒有這個房間的資料唷喵~";
-                console.log('no such room');
-		return;
-            } else {
-                //製作房間&角色資訊
-                
-                var delay = function(r,s){
-                    return new Promise(
-                        function(resolve,reject){
-                            setTimeout(function(){
-                                resolve([r,s]);
-                            },s); 
-                        }
-                    );
-                };
-                
-                var KPid = '';
-                var data = response.rows;
-                console.log('finding kp');
-                
-                //delay().then(function(v){
+    
+    var delay = function(r,s){
+        return new Promise(function(resolve,reject){
+            setTimeout(function(){
+                resolve([r,s]);
+            },s); 
+        });
+    };
+    
+    delay().then(function(v){
+        sheetrock({
+            url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
+            query: selectQuery,
+            callback: function (error, options, response) {
+                if(error) {
+                    console.log('no such room');
+                    returnMsg = "沒有這個房間的資料唷喵~";
+                } else {
+                    //製作房間&角色資訊
+                    
+                    var KPid = '';
+                    var data = response.rows;
+			
+                    console.log('try to find kp');
                     
                     if(data.find(function(element){
                         if(element.cellsArray[3] == 'KP')
                         {
-                            console.log('set room');
+                            console.log('found kp and set room');
                             TRPG.createRoom(groupId, createNewRoom(groupId));
-                            console.log('found kp');
                             KPid = element.cellsArray[2];
 
                             return element;
                         }
                    })==null) {
-                        returnMsg = '這個房間沒有KP喵~';
                         console.log('no kp data in this room');
-		        return;
+                        returnMsg = '這個房間沒有KP喵~';
+			return;
                     }
-                    
-                    //return delay('',1000);
-                    
-                //}).then(function(v){
+		
                     TRPG[groupId].KP_MID = KPid;
-                   // return delay('',1000); 
-                    
-                //}).then(function(v){
                     for(i=0; i<data.length; i++){
                         var id = data[i].cellsArray[3];
                         if(id != 'KP'){
                             console.log('found pc '+ id);
-                        
                         
                             //建立角色資訊
                             console.log('set pc');
                             var newPlayer = createChar(id, '');
                             var newPlayerJson = data[i].cellsArray[4];
                             TRPG[groupId].players.push(newPlayer);
-                            console.log(newPlayer.import(newPlayerJson));
+                            replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
                         }
-                    } 
-		//});
-                
+                    }
+                }
             }
-        }
-    });
-    return returnMsg;
+        });
+        return delay('',1000); 
+    }).then(function(v){
+        console.log(returnMsg); 
+        replyMsgToLine('push', groupId, returnMsg);
+    })
 }
 
 ///////////////////////////////////////
