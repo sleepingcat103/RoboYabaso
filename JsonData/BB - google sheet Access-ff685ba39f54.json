@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "helical-rhythm-193803",
+  "private_key_id": "ff685ba39f54541e39e15a61781657f382d50828",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+B/ZBYocXe07T\n2GX1jh7IjY/Kp+dk0d3F6kym6R/OqBuhxv7GqJO8dz/cM7yAz9pBnyZNT1wddvI3\nP/SPuYOiikGarOmCly0Bd5we0yrUr9wCAEULvxJ/TaSQVV+CDmPJ5ymyLUVbmla6\n4F5tja4awO+H/LES5LFYyetC2kyb2E8GnO1hcEzPpJK+i027iAd5EFjA1R3vW5E1\nGKYVN4UblShKctOvy+0urrclxXyZMg7vpZSQY8Y4bl4bmsCqD2Ui6IzowuC1Y8iz\nLE5jY7Cy6xGVwdqpCOrpKVOwWfQ5coFhOKRRJvOMbPm6i6Khx2KA9kH0hOkdLugF\nyV3m754VAgMBAAECggEAJFTN3EDb3p2s27xE/A5MrN/BxMdWqlQkcCUkPAoYknBZ\n/hNXXQBYZIExFKbQjJkQm5izoDbCwABgfTctSPg5Jk+EDPAvoc/I4z2su8j4KJsp\ntzk5ei4w+WVNB+pGnQ0mv3CCbIYSu1l16PsiGpRqm8NU2F0zto7CKF1MbSbi3C2J\nyQi7ptbUuYgs6tqAhHpKSOxijljLL9v/GilvXOC6cZDe2h0e6lVsWMHXklIZc5zK\nOv7FffkLnacwc1cf9Dh2lfAH+YYWrDHW/Ht1owIFo+DOutyYoECp8DElNFyLDQdd\nskZNmte5J6U+VZcB6ISMgZJbntnFTdevORpdu2Bl6QKBgQDi6SyuzWYIY/Pt0Qr3\no51Mzxpuzh8SaqaUmddIw7ZNa4muefjgrHoALZPHlM6DBVJ4wwso/o0oWhst7Gj6\n43+elRmHLt5iCaaJx5mNLF3dCr+uhnnDDTjCQ8yH2m5QYAWRbm+HSEcsYzJs/A/v\nFudOuoxXbHNeXznzIFV9RykpLQKBgQDWZHUg/LCg4BwqVsKiNf7uL/322IQcKrVI\nphfp84tLOWnyc6RRd9fr2KRi4foMpBC/agugJmJGBQvgIOaxA/G7kFroVaEg6R1l\nsT92vPZl6B7pUN6v4GUzpWWDJ+6auFqcYZW/DW8QMMkIkmKkbYgYGqJ3XFeuARbo\nORTf+w4JiQKBgQCYhq6fbbf5Sd7M7CiYH6X73HbjJrCiO4hv+R1KbywazH+HBbwy\noh18AycEEFXkom42eL0GuF0AU9lTPEew5b2CRq0bPnkDo4MLuFzSFZGepLwGP6SX\nZUrS4qoYY86lPnZftMFJSV92SdO6iJDZYSbot+LgXSkLta0JbaGpjWzwnQKBgQC1\nuZsq5eXVx4E4RihelMRNI3LyzJ5WvcDCHr+AeAanMbhjYbBzudDVQeI9SuzH0D29\n8mZ+TmrYjSh+x4SjoQNDCF52NzcIDXD0pOR1gkCdKr8g54KKs/s0Zsr//FYc4Y00\npubmdb2hjKiq0mI4m/tS6yixYh2UCapgFxphrI0+eQKBgDZT63u7OxDxfU7ulIXc\nR3/gzflGKRBxAb5ivlPeJRueI1XWECwHamybNJRrQmRibhOFyX8jUhRxk7XXyHRB\n+g73UE6fuoRFjWPLdHwYs9aRw2qe1s9OUoUG++FY5jaZapzZynZ3QyOnszES53A+\nYjsKeRcf5Tj4tGPdIO0pC3zD\n-----END PRIVATE KEY-----\n",
+  "client_email": "google-sheet-access@helical-rhythm-193803.iam.gserviceaccount.com",
+  "client_id": "114819241828919811114",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/google-sheet-access%40helical-rhythm-193803.iam.gserviceaccount.com"
+}
