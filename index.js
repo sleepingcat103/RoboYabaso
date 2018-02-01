@@ -742,8 +742,11 @@ function LoadGame(groupId){
               if(element.name == 'KP') {
                 console.log('found KP and set room');
                 replyMsgToLine('push', groupId, '設定KP!');
+                console.log('1');
                 TRPG.createRoom(groupId, createNewRoom(groupId));
+                console.log('2');
                 TRPG[groupId].KP_MID = element.name;
+                console.log('3');
                 return element;
               }
             })==null){
