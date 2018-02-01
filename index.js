@@ -875,6 +875,7 @@ function createNewRoom(p_Mid) {
     var room = {
         GP_MID: p_Mid,
         KP_MID: '',
+	Rows: '',
         players: []
     };
     room.setkp = function (p_Mid) {
