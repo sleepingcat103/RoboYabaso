@@ -6,7 +6,9 @@ var rp = require('request-promise');
 var cheerio = require("cheerio");
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-var sheetrock = require('sheetrock');
+//var sheetrock = require('sheetrock');
+var GoogleSpreadsheet = require("google-spreadsheet"); 
+var async = require('async');
 var app = express();
 
 
@@ -26,6 +28,7 @@ var idiotGroup = 'Cf712dd6f2676add8a6997fbeb0587619';
 var twitchEmoji = require('./JsonData/twitchEmoji.json');
 var J_newCharStatus = require('./JsonData/newCharStatus.json');
 var JSONmapping = require('./JsonData/WebFileToJsonMapping.json');
+var myCreds = require('./JsonData/BB-googlesheetaccess-Key.json') 
 
 //google sheet
 //client_secret.json
@@ -36,11 +39,10 @@ var oauth2Client = new auth.OAuth2(myClientSecret.installed.client_id,myClientSe
 //sheetsapi.json
 oauth2Client.credentials = {"access_token":"ya29.GltNBUPTeXr094wOq6KSEJqYg4DXtkLyvs8hAdA3lDc4Zc6a8GLj3vd69ZAWHy7M7egwIgPpw2LJO9l432puFcErwTfwmp5S3eClJudQi7OBknYVEsKmVjvAqGEx","refresh_token":"1/oZUfFdL0n5tpgs5JPTcQQCCtpI3D-Tyn4CFmFZNfyfI","token_type":"Bearer","expiry_date":1516871850908};
 //試算表的ID
-var mySheetId='1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig';
-var sheets = google.sheets('v4');
-var sheetId = 'COC6_DB';
-
-
+var mySheetId='15lPzgW8bIymnVwwIHxYPfRJfh7pzC69QeKL4o5G1VSk';
+var doc = new GoogleSpreadsheet(mySheetId); 
+//var sheets = google.sheets('v4');
+var sheetTitle = 'COC6_DB1';
 
 
 // 房間入口
@@ -704,71 +706,76 @@ function JP(replyToken) {
 
 //抓取房間資訊
 function LoadGame(groupId){
-    console.log('start loading');
-    var selectQuery = 'select A,B,C,D,E WHERE B = \'' + groupId + '\'';
-    var returnMsg = '讀檔成功!';
-    
-    var delay = function(r,s){
-        return new Promise(function(resolve,reject){
-            setTimeout(function(){
-                resolve([r,s]);
-            },s); 
-        });
-    };
-    
-    delay().then(function(v){
-        sheetrock({
-            url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
-            query: selectQuery,
-            callback: function (error, options, response) {
-                if(error) {
-                    console.log('no such room');
-                    returnMsg = "沒有這個房間的資料唷喵~";
-                } else {
-                    //製作房間&角色資訊
-                    
-                    var KPid = '';
-                    var data = response.rows;
-			
-                    console.log('try to find kp');
-                    
-                    if(data.find(function(element){
-                        if(element.cellsArray[3] == 'KP')
-                        {
-                            console.log('found kp and set room');
-                            TRPG.createRoom(groupId, createNewRoom(groupId));
-                            KPid = element.cellsArray[2];
+      var sheet;
 
-                            return element;
-                        }
-                   })==null) {
-                        console.log('no kp data in this room');
-                        returnMsg = '這個房間沒有KP喵~';
-			return;
-                    }
-		
-                    TRPG[groupId].KP_MID = KPid;
-                    for(i=0; i<data.length; i++){
-                        var id = data[i].cellsArray[3];
-                        if(id != 'KP'){
-                            console.log('found pc '+ id);
-                        
-                            //建立角色資訊
-                            console.log('set pc');
-                            var newPlayer = createChar(id, '');
-                            var newPlayerJson = data[i].cellsArray[4];
-                            TRPG[groupId].players.push(newPlayer);
-                            replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
-                        }
-                    }
-                }
+  async.series([
+    function setAuth(step){
+      doc.useServiceAccountAuth(myCreds, step); 
+    },
+    function GetCorrespondSheet(step){
+      doc.getInfo(function(err, info) { 
+        if(err){
+          step('取得表格資訊失敗');
+        }else{
+          for(i=0; i<info.worksheets.length; i++){
+            if(info.worksheets[i].title == sheetTitle){
+              sheet = info.worksheets[i];
+              step(); 
+              return;
             }
-        });
-        return delay('',1000); 
-    }).then(function(v){
-        console.log(returnMsg); 
-        replyMsgToLine('push', groupId, returnMsg);
-    })
+          }
+          step('找不到表格'); 
+        }
+      }); 
+    },
+    function GetRows(step){
+      sheet.getRows({
+        query: encodeURI("group="+groupId)
+      }, function( err, rows ){
+        if(err){
+          step('找不到資料'); 
+        }else{
+          if(rows.length == 0){
+            step('沒有該房間的紀錄');
+          }else{
+            if(rows.find(function(element){
+              if(element.name == 'KP') {
+                console.log('found KP and set room');
+                replyMsgToLine('push', groupId, '設定KP!');
+                TRPG.createRoom(groupId, createNewRoom(groupId));
+                TRPG[groupId].KP_MID = element.name;
+                return element;
+              }
+            })==null){
+              console.log('no kp in the room: ', groupId);
+              step('這個房間沒有KP');
+
+            }else{
+              for(var i in rows){
+                if(rows[i].name == 'KP'){
+
+                  var newPlayer = createChar(rows[i].name, '');
+                  var newPlayerJson = rows[i].status;
+                  TRPG[groupId].players.push(newPlayer);
+                  replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
+                }
+              }
+              step();
+            }
+          }
+        }
+      });
+    },
+    function sss(step){
+      console.log('Room set success!!');
+      replyMsgToLine('push', groupId, '房間設定完成!!');
+    }
+  ], function(err){
+    if( err ) {
+      console.log('Error: '+err);
+      replyMsgToLine('push', groupId, err+'喵');
+    }
+  });
 }
 
 ///////////////////////////////////////
