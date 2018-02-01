@@ -744,7 +744,7 @@ function LoadGame(groupId){
                 console.log('found KP and set room');
                 replyMsgToLine('push', groupId, '設定KP!');
                 TRPG.createRoom(groupId, createNewRoom(groupId));
-                TRPG[groupId].KP_MID = element.name;
+                TRPG[groupId].KP_MID = element.user;
 		TRPG[groupId].Rows = rows;
                 return element;
               }
