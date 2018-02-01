@@ -755,7 +755,7 @@ function LoadGame(groupId){
 		                    pictureUrl: '',
 		                    statusMessage: ''
 	                        };
-	                        getUserProfile(rows.user);
+	                        getUserProfile(rows[i].user);
 		      
                                 if(rows[i].name != 'KP'){
                                     var newPlayer = createChar(rows[i].name, '');
