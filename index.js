@@ -758,7 +758,7 @@ function LoadGame(groupId){
 	                        getUserProfile(rows[i].user);
 		      
                                 if(rows[i].name != 'KP'){
-                                    var newPlayer = createChar(rows[i].name, '');
+                                    var newPlayer = createChar(rows[i].name, rows[i].user);
                                     var newPlayerJson = rows[i].status;
                                     TRPG[groupId].players.push(newPlayer);
                                     replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
@@ -807,7 +807,7 @@ function SaveGame(groupId){
                 }
             }); 
         },
-        function GetRows(step){
+        function FindRecord(step){
             sheet.getRows({
                 query: encodeURI("group="+groupId)
             }, function( err, rows ){
@@ -815,7 +815,29 @@ function SaveGame(groupId){
                     step('找不到資料'); 
                 }else{
                     if(rows.length == 0){
-                        step('沒有該房間的紀錄');
+                        sheet.addRow({
+			    group: groupId,
+			    user: TRPG[groupId].KP_MID,
+			    name: 'KP',
+			    status: ''
+			}, function( err, rows ){
+			    if(!err){
+				replyMsgToLine('push', groupId, 'KP 資訊已存入..'); 
+				    
+				for(var i in TRPG[groupId].players){
+				    sheet.addRow({
+				        group: groupId,
+				        user: TRPG[groupId].players[i].status.uid,
+				        name: TRPG[groupId].players[i].status.name,
+				        status: JSON.stringify(TRPG[groupId].players[i].status)
+				    }, function( err, rows ){
+				        if(!err){
+				            replyMsgToLine('push', groupId, newchar[i].status.name + ' 已存入..');    
+				        }
+				    })
+				}
+			    }
+			})
                     }else{
 			Rows = rows;
                         step();
@@ -953,8 +975,10 @@ function createChar(p_name, p_uid) {
     player.import = function (p_str) {
         var newChar = JSON.parse(p_str);
         var oriName = this.getVal('name');
+	var uid = this.getVal('uid');
         this.status = newChar;
         this.setVal('name', oriName);
+        this.setVal('uid', uid);
         return '成功匯入角色 ' + this.getVal('name') + ' !!!!';
     };
     player.importFromTRPG = function (p_str) {
