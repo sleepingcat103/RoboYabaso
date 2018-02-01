@@ -832,7 +832,7 @@ function SaveGame(groupId){
 				        status: JSON.stringify(TRPG[groupId].players[i].status)
 				    }, function( err, rows ){
 				        if(!err){
-				            replyMsgToLine('push', groupId, newchar[i].status.name + ' 已存入..');    
+				            replyMsgToLine('push', groupId, TRPG[groupId].players[i].status.name + ' 已存入..');    
 				        }
 				    })
 				}
