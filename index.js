@@ -256,7 +256,11 @@ function getUserProfile(p_MID) {
         //console.log('Headers: ' + JSON.stringify(response.headers));
         response.setEncoding('utf8');
         response.on('data', function (body) {
-			console.log(JSON.stringify(body));
+	    console.log(JSON.stringify(body));
+	    if(body.message == 'Not found'){
+                replyMsgToLine('push', userToRoom[p_MID].GP_MID, '找不到用戶 ' + p_MID + ' 的資料!!');
+		return;
+	    }
             var newBody = MyJSONStringify(body);
             userToRoom[p_MID].displayName = newBody.displayName;
             userToRoom[p_MID].userId = newBody.userId;
