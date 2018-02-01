@@ -16,6 +16,7 @@
     "request": "2.83.0",
     "request-promise": "4.2.2",
     "google-auth-library": "^0.10.0",
+    "google-spreadsheet": "^2.0.4",
     "googleapis": "^19.0.0",
     "sheetrock": "^1.1.4"
   },
