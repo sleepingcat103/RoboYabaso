@@ -404,21 +404,17 @@ function parseInput(roomMID, rplyToken, inputStr) {
             return '這個房間目前沒有進行遊戲唷';
         }
 		
-    } else if (trigger == 'getkp') {
+    } else if (trigger == 'getkp' && event.source.type == 'group') {
         if (TRPG[roomMID].KP_MID != '') {
             return TRPG[roomMID].KP_MID;
-        } else if (event.source.type != 'group') {
-            return '在群組才能使用唷!!!';
         } else {
             return '目前沒有設置KP喵!!!';
         }
 		    
-    } else if (trigger == 'join') {
-        if (event.source.type == 'user' &&
-            userToRoom.hasOwnProperty(event.source.userId) &&
-            userToRoom[event.source.userId].GP_MID == mainMsg[1]) {
+    } else if (trigger == 'joingame' && event.source.type == 'group') {
+        if (userToRoom.hasOwnProperty(event.source.userId)) {
             return '你已經在房間裡了喵!';
-        } else if (event.source.type == 'user') {
+        } else {
             eval('userToRoom.' + event.source.userId + ' = {}');
             userToRoom[event.source.userId] = {
                 GP_MID: mainMsg[1],
@@ -427,14 +423,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 pictureUrl: '',
                 statusMessage: ''
             };
-            getUserProfile(event.source.userId)
-            return '加入房間喵!\n請到群組確認加入訊息~';
-        } else {
-            return '你想幹嘛啦~~~';
+            getUserProfile(event.source.userId);
         }
 	    
-    } else if (trigger == 'setkp') {
-        if (event.source.type == 'user') {
+    } else if (trigger == 'setkp' && event.source.type == 'group') {
             if (TRPG[roomMID].KP_MID == '' || TRPG[roomMID].KP_MID == event.source.userId) {
                 if (roomMID == 'first') {
                     return '你還沒有進入房間';
@@ -444,23 +436,16 @@ function parseInput(roomMID, rplyToken, inputStr) {
             } else {
                 return '如果要更換KP，請現任KP先卸任之後，才能重新"setkp"';
             }
-        } else {
-            return '私密BOT才能設定KP哦!!!';
-        }
 		
-    } else if (trigger == 'killkp') {
-        if (event.source.type == 'user' && TRPG[roomMID].KP_MID == event.source.userId) {
+    } else if (trigger == 'killkp' && event.source.type == 'group') {
+        if (TRPG[roomMID].KP_MID == event.source.userId) {
             TRPG[roomMID].KP_MID = '';
-            return '已經沒有KP了喵';
-        } else {
-            if (TRPG[roomMID].KP_MID != '') {
-                return '只有KP在私下密語才能使用這個功能哦!';
+            return 'KP RIP';
+        } else if (TRPG[roomMID].KP_MID != '') {
+                return '現在沒有KP喵~';
             } else if (roomMID == 'first') {
                 return '你還沒有進入房間';
-            } else {
-                return '現在沒有KP喵~';
             }
-        }
 	    
     } else if (trigger == 'getgp') {
         if (TRPG[roomMID].GP_MID != '') {
