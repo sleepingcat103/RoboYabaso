@@ -859,7 +859,7 @@ function SaveGame(groupId){
             step();
         },
 	function SaveData2(step){
-            for(var i in newchar)
+            for(var i in newchar){
 		sheet.addRow({
 		    group: groupId,
 	            user: newchar[i].status.uid,
