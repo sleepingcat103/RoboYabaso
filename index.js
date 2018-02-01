@@ -754,18 +754,17 @@ function LoadGame(groupId){
 
             }else{
               for(var i in rows){
+		eval('userToRoom.' + rows[i].user + ' = {}');
+	        userToRoom[rows[i].user] = {
+		  GP_MID: groupId,
+		  displayName: '',
+		  userId: '',
+		  pictureUrl: '',
+		  statusMessage: ''
+	        };
+	        getUserProfile(event.source.userId);
+		      
                 if(rows[i].name != 'KP'){
-			
-		  eval('userToRoom.' + rows[i].user + ' = {}');
-	          userToRoom[rows[i].user] = {
-		    GP_MID: groupId,
-		    displayName: '',
-		    userId: '',
-		    pictureUrl: '',
-		    statusMessage: ''
-	          };
-	          getUserProfile(event.source.userId);
-		  
                   var newPlayer = createChar(rows[i].name, '');
                   var newPlayerJson = rows[i].status;
                   TRPG[groupId].players.push(newPlayer);
