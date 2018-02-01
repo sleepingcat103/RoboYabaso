@@ -52,6 +52,7 @@ var TRPG = {
     first: {
         KP_MID: '',
         GP_MID: '',
+        Rows: null,
         players: []
     }
 };
@@ -742,11 +743,9 @@ function LoadGame(groupId){
               if(element.name == 'KP') {
                 console.log('found KP and set room');
                 replyMsgToLine('push', groupId, '設定KP!');
-                console.log('1');
                 TRPG.createRoom(groupId, createNewRoom(groupId));
-                console.log('2');
                 TRPG[groupId].KP_MID = element.name;
-                console.log('3');
+		TRPG[groupId].Rows = rows;
                 return element;
               }
             })==null){
@@ -755,7 +754,7 @@ function LoadGame(groupId){
 
             }else{
               for(var i in rows){
-                if(rows[i].name == 'KP'){
+                if(rows[i].name != 'KP'){
 
                   var newPlayer = createChar(rows[i].name, '');
                   var newPlayerJson = rows[i].status;
