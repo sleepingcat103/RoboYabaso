@@ -411,7 +411,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 DeleteGame(event.source.groupId);
 	        return '遊戲資料已刪除!!';
 	    }else{
-		TRPG[event.source.groupId].savelock = false;
+		TRPG[event.source.groupId].savelock = true;
 		return "再次輸入 gamedelete 以確認刪除遊戲資料";
 	    }
         } else {
