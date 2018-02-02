@@ -81,12 +81,12 @@ app.post('/', jsonParser, function (req, res) {
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
     }
 	
+    console.log('event: ' + JSON.stringify(event));
+	
     let msgType = event.message.type;
     let msg = event.message.text;
     let rplyToken = event.replyToken;
     let rplyVal = null;
-
-    console.log('event: ' + JSON.stringify(event));
 	
     var roomMID = 'first';
 
