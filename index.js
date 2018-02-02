@@ -76,10 +76,12 @@ app.post('/', jsonParser, function (req, res) {
     event = req.body.events[0];
     let type = event.type;
 
-    if (type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)) {
-        eval('delete TRPG.' + event.source.groupId);
+    if (type == 'leave') {
 	DeleteGame(event.source.groupId);
-        console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
+	if(TRPG.hasOwnProperty(event.source.groupId)){
+            eval('delete TRPG.' + event.source.groupId);
+            console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
+	}
     }
 
     if(type == 'join' || type == 'leave') return;
