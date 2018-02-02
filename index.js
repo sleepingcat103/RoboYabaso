@@ -418,7 +418,15 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	        return '遊戲資料已刪除!!';
 	    }else{
 		TRPG[event.source.groupId].savelock = true;
-		return "再次輸入 gamedelete 以確認刪除遊戲資料";
+		    
+		var t = setTimeout(function(){
+		    if(TRPG.hasOwnProperty(event.source.groupId)){
+		        TRPG[event.source.groupId].savelock = false;
+			    console.log('savelock locked');
+	            }
+		}, 3000);
+		    
+		return "3秒內再次輸入 gamedelete 以確認刪除遊戲資料";
 	    }
         } else {
             return '只有KP可以刪除遊戲資料唷';
