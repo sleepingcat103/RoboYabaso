@@ -482,6 +482,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     } else if ((trigger == 'leaveroom' || event.type == 'leave') && TRPG.hasOwnProperty(event.source.groupId)) {
         eval('delete TRPG.' + event.source.groupId);
+	DeleteGame(event.source.groupId);
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
         return '已經刪除房間資訊了喵~';
 	    
