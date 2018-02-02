@@ -409,6 +409,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         if (TRPG[event.source.groupId].KP_MID == event.source.userId) {
             if(TRPG[event.source.groupId].savelock){
                 DeleteGame(event.source.groupId);
+		TRPG[event.source.groupId].savelock = false;
 	        return '遊戲資料已刪除!!';
 	    }else{
 		TRPG[event.source.groupId].savelock = true;
