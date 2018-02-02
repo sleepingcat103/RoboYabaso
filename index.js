@@ -78,10 +78,11 @@ app.post('/', jsonParser, function (req, res) {
 
     if (type == 'leave' && TRPG.hasOwnProperty(event.source.groupId)) {
         eval('delete TRPG.' + event.source.groupId);
+	DeleteGame(event.source.groupId);
         console.log('room existance: ' + TRPG.hasOwnProperty(event.source.groupId));
     }
-	
-    console.log('event: ' + JSON.stringify(event));
+
+    if(type == 'join' || type == 'leave') return;
 	
     let msgType = event.message.type;
     let msg = event.message.text;
