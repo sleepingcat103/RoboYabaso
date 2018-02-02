@@ -52,6 +52,7 @@ var TRPG = {
     first: {
         KP_MID: '',
         GP_MID: '',
+	savelock: false,
         players: []
     }
 };
@@ -390,20 +391,33 @@ function parseInput(roomMID, rplyToken, inputStr) {
         }
 	    
     //TRPG房間相關指令
-    } else if (trigger == 'loadgame' && event.source.type == 'group') {
+    } else if (trigger == 'gameload' && event.source.type == 'group') {
         if (TRPG.hasOwnProperty(event.source.groupId)) {
             return '已經建立了遊戲房間!!!';
         } else {
             LoadGame(event.source.groupId);
         }
 		
-    } else if (trigger == 'savegame' && event.source.type == 'group') {
+    } else if (trigger == 'gamesave' && event.source.type == 'group') {
         if (TRPG.hasOwnProperty(event.source.groupId)) {
             SaveGame(event.source.groupId);
         } else {
             return '這個房間目前沒有進行遊戲唷';
         }
-		
+	
+    } else if (trigger == 'gamedelete' && event.source.type == 'group' && TRPG.hasOwnProperty(event.source.groupId)) {
+        if (TRPG[event.source.groupId].KP_MID == event.source.userId) {
+            if(TRPG[event.source.groupId].savelock){
+                DeleteGame(event.source.groupId);
+	        return '遊戲資料已刪除!!';
+	    }else{
+		TRPG[event.source.groupId].savelock = false;
+		return "再次輸入 gamedelete 以確認刪除遊戲資料";
+	    }
+        } else {
+            return '只有KP可以刪除遊戲資料唷';
+        }
+	    
     } else if (trigger == 'getkp' && event.source.type == 'group') {
         if (TRPG[roomMID].KP_MID != '') {
             return TRPG[roomMID].KP_MID;
@@ -891,6 +905,56 @@ function SaveGame(groupId){
     });
 }
 
+function DeleteGame(groupId){
+    var sheet;
+
+    async.series([
+        function setAuth(step){
+            doc.useServiceAccountAuth(myCreds, step); 
+        },
+        function GetCorrespondSheet(step){
+            doc.getInfo(function(err, info) { 
+                if(err){
+                    step('取得表格資訊失敗');
+                }else{
+                    for(i=0; i<info.worksheets.length; i++){
+                        if(info.worksheets[i].title == sheetTitle){
+                            sheet = info.worksheets[i];
+                            step(); 
+                            return;
+                        }
+                    }
+                    step('找不到表格'); 
+                }
+            }); 
+        },
+        function GetRows(step){
+            sheet.getRows({
+                query: encodeURI("group="+groupId)
+            }, function( err, rows ){
+                if(err){
+                    step('找不到資料'); 
+                }else{
+                    if(rows.length == 0){
+                        step('沒有該房間的紀錄');
+                    }else{
+                        for(var i in rows){
+			    rows[i].del();
+		        }
+                    }
+                }
+            });
+        },
+        function Last(step){
+            console.log('Room remove success!!');
+        }
+    ], function(err){
+        if( err ) {
+            console.log('Error: '+err);
+        }
+    });
+}
+
 ///////////////////////////////////////
 /////////////////角色功能///////////////
 ///////////////////////////////////////
@@ -988,6 +1052,7 @@ function createNewRoom(p_Mid) {
     var room = {
         GP_MID: p_Mid,
         KP_MID: '',
+	savelock: false,
         players: []
     };
     room.setkp = function (p_Mid) {
