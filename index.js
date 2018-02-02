@@ -424,9 +424,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
 		        TRPG[event.source.groupId].savelock = false;
 			    console.log('savelock locked');
 	            }
-		}, 3000);
+		}, 10000);
 		    
-		return "3秒內再次輸入 gamedelete 以確認刪除遊戲資料";
+		return "10秒內再次輸入 gamedelete 以確認刪除遊戲資料";
 	    }
         } else {
             return '只有KP可以刪除遊戲資料唷';
@@ -775,7 +775,11 @@ function LoadGame(groupId){
                                     var newPlayer = createChar(rows[i].name, rows[i].user);
                                     var newPlayerJson = rows[i].status;
                                     TRPG[groupId].players.push(newPlayer);
-                                    replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
+				    if(!newPlayerJson){
+					replyMsgToLine('push', groupId, '成功匯入角色 ' + rows[i].name + ' !!!!');
+			            }else{
+                                        replyMsgToLine('push', groupId, newPlayer.import(newPlayerJson));
+				    }
                                 }
                             }
                             step();
