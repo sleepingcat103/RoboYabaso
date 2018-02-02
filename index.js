@@ -86,6 +86,8 @@ app.post('/', jsonParser, function (req, res) {
     let rplyToken = event.replyToken;
     let rplyVal = null;
 
+    console.log('event: ' + JSON.stringify(event));
+	
     var roomMID = 'first';
 
     // 先找是否已經進入房間
