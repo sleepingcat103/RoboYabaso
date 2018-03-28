@@ -268,6 +268,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
     let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
 
+	console.log('trigger: ' + mainMsg[0].toLowerCase());
+	console.log('other meaasge: ' + inputStr.replace(trigger, ''));
+	
     //角卡功能快速入口//
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
         if (mainMsg[0].toString() == TRPG[roomMID].players[i].getVal('name'))
@@ -288,7 +291,14 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return BStyleFlagSCRIPTS();
 	    
     } else if (trigger == 'shorten'){
-        var s = inputStr.toLowerCase().replace(trigger, '');
+        var s = function(){
+	    var tmp = '';
+	    for (i = 0; i < mainMsg.length; i++) {
+		tmp = tmp + mainMsg[i]+ ' ';
+            }
+	};
+	    
+	console.log('longUrl: '+ s);
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
