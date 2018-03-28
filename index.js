@@ -287,7 +287,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
 	    
-    } else if (trigger == 'shorten' || trigger == 'Shorten'){
+    } else if (IsKeyWord(trigger, ['shorten', 'Shorten'])){
         var s = inputStr.toLowerCase().replace(trigger, '');
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
@@ -302,7 +302,6 @@ function parseInput(roomMID, rplyToken, inputStr) {
 		return s;
             }
         });
-    }
     
     //圖片回應
     } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
