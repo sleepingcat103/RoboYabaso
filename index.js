@@ -291,13 +291,11 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return BStyleFlagSCRIPTS();
 	    
     } else if (trigger == 'shorten'){
-        var s = function(){
-	    var tmp = '';
-	    for (i = 0; i < mainMsg.length; i++) {
-		tmp = tmp + mainMsg[i]+ ' ';
-            }
-            return tmp;
-	};
+        
+	var s = '';
+	for (i = 0; i < mainMsg.length; i++) {
+	    s = s + mainMsg[i]+ ' ';
+        }
 	    
 	console.log('longUrl: '+ s);
 	    
@@ -310,7 +308,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 return 'error' + error;
             } else {
 		s = body.id;
-		return s;
+		replyMsgToLine(outType, rplyToken, s);
             }
         });
     
