@@ -290,10 +290,11 @@ function parseInput(roomMID, rplyToken, inputStr) {
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
 	    
-    } else if (trigger == 'shorten'){
+    } else if (trigger == 'shorten' && mainMsg.length > 1){
         
 	var s = '';
-	for (i = 0; i < mainMsg.length; i++) {
+	    
+	for (i = 1; i < mainMsg.length; i++) {
 	    s = s + mainMsg[i]+ ' ';
         }
 	    
