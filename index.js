@@ -296,6 +296,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    for (i = 0; i < mainMsg.length; i++) {
 		tmp = tmp + mainMsg[i]+ ' ';
             }
+            return tmp;
 	};
 	    
 	console.log('longUrl: '+ s);
