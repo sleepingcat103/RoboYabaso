@@ -8,6 +8,7 @@ var request = require("request");
 var rp = require('request-promise');
 var cheerio = require("cheerio");
 var app = express();
+var fs = require('fs');
 
 var jsonParser = bodyParser.json();
 
@@ -518,16 +519,23 @@ function parseInput(roomMID, rplyToken, inputStr) {
         
         outType = 'audio';
         voicelength = 5000;
-        
-        var request = http.get("http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=Test&tl=En-gb&e=m4a", 
-	    function(error, response) {
-	        if(error) {
-                    console.log(error);
-                } else {
-                    s = body.id;
-                    //console.log("google url= " + s);
-                    replyMsgToLine(outType, rplyToken, response);
-                }
+	    
+	let s = GetUrl('http://translate.google.com/translate_tts', {
+            ie: 'UTF-8',
+            total: 1,
+            idx: 0,
+            textlen: 32,
+            client: 'tw-ob',
+            tl: 'En-gb',
+            e: 'm4a',
+	    q: 'test voice'
+        });
+	
+        var file = fs.createWriteStream("file.m4a");
+        var request = http.get(s, 
+	    function(response) {
+	        response.pipe(file);
+		replyMsgToLine(outType, rplyToken, '/file.m4a');
 	    }
         );
             
