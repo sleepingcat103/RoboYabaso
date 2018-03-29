@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var http = require('http');
 var request = require("request");
 var rp = require('request-promise');
 var cheerio = require("cheerio");
@@ -513,7 +514,23 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     //聲音相關
     //需要好用的API
-    
+    }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
+        
+        outType = 'audio';
+        voicelength = 5000;
+        
+        var request = http.get("http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=32&client=tw-ob&q=Test&tl=En-gb&e=m4a", 
+	    function(error, response) {
+	        if(error) {
+                    console.log(error);
+                } else {
+                    s = body.id;
+                    //console.log("google url= " + s);
+                    replyMsgToLine(outType, rplyToken, response);
+                }
+	    }
+        );
+            
 //  }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
 //         let s = inputStr.toLowerCase().replace(trigger, '').trim();
             
