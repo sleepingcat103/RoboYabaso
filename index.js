@@ -260,16 +260,13 @@ function getUserProfile(p_MID) {
 ////////////////////////////////////////
 function parseInput(roomMID, rplyToken, inputStr) {
 
-    console.log('InputStr: ' + inputStr);
+    //console.log('InputStr: ' + inputStr);
     _isNaN = function (obj) {
         return isNaN(parseInt(obj));
     }
     let msgSplitor = (/\S+/ig);
     let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
     let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
-
-	console.log('trigger: ' + mainMsg[0].toLowerCase());
-	console.log('other meaasge: ' + inputStr.replace(trigger, ''));
 	
     //角卡功能快速入口//
     for (i = 0; i < TRPG[roomMID].players.length; i++) {
@@ -290,16 +287,13 @@ function parseInput(roomMID, rplyToken, inputStr) {
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
 	    
+    // 縮網址
     } else if (trigger == 'shorten' && mainMsg.length > 1){
         
-	var s = '';
-	    
+	var s = ''; 
 	for (i = 1; i < mainMsg.length; i++) {
 	    s = s + mainMsg[i]+ ' ';
         }
-	    
-	console.log('longUrl: '+ s);
-	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
@@ -496,9 +490,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
         JP(rplyToken);
 
     //圖奇表情符號
-    } else if (twitchEmoji.hasOwnProperty(trigger)) {
-        outType = 'image';
-        return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
+    //圖片不好用
+    //} else if (twitchEmoji.hasOwnProperty(trigger)) {
+    //    outType = 'image';
+    //    return 'https://static-cdn.jtvnw.net/emoticons/v1/' + twitchEmoji[trigger] + '/1.0';
 	    
     //貼圖
     }else if(IsKeyWord(trigger, ['打架', '互相傷害r', '來互相傷害', '來互相傷害r'])){
@@ -517,98 +512,102 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	return Sticker("2", "29");
 	    
     //聲音相關
-    }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
-        let s = inputStr.toLowerCase().replace(trigger, '').trim();
+    //需要好用的API
+    
+//  }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
+//         let s = inputStr.toLowerCase().replace(trigger, '').trim();
+            
+//         outType = 'audio';
+//         voicelength = s.length*500;
+        
+//         s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
+//                 username: 'MA2017',
+//                 password: 'MnYrnxhH',
+//                 text: s,
+//                 speaker_name: 'reina_emo',
+//                 ext: 'aac',
+//                 volume: 2.00,
+//                 range: 1.50
+//         });
+            
+//         //console.log('url: ' + s);
+//         //console.log('voice length: ' + voicelength);
+            
+//         request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+//             json: {
+//                 'longUrl': s
+//             }
+//         }, function (error, response, body) {
+//             if(error) {
+//                 console.log(error);
+//             } else {
+//                 s = body.id;
+//                 //console.log("google url= " + s);
+//                 replyMsgToLine(outType, rplyToken, s);
+//             }
+//         });
 	    
-	outType = 'audio';
-	voicelength = s.length*500;
- 	
-	s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
-		username: 'MA2017',
-		password: 'MnYrnxhH',
-		text: s,
-		speaker_name: 'reina_emo',
-		ext: 'aac',
-		volume: 2.00,
-		range: 1.50
-	});
-	    
-        //console.log('url: ' + s);
-	//console.log('voice length: ' + voicelength);
-	    
-        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-            json: {
-                'longUrl': s
-            }
-        }, function (error, response, body) {
-            if(error) {
-                console.log(error);
-            } else {
-		s = body.id;
-		//console.log("google url= " + s);
-		replyMsgToLine(outType, rplyToken, s);
-            }
-        });
-    }else if(trigger == 'secret' || trigger == '秘密' || trigger == 'ひみつ'){
-        let s = inputStr.toLowerCase().replace(trigger, '').trim();
-	    
-	outType = 'audio';
-	voicelength = s.length*500;
- 	
-	s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
-		username: 'MA2017',
-		password: 'MnYrnxhH',
-		text: s,
-		speaker_name: 'reina_emo',
-		ext: 'aac',
-		volume: 2.00,
-		range: 1.50
-	});
-	    
-        //console.log('url: ' + s);
-	    
-        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-            json: {
-                'longUrl': s
-            }
-        }, function (error, response, body) {
-            if(error) {
-                console.log(error);
-            } else {
-		s = body.id;
-		//console.log("google url= " + s);
-		replyMsgToLine('pushsecret', idiotGroup, s);
-            }
-        });
-    }else if(trigger == '告訴你'){
-        let s = inputStr.toLowerCase().replace(trigger, '');
-	//s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
-	    
-    	var regExp = /^[A-Za-z.,\s]+$/g;
-    	if (regExp.test(s)){
-		//全是英文
-	    s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-gb&q=' + s;
-	}else{
-		//非全英文
-	    s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh&q=' + s;
-	}
-	    
-        //console.log('url: ' + s);
-	    
-        request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-            json: {
-                'longUrl': s
-            }
-        }, function (error, response, body) {
-            if(error) {
-                console.log(error);
-            } else {
-		s = body.id;
-		//console.log("google url= " + s);
-		replyMsgToLine('push', idiotGroup, s);
-            }
-        });
-    }
+    // }else if(trigger == 'secret' || trigger == '秘密' || trigger == 'ひみつ'){
+    //     let s = inputStr.toLowerCase().replace(trigger, '').trim();
+            
+    //     outType = 'audio';
+    //     voicelength = s.length*500;
+        
+    //     s = GetUrl('https://webapi.aitalk.jp/webapi/v2/ttsget.php', {
+    //             username: 'MA2017',
+    //             password: 'MnYrnxhH',
+    //             text: s,
+    //             speaker_name: 'reina_emo',
+    //             ext: 'aac',
+    //             volume: 2.00,
+    //             range: 1.50
+    //     });
+            
+    //     //console.log('url: ' + s);
+            
+    //     request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+    //         json: {
+    //             'longUrl': s
+    //         }
+    //     }, function (error, response, body) {
+    //         if(error) {
+    //             console.log(error);
+    //         } else {
+    //             s = body.id;
+    //             //console.log("google url= " + s);
+    //             replyMsgToLine('pushsecret', idiotGroup, s);
+    //         }
+    //     });
+            
+    // }else if(trigger == '告訴你'){
+    //     let s = inputStr.toLowerCase().replace(trigger, '');
+    //     //s = 'http://api.voicerss.org/?key=ad9bb556e281481093e10b10ffc673e5&hl=zh-tw&src=' + s;
+            
+    //     var regExp = /^[A-Za-z.,\s]+$/g;
+    //     if (regExp.test(s)){
+    //             //全是英文
+    //         s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-gb&q=' + s;
+    //     }else{
+    //             //非全英文
+    //         s = 'http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh&q=' + s;
+    //     }
+            
+    //     //console.log('url: ' + s);
+            
+    //     request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+    //         json: {
+    //             'longUrl': s
+    //         }
+    //     }, function (error, response, body) {
+    //         if(error) {
+    //             console.log(error);
+    //         } else {
+    //             s = body.id;
+    //             //console.log("google url= " + s);
+    //             replyMsgToLine('push', idiotGroup, s);
+    //         }
+    //     });
+    // }
 }
 
 ////////////////////////////////////////
