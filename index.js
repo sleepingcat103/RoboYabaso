@@ -516,7 +516,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
     //聲音相關
     //需要好用的API
     }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
-        
+        return;
         outType = 'audio';
         voicelength = 5000;
 	    
@@ -535,8 +535,8 @@ function parseInput(roomMID, rplyToken, inputStr) {
         var request = http.get(s, 
 	    function(response) {
 	        response.pipe(file);
-		var data = fs.readFileSync('file.m4a', 'utf8');
-		replyMsgToLine(outType, rplyToken, data);
+		//var data = fs.readFileSync('file.m4a', 'utf8');
+		//replyMsgToLine(outType, rplyToken, data);
 	    }
         );
             
