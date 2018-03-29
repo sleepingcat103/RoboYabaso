@@ -535,7 +535,8 @@ function parseInput(roomMID, rplyToken, inputStr) {
         var request = http.get(s, 
 	    function(response) {
 	        response.pipe(file);
-		replyMsgToLine(outType, rplyToken, '/file.m4a');
+		var data = fs.readFileSync('file.m4a', 'utf8');
+		replyMsgToLine(outType, rplyToken, data);
 	    }
         );
             
