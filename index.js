@@ -624,7 +624,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
     //             replyMsgToLine('push', idiotGroup, s);
     //         }
     //     });
-    // }
+    }
 }
 
 ////////////////////////////////////////
