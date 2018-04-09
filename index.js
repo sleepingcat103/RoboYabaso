@@ -312,7 +312,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         });
 	    
     //google
-    }else if(trigger == 'google' || trigger == '搜尋' || trigger == '谷哥'){
+    }else if((trigger == 'google' || trigger == '搜尋' || trigger == '谷哥') && mainMsg.length > 1){
         var tmp = ''; 
 	for (i = 1; i < mainMsg.length; i++) {
 	    tmp = tmp + mainMsg[i]+ ' ';
