@@ -311,13 +311,13 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     //google
     }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
-        var s = ''; 
+        var tmp = ''; 
 	for (i = 1; i < mainMsg.length; i++) {
-	    s = s + mainMsg[i]+ ' ';
+	    tmp = tmp + mainMsg[i]+ ' ';
         }
 	    
 	let s = GetUrl('https://www.google.com.tw/search?', {
-            q=s
+            q = tmp
         });
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
