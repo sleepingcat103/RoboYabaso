@@ -316,7 +316,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    tmp = tmp + mainMsg[i]+ ' ';
         }
 	    
-	let s = GetUrl('https://www.google.com.tw/search?', {
+	let s = GetUrl('https://www.google.com.tw/search', {
             q: tmp
         });
 	    
