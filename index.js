@@ -308,6 +308,30 @@ function parseInput(roomMID, rplyToken, inputStr) {
 		replyMsgToLine(outType, rplyToken, s);
             }
         });
+	    
+    //google
+    }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
+        var s = ''; 
+	for (i = 1; i < mainMsg.length; i++) {
+	    s = s + mainMsg[i]+ ' ';
+        }
+	    
+	let s = GetUrl('https://www.google.com.tw/search?', {
+            q=s
+        });
+	    
+	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+            json: {
+                'longUrl': s
+            }
+        }, function (error, response, body) {
+            if(error) {
+                return 'error' + error;
+            } else {
+		s = body.id;
+		replyMsgToLine(outType, rplyToken, s + '\ngoogle很難嗎'+ Cat());
+            }
+        });
     
     //圖片回應
     } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
