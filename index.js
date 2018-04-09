@@ -310,14 +310,14 @@ function parseInput(roomMID, rplyToken, inputStr) {
         });
 	    
     //google
-    }else if(trigger == 'voice' || trigger == 'say' || trigger == '話せ'){
+    }else if(trigger == 'google' || trigger == '搜尋' || trigger == '谷哥'){
         var tmp = ''; 
 	for (i = 1; i < mainMsg.length; i++) {
 	    tmp = tmp + mainMsg[i]+ ' ';
         }
 	    
 	let s = GetUrl('https://www.google.com.tw/search?', {
-            q = tmp
+            q: tmp
         });
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
