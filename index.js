@@ -103,7 +103,7 @@ app.post('/', jsonParser, function (req, res) {
             rplyVal = parseInput(roomMID, rplyToken, msg);
             console.log('rplyVal: ' + rplyVal);
         } catch (e) {
-            console.log('catch error');
+            console.log('parseInput error');
             console.log(e.toString());
         }
     }
@@ -319,6 +319,8 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	let s = GetUrl('https://www.google.com.tw/search?', {
             q: tmp
         });
+	    
+	console.log('search url: '+ tmp);
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
