@@ -296,7 +296,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	for (i = 1; i < mainMsg.length; i++) {
 	    s = s + mainMsg[i]+ ' ';
         }
-	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+	    
+	var rq = require("request");
+	rq.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
             }
@@ -322,7 +324,8 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
 	console.log('search url: '+ s);
 	    
-	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+	var rq = require("request");
+	rq.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
                 'longUrl': s
             }
