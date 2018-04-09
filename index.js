@@ -320,7 +320,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
             q: tmp
         });
 	    
-	console.log('search url: '+ tmp);
+	console.log('search url: '+ s);
 	    
 	request.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
             json: {
@@ -331,6 +331,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 return 'error' + error;
             } else {
 		s = body.id;
+		    console.log('s: '+ s);
+		    console.log('outType: '+ outType);
+		    console.log('rplyToken: '+ rplyToken);
 		replyMsgToLine(outType, rplyToken, s + '\ngoogle很難嗎'+ Cat());
             }
         });
