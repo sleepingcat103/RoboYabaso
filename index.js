@@ -337,7 +337,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
 		    console.log('s: '+ s);
 		    console.log('outType: '+ outType);
 		    console.log('rplyToken: '+ rplyToken);
-		replyMsgToLine(outType, rplyToken, s + '\ngoogle很難嗎'+ Cat());
+		replyMsgToLine(outType, rplyToken, s + '\n' + google() + Cat());
             }
         });
     
@@ -1425,6 +1425,12 @@ function Cat() {
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵?', '喵喵喵', '喵?', '喵~', '喵喵喵喵!', '喵<3', '喵喵.....', '喵嗚~', '喵喵! 喵喵喵!', '喵喵', '喵', '\
 喵喵!', '喵喵....喵?', '喵!!!', '喵~喵~', '衝三小', '87玩夠沒', '生ㄎㄎㄎㄎㄎㄎ'];
+    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+}
+
+function Google(){
+    let rplyArr = ['google很難嗎喵?', 'google也要叫貓做也太扯了吧喵...', '才..才不是特地為你去找的喵!', '酬勞就罐罐10個就好了喵<3', '\
+虐貓!!本貓要罷工喵!!', '(投以鄙視的眼神)', '下次叫狗去找好喵?', '以上內容18禁喵>///<', '小學生才叫貓google喵', '搜尋這甚麼鬼東西喵!!(炸毛)'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 }
 
