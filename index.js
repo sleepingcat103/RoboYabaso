@@ -332,7 +332,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
                 return 'error' + error;
             } else {
 		s = body.id;
-		replyMsgToLine(outType, rplyToken, s + '\n' + google());
+		replyMsgToLine(outType, rplyToken, s + '\n' + Google());
             }
         });
     
