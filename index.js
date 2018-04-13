@@ -730,7 +730,7 @@ function TWticket(replyToken) {
         
         var s = 
         $("#area1")[0].children[3].children[0].data.halfToFull() +
-        '\n------特別獎------\n    ' + 
+        '\n-----特別獎-----\n    ' + 
         fax[0].children[0].data.halfToFull() + 
         '\n------特獎------\n    ' + 
         fax[1].children[0].data.halfToFull() +
