@@ -284,7 +284,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return choice(inputStr, mainMsg);
 	    
     } else if (trigger.match(/運氣|運勢/) != null) {
-        return randomLuck(mainMsg); //占卜運氣
+        return Luck(mainMsg, rplyToken); //各種運氣
 	    
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
@@ -710,6 +710,36 @@ let godcatArr = ['https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];	
 }
 
+////////////////////////////////////////
+//////////////// 統一發票
+////////////////////////////////////////
+function TWticket() {
+    
+    var options = {
+        uri: 'http://invoice.etax.nat.gov.tw/index.html',
+        transform: function (body) {
+            return cheerio.load(body);
+        }
+    };
+    rp(options).then(function ($) {
+        var fax = $(".t18Red");
+        
+        var s = 
+        '------特獎------\n' + 
+        fax[0].children[0].data.halfToFull() + 
+        '\n\n------頭獎------\n' + 
+        fax[1].children[0].data.halfToFull() +
+        '\n\n---二獎～六獎---\n' + 
+        fax[2].children[0].data.replace(/、/g, '\n').halfToFull() +
+        '\n\n----增開六獎----\n' + 
+        fax[3].children[0].data.replace(/、/g, '\n').halfToFull();
+        
+        replyMsgToLine(outType, replyToken, s);
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+}
 ////////////////////////////////////////
 //////////////// jp
 ////////////////////////////////////////
@@ -1304,9 +1334,48 @@ function BStyleFlagSCRIPTS() {
 }
 
 
-function randomLuck(TEXT) {
-    let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
-    return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+function Luck(TEXT, rplyToken) {
+    var table = ['牡羊.白羊.牡羊座.白羊座', '金牛.金牛座', '雙子.雙子座', '巨蟹.巨蟹座', '獅子.獅子座', '處女.處女座', '天秤.天平.天秤座.天平座', '天蠍.天蠍座', '射手.射手座', '魔羯.魔羯座', '水瓶.水瓶座', '雙魚.雙魚座'];
+    var target = TEXT.rplace('運氣', '').replace('運勢','');
+    var index = table.indexOf(table.find(function(element){
+        if(element.indexOf(str)>0) return element;
+    }));
+	
+    if(index>0){
+        Constellation(index);
+    }else{
+        let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
+        return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    }
+}
+
+function Constellation(index) {
+    var today = new Date().toISOString().substring(0, 10);
+    var options = {
+        uri: 'http://astro.click108.com.tw/daily_' + index + '.php?iAcDay=' + today + '&iAstro=' + index,
+        transform: function (body) {
+            return cheerio.load(body);
+        }
+    };
+    rp(options).then(function ($) {
+        var fax = $(".TODAY_CONTENT")[0]
+        
+        var s = 
+        fax.children[1].children[0].data + '\n' +
+        fax.children[3].children[0].children[0].data + '\n' +
+        fax.children[4].children[0].data + '\n' +
+        fax.children[6].children[0].children[0].data + '\n' +
+        fax.children[7].children[0].data + '\n' +
+        fax.children[9].children[0].children[0].data + '\n' +
+        fax.children[10].children[0].data + '\n' +
+        fax.children[12].children[0].children[0].data + '\n' +
+        fax.children[13].children[0].data;
+        
+        //replyMsgToLine(outType, replyToken, str);
+    })
+    .catch(function (err) {
+        console.log("Fail to get data.");
+    });
 }
 
 ////////////////////////////////////////
@@ -1435,3 +1504,18 @@ function Bro() {
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
 
+
+//prototype
+String.prototype.halfToFull = function () {
+    var temp = "";
+    for (var i = 0; i < this.toString().length; i++) {
+        var charCode = this.toString().charCodeAt(i);
+        if (charCode <= 126 && charCode >= 33) {
+            charCode += 65248;
+        } else if (charCode == 32) { // 半形空白轉全形
+            charCode = 12288;
+        }
+        temp = temp + String.fromCharCode(charCode);
+    }
+    return temp;
+};
