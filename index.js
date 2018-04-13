@@ -730,14 +730,14 @@ function TWticket(replyToken) {
         
         var s = 
         $("#area1")[0].children[3].children[0].data.halfToFull() +
-        '\n------特獎------\n   ' + 
+        '\n------特獎------\n    ' + 
         fax[0].children[0].data.halfToFull() + 
-        '\n------頭獎------\n   ' + 
+        '\n------頭獎------\n    ' + 
         fax[1].children[0].data.halfToFull() +
-        '\n---二獎～六獎---\n   ' + 
-        fax[2].children[0].data.replace(/、/g, '\n').halfToFull() +
-        '\n----增開六獎----\n   ' + 
-        fax[3].children[0].data.replace(/、/g, '\n').halfToFull();
+        '\n---二獎～六獎---\n    ' + 
+        fax[2].children[0].data.replace(/、/g, '\n    ').halfToFull() +
+        '\n----增開六獎----\n    ' + 
+        fax[3].children[0].data.replace(/、/g, '\n    ').halfToFull();
         
         replyMsgToLine(outType, replyToken, s);
     })
@@ -1339,7 +1339,7 @@ function BStyleFlagSCRIPTS() {
 }
 
 
-function Luck(str, rplyToken) {
+function Luck(str, replyToken) {
     var table = ['牡羊.白羊.牡羊座.白羊座', '金牛.金牛座', '雙子.雙子座', '巨蟹.巨蟹座', '獅子.獅子座', '處女.處女座', '天秤.天平.天秤座.天平座', '天蠍.天蠍座', '射手.射手座', '魔羯.魔羯座', '水瓶.水瓶座', '雙魚.雙魚座'];
     var target = str.replace('運氣', '').replace('運勢','');
 	
@@ -1378,7 +1378,7 @@ function Constellation(index) {
         fax.children[12].children[0].children[0].data + '\n' +
         fax.children[13].children[0].data;
         
-        //replyMsgToLine(outType, replyToken, str);
+        replyMsgToLine(outType, replyToken, s);
     })
     .catch(function (err) {
         console.log("Fail to get data.");
@@ -1512,7 +1512,9 @@ function Bro() {
 };
 
 
-//prototype
+////////////////////////////////////////
+////////////////prototype
+////////////////////////////////////////
 String.prototype.halfToFull = function () {
     var temp = "";
     for (var i = 0; i < this.toString().length; i++) {
