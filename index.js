@@ -729,7 +729,8 @@ function TWticket(replyToken) {
         var fax = $(".t18Red");
         
         var s = 
-        '------特獎------\n' + 
+        $("#area1")[0].children[3].children[0].data.halfToFull() +
+        '\n------特獎------\n' + 
         fax[0].children[0].data.halfToFull() + 
         '\n\n------頭獎------\n' + 
         fax[1].children[0].data.halfToFull() +
@@ -1338,9 +1339,10 @@ function BStyleFlagSCRIPTS() {
 }
 
 
-function Luck(TEXT, rplyToken) {
+function Luck(str, rplyToken) {
     var table = ['牡羊.白羊.牡羊座.白羊座', '金牛.金牛座', '雙子.雙子座', '巨蟹.巨蟹座', '獅子.獅子座', '處女.處女座', '天秤.天平.天秤座.天平座', '天蠍.天蠍座', '射手.射手座', '魔羯.魔羯座', '水瓶.水瓶座', '雙魚.雙魚座'];
-    var target = TEXT.replace('運氣', '').replace('運勢','');
+    var target = str.replace('運氣', '').replace('運勢','');
+	
     var index = table.indexOf(table.find(function(element){
         if(element.indexOf(str)>0) return element;
     }));
@@ -1350,7 +1352,7 @@ function Luck(TEXT, rplyToken) {
 	return;
     }else{
         let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
-        return TEXT[0] + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+        return str + ' ： ' + rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
 }
 
