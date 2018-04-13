@@ -736,8 +736,8 @@ function TWticket(replyToken) {
         fax[1].children[0].data.halfToFull() +
         '\n---二獎～六獎---\n    ' + 
         fax[2].children[0].data.replace(/、/g, '\n    ').halfToFull() +
-        '\n----增開六獎----\n    ' + 
-        fax[3].children[0].data.replace(/、/g, '\n    ').halfToFull();
+        '\n----增開六獎----\n         ' + 
+        fax[3].children[0].data.replace(/、/g, '\n         ').halfToFull();
         
         replyMsgToLine(outType, replyToken, s);
     })
@@ -1348,7 +1348,7 @@ function Luck(str, replyToken) {
     }));
 	
     if(index>0){
-        Constellation(index);
+        Constellation(index, replyToken);
 	return;
     }else{
         let rplyArr = ['超大吉', '大吉', '大吉', '中吉', '中吉', '中吉', '小吉', '小吉', '小吉', '小吉', '凶', '凶', '凶', '大凶', '大凶', '你還是，不要知道比較好', '這應該不關我的事'];
@@ -1356,7 +1356,7 @@ function Luck(str, replyToken) {
     }
 }
 
-function Constellation(index) {
+function Constellation(index, replyToken) {
     var today = new Date().toISOString().substring(0, 10);
     var options = {
         uri: 'http://astro.click108.com.tw/daily_' + index + '.php?iAcDay=' + today + '&iAstro=' + index,
