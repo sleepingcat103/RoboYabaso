@@ -730,14 +730,14 @@ function TWticket(replyToken) {
         
         var s = 
         $("#area1")[0].children[3].children[0].data.halfToFull() +
-        '\n-----特別獎-----\n    ' + 
+        '\n特別獎：\n    ' + 
         fax[0].children[0].data.halfToFull() + 
-        '\n------特獎------\n    ' + 
+        '\n特獎：\n    ' + 
         fax[1].children[0].data.halfToFull() +
-        '\n---頭獎～六獎---\n    ' + 
-        fax[2].children[0].data.replace(/、/g, '\n    ').halfToFull() +
-        '\n----增開六獎----\n         ' + 
-        fax[3].children[0].data.replace(/、/g, '\n         ').halfToFull();
+        '\n頭獎～六獎：\n    ' + 
+        fax[2].children[0].data.replace(/、/g, '\n    ').halfToFull(false) +
+        '\n增開六獎：\n    ' + 
+        fax[3].children[0].data.replace(/、/g, '\n    ').halfToFull(false);
         
         replyMsgToLine(outType, replyToken, s);
     })
