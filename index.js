@@ -1344,7 +1344,7 @@ function Luck(str, rplyToken) {
     var target = str.replace('運氣', '').replace('運勢','');
 	
     var index = table.indexOf(table.find(function(element){
-        if(element.indexOf(str)>0) return element;
+        if(element.indexOf(target)>0) return element;
     }));
 	
     if(index>0){
