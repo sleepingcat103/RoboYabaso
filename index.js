@@ -1515,14 +1515,14 @@ function Bro() {
 ////////////////////////////////////////
 ////////////////prototype
 ////////////////////////////////////////
-String.prototype.halfToFull = function (flas) {
+String.prototype.halfToFull = function (flag) {
     var temp = "";
     for (var i = 0; i < this.toString().length; i++) {
         var charCode = this.toString().charCodeAt(i);
         if (charCode <= 126 && charCode >= 33) {
             charCode += 65248;
         } else if (charCode == 32) { // 半形空白轉全形
-	    if(true){
+	    if(flag){
                 charCode = 12288;
 	    }
         }
