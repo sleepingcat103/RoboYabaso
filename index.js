@@ -730,13 +730,13 @@ function TWticket(replyToken) {
         
         var s = 
         $("#area1")[0].children[3].children[0].data.halfToFull() +
-        '\n------特獎------\n' + 
+        '\n------特獎------\n   ' + 
         fax[0].children[0].data.halfToFull() + 
-        '\n\n------頭獎------\n' + 
+        '\n------頭獎------\n   ' + 
         fax[1].children[0].data.halfToFull() +
-        '\n\n---二獎～六獎---\n' + 
+        '\n---二獎～六獎---\n   ' + 
         fax[2].children[0].data.replace(/、/g, '\n').halfToFull() +
-        '\n\n----增開六獎----\n' + 
+        '\n----增開六獎----\n   ' + 
         fax[3].children[0].data.replace(/、/g, '\n').halfToFull();
         
         replyMsgToLine(outType, replyToken, s);
