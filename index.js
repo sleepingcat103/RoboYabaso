@@ -284,14 +284,14 @@ function parseInput(roomMID, rplyToken, inputStr) {
         return choice(inputStr, mainMsg);
 	    
     } else if (trigger.match(/運氣|運勢/) != null) {
-        return Luck(mainMsg, rplyToken); //各種運氣
+        return Luck(mainMsg[0], rplyToken); //各種運氣
 	    
     } else if (trigger.match(/立flag|死亡flag/) != null) {
         return BStyleFlagSCRIPTS();
 	   
     //統一發票
-    } else if ((trigger == '統一發票' || trigger == '發票') && mainMsg.length > 1) {
-        return BStyleFlagSCRIPTS();
+    } else if ((trigger == '統一發票' || trigger == '發票') && mainMsg.length == 1) {
+        return TWticket(rplyToken);
 
     // 縮網址
     } else if (trigger == 'shorten' && mainMsg.length > 1){
@@ -717,7 +717,7 @@ let godcatArr = ['https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma
 ////////////////////////////////////////
 //////////////// 統一發票
 ////////////////////////////////////////
-function TWticket() {
+function TWticket(replyToken) {
     
     var options = {
         uri: 'http://invoice.etax.nat.gov.tw/index.html',
