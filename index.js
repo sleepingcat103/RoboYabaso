@@ -371,6 +371,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
     } else if (trigger.match(/喵/) != null) {
         return Meow();
 	    
+    } else if (trigger.match(/打l/) != null) {
+        return L();
+	    
     } else if (trigger.match(/貓/) != null) {
         return Cat();
 	    
@@ -379,9 +382,6 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     } else if (trigger == '大哥') {
         return Bro();
-	    	    
-    } else if (trigger.match(/打l/) != null) {
-        return L();
 	    
     //TRPG相關功能
     } else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
