@@ -379,6 +379,9 @@ function parseInput(roomMID, rplyToken, inputStr) {
 	    
     } else if (trigger == '大哥') {
         return Bro();
+	    	    
+    } else if (trigger.match(/打l/) != null) {
+        return L();
 	    
     //TRPG相關功能
     } else if (trigger.match(/coc創角/) != null && mainMsg[1] != NaN) {
@@ -1508,6 +1511,11 @@ function Google(){
 
 function Bro() {
     let rplyArr = ['大哥是對的!!', '叫本大爺有何貴幹?', '幹嘛? 說好的貓罐罐呢?', '大哥你叫的?', '大哥永遠是對的!!!!'];
+    return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+};
+
+function L() {
+    let rplyArr = ['通通他媽給我上線，等等我一個一個點名= =', 'ㄇㄉ給我上線喔 ( *・ω・)✄╰ひ╯', '叫你R 王振宇', '過氣糞Game開起來!'];
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
 };
 
