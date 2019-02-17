@@ -1411,7 +1411,9 @@ function gotcha(){
             }    
         }
     }
-    
+    if(result.join('') == 'RRRRRRRRRR') result[9] = 'SR';
+
+
     flex = {
         "type": "flex",
         "altText": "123五星好簡單",
