@@ -19,6 +19,7 @@ var v_path = '/v2/bot/message/reply';
 var timerFlag = 'off';
 var voicelength = 0;
 var idiotGroup = 'Cf712dd6f2676add8a6997fbeb0587619';
+rate = {upSSR: 1.0, SSR: 2.0, SR: 20.0, R: 100.0};
 
 var twitchEmoji = require('./JsonData/twitchEmoji.json');
 var J_newCharStatus = require('./JsonData/newCharStatus.json');
@@ -128,15 +129,20 @@ app.listen(app.get('port'), function () {
 function replyMsgToLine(outType, rplyToken, rplyVal) {
 
     let rplyObj;
-    if(outType == 'video'){
-        v_path = '/v2/bot/message/reply';
-        rplyObj = {
+//     
+//         v_path = '/v2/bot/message/reply';
+//         rplyObj = {
+//             replyToken: rplyToken,
+//             messages: [{
+// 	        "type": "video",
+// 	        "originalContentUrl": rplyVal,
+// 	        "previewImageUrl": "https://github.com/sleepingcat103/RoboYabaso/raw/master/201542716135.png"
+// 	    }]
+//         }
+    if(outType == 'gotcha'){
+	rplyObj = {
             replyToken: rplyToken,
-            messages: [{
-	        "type": "video",
-	        "originalContentUrl": rplyVal,
-	        "previewImageUrl": "https://github.com/sleepingcat103/RoboYabaso/raw/master/201542716135.png"
-	    }]
+            messages: [rplyVal]
         }
     } else if(outType == 'audio'){
         v_path = '/v2/bot/message/reply';
@@ -277,7 +283,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
     }
 	
     //不是很重要的功能
-    if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
+    if(IsKeyWord(trigger, ['抽卡', '抽!', '!抽', '10連抽', '10連', '10抽'])){
+        replyMsgToLine('gotcha', rplyToken, gotcha());
+    
+    } else if (trigger.match(/排序/) != null && mainMsg.length >= 3) {
         return SortIt(inputStr, mainMsg);
 	    
     } else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
@@ -1386,6 +1395,54 @@ function Constellation(index, replyToken) {
     .catch(function (err) {
         console.log("Fail to get data.");
     });
+}
+
+//10抽
+function gotcha(){
+    myrate = Object.keys(rate);
+    result=[];
+    for(i=0;i<10;i++){
+        chance = Math.random()*100;
+
+        for(j=0; j<myrate.length; j++){
+            if(rate[myrate[j]]>chance){
+                result.push(myrate[j]);
+                break;
+            }    
+        }
+    }
+    
+    flex = {
+        "type": "flex",
+        "altText": "123五星好簡單",
+        "contents": {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "spacing": "sm",
+                "contents": []
+            }
+        }
+    }
+    
+    for(i=0;i<10;i=i+5){
+        box = {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": []
+        }
+        for(j=0; j<5; j++){
+            box.contents.push({
+                "type": "icon",
+                "url": `https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/master/pictures/gotcha/${result[i+j]}.png`,
+                "size": "4xl",
+            })
+        }
+        flex.contents.body.contents.push(box);
+    }
+    return flex;
 }
 
 ////////////////////////////////////////
