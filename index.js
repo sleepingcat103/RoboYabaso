@@ -1401,6 +1401,7 @@ function Constellation(index, replyToken) {
 function gotcha(){
     myrate = Object.keys(rate);
     result=[];
+    msg = '';
     for(i=0;i<10;i++){
         chance = Math.random()*100;
 
@@ -1411,12 +1412,17 @@ function gotcha(){
             }    
         }
     }
-    if(result.join('') == 'RRRRRRRRRR') result[9] = 'SR';
-
+    if(result.join('') == 'RRRRRRRRRR') {
+        result[9] = 'SR';
+    }
+    if((result.match(/SS/g) || []).length == 0 && (result.match(/S/g) || []).length < 3) {
+	rplyArr = ['保底 ㄏ', '可撥的非洲仔 z', '非洲歡迎你，朋友', '再...再10抽一定出', '....跟下個月的借錢好了', '下次會更好...吧?', '123 出彩好幾單'];
+	msg = rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
+    }
 
     flex = {
         "type": "flex",
-        "altText": "123五星好簡單",
+        "altText": "123 出彩好簡單",
         "contents": {
             "type": "bubble",
             "body": {
@@ -1424,7 +1430,12 @@ function gotcha(){
                 "layout": "vertical",
                 "spacing": "sm",
                 "contents": []
-            }
+            },
+		"styles": {
+		    "body": {
+			"backgroundColor": "#fbf3e3",
+		    }
+		}
         }
     }
     
@@ -1443,6 +1454,21 @@ function gotcha(){
             })
         }
         flex.contents.body.contents.push(box);
+    }
+	
+    if(msg) {
+	box.contents.push({
+		"type": "box",
+		"layout": "baseline",
+		"spacing": "sm",
+		"contents": [{
+			"type": "text",
+			"text": msg,
+			"size": "xl",
+			"weight": "bold",
+			"color": "#000099"
+		}]
+	});
     }
     return flex;
 }
