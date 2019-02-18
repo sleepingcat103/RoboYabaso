@@ -1416,7 +1416,7 @@ function gotcha(){
         result[9] = 'SR';
     }
     if((result.join('').match(/SS/g) || []).length == 0 && (result.join('').match(/S/g) || []).length < 3) {
-	rplyArr = ['可撥的非洲仔 z', '非洲歡迎你，朋友', '再...再10抽一定出', '....跟下個月的借錢好了', '下次會更好...吧?', '123 出彩好幾單'];
+	rplyArr = ['可撥的非洲仔 z', '非洲歡迎你，朋友', '再...再10抽一定出', '....跟下個月的自己借錢好了', '下次會更好...嗎?', '123 出彩好幾單'];
 	if((result.join('').match(/S/g) || []).length == 1) rplyArr.push('保底 ㄏ');
 	msg = rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];
     }
