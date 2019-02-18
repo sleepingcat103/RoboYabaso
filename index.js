@@ -1464,9 +1464,8 @@ function gotcha(){
 		"contents": [{
 			"type": "text",
 			"text": msg,
-			"size": "xl",
-			"weight": "bold",
-			"color": "#000099"
+			"size": "lg",
+			"color": "#568ad8"
 		}]
 	});
     }
