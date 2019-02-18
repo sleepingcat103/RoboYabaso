@@ -1457,7 +1457,7 @@ function gotcha(){
     }
 	
     if(msg) {
-	box.contents.push({
+	flex.contents.body.contents.push({
 		"type": "box",
 		"layout": "baseline",
 		"spacing": "sm",
