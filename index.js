@@ -350,6 +350,10 @@ function parseInput(roomMID, rplyToken, inputStr) {
         });
     
     //圖片回應
+    } else if (IsKeyWord(trigger, ['抽老婆']) && mainMsg.length == 1)) {
+        outType = 'image';
+        return new_waifu(); 
+	    
     } else if (IsKeyWord(trigger, ['臭貓', '小方方', '方董']) || IsKeyWord(mainMsg[0], ['FQ', 'FK']) || (IsKeyWord(trigger, '@方翊宸') && mainMsg.length == 1)) {
         return Image('godcat');
 	    
@@ -724,6 +728,12 @@ let godcatArr = ['https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma
 	
     outType = 'image';
     return rplyArr[Math.floor((Math.random() * (rplyArr.length)) + 0)];	
+}
+
+//偷人家的隨機老婆來用
+function new_waifu() {
+	var new_id = Math.floor(Math.random() * 60000);
+	return `http://www.thiswaifudoesnotexist.net/example-${new_id}.jpg`;
 }
 
 ////////////////////////////////////////
