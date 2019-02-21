@@ -350,7 +350,7 @@ function parseInput(roomMID, rplyToken, inputStr) {
         });
     
     //圖片回應
-    } else if (IsKeyWord(trigger, ['抽老婆']) && mainMsg.length == 1)) {
+    } else if (IsKeyWord(trigger, ['抽老婆']) && mainMsg.length == 1) {
         outType = 'image';
         return new_waifu(); 
 	    
