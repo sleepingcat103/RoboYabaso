@@ -733,7 +733,7 @@ let godcatArr = ['https://raw.githubusercontent.com/sleepingcat103/RoboYabaso/ma
 //偷人家的隨機老婆來用
 function new_waifu() {
 	var new_id = Math.floor(Math.random() * 60000);
-	return `http://www.thiswaifudoesnotexist.net/example-${new_id}.jpg`;
+	return `https://www.thiswaifudoesnotexist.net/example-${new_id}.jpg`;
 }
 
 ////////////////////////////////////////
