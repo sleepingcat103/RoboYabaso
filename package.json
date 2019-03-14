@@ -1,9 +1,9 @@
 {
   "name": "leoli",
   "version": "0.2.0",
-  "description": "LeoLi Line Bot",
+  "description": "SC Line Bot",
   "engines": {
-    "node": "6.11.1"
+    "node": "8.15.1"
   },
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,10 @@
     "http": "0.0.0",
     "fs": "0.0.1-security",
     "request": "2.85.0",
-    "request-promise": "4.2.2",
-    "google-auth-library": "^0.10.0",
-    "googleapis": "^19.0.0",
-    "sheetrock": "^1.1.4"
+    "request-promise": "4.2.2"
   },
   "keywords": [
-    "LeoLi",
+    "SC",
     "Line"
   ],
   "license": "MIT"
