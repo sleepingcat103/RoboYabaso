@@ -13,7 +13,7 @@ var botToken = 'fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn
 app.set('port', (process.env.PORT || 5000));
 
 app.post('/', jsonParser, function (req, res) {
-    res.send(200);
+    res.send('ok');
     var event = req.body.events[0];
 
     let type = event.type;
@@ -27,13 +27,7 @@ app.post('/', jsonParser, function (req, res) {
         /* event.source.type == 'user' */ event.source.userId
 
     if (type == 'message' && msgType == 'text') {
-        // try {
-            dealWithInput({
-                reply: replyToken,
-                push: to}, msg);
-        // } catch (e) {
-        //     console.log('parseInput error', e.toString());
-        // }
+        dealWithInput({reply: replyToken, push: to}, msg);
     }
 });
 
