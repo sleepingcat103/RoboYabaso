@@ -71,9 +71,9 @@ class mainFunctions {
     gotcha(){
         // 10抽
         
-        myrate = Object.keys(rate);
-        result=[];
-        msg = '';
+        var myrate = Object.keys(rate);
+        var result=[];
+        var msg = '';
         for(i=0;i<10;i++){
             chance = Math.random()*100;
 
@@ -88,12 +88,12 @@ class mainFunctions {
             result[9] = 'SR';
         }
         if((result.join('').match(/SS/g) || []).length == 0 && (result.join('').match(/S/g) || []).length < 3) {
-            rplyArr = ['可撥的非洲仔 z', '非洲歡迎你，朋友', '再...再10抽一定出', '....跟下個月的自己借錢好了', '下次會更好...嗎?', '123 出彩好幾單'];
+            var rplyArr = ['可撥的非洲仔 z', '非洲歡迎你，朋友', '再...再10抽一定出', '....跟下個月的自己借錢好了', '下次會更好...嗎?', '123 出彩好幾單'];
         if((result.join('').match(/S/g) || []).length == 1) rplyArr.push('保底 ㄏ');
             msg = rplyArr.getRandom();
         }
 
-        flex = {
+        var flex = {
             "type": "flex",
             "altText": "123 出彩好簡單",
             "contents": {
@@ -113,7 +113,7 @@ class mainFunctions {
         }
 
         for(i=0;i<10;i=i+5){
-            box = {
+            var box = {
                 "type": "box",
                 "layout": "baseline",
                 "spacing": "sm",
