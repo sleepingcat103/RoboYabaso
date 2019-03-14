@@ -3,7 +3,7 @@
 var rp = require('request-promise');
 var cheerio = require("cheerio");
 
-var Messages = require('./JsonData/Messages.json');
+var Messages = require('../JsonData/Messages.json');
 var rate = {upSSR: 1.0, SSR: 2.0, SR: 20.0, R: 100.0};
 var i,j;
 
