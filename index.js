@@ -159,7 +159,7 @@ async function dealWithInput(tokens, inputStr) {
 
     //不是很重要的功能
     if (IsKeyWordEquals(trigger, ['抽卡', '抽爆', '抽!', '!抽', '抽！', '！抽', '10連抽', '10連', '10抽'])){
-        replyMsgToLine(tokens.reply, [ gotcha()] );
+        replyMsgToLine(tokens.reply, [ mainFunctions.gotcha()] );
 
     } else if (trigger.match(/排序|排列|幫我排/) != null && mainMsg.length >= 3) {
         replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.SortIt(inputStr, mainMsg)) ]);
