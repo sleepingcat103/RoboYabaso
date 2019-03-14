@@ -27,13 +27,13 @@ app.post('/', jsonParser, function (req, res) {
         /* event.source.type == 'user' */ event.source.userId
 
     if (type == 'message' && msgType == 'text') {
-        try {
+        // try {
             dealWithInput({
                 reply: replyToken,
                 push: to}, msg);
-        } catch (e) {
-            console.log('parseInput error', e.toString());
-        }
+        // } catch (e) {
+        //     console.log('parseInput error', e.toString());
+        // }
     }
 });
 
@@ -61,7 +61,6 @@ function pushMsgToLine(replyToken, rplyMsg){
 
 function postToLine(msgObj, method){
     console.log(msgObj, method)
-    return; 
     let rplyJson = JSON.stringify(msgObj);
     var options = setPostOption(method == reply ? '/v2/bot/message/reply' : '/v2/bot/message/push');
     var request = https.request(options, function (response) {
