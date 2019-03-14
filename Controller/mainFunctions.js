@@ -75,7 +75,7 @@ class mainFunctions {
         var result=[];
         var msg = '';
         for(i=0;i<10;i++){
-            chance = Math.random()*100;
+            var chance = Math.random()*100;
 
             for(j=0; j<myrate.length; j++){
                 if(rate[myrate[j]]>chance){
