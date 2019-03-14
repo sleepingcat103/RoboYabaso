@@ -56,7 +56,7 @@ function pushMsgToLine(replyToken, rplyMsg){
 function postToLine(msgObj, method){
     console.log(msgObj, method)
     let rplyJson = JSON.stringify(msgObj);
-    var options = setPostOption(method == reply ? '/v2/bot/message/reply' : '/v2/bot/message/push');
+    var options = setPostOption(method == 'reply' ? '/v2/bot/message/reply' : '/v2/bot/message/push');
     var request = https.request(options, function (response) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
