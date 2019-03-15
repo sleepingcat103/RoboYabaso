@@ -55,6 +55,7 @@ function pushMsgToLine(replyToken, rplyMsg){
 
 function postToLine(msgObj, method){
     console.log(msgObj, method)
+    return;
     let rplyJson = JSON.stringify(msgObj);
     var options = setPostOption(method == 'reply' ? '/v2/bot/message/reply' : '/v2/bot/message/push');
     var request = https.request(options, function (response) {
@@ -152,98 +153,103 @@ function IsKeyWordEquals(target, strs){
 }
 
 async function dealWithInput(tokens, inputStr) {
+    try{
+        let msgSplitor = (/\S+/ig);
+        let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
+        let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
 
-    let msgSplitor = (/\S+/ig);
-    let mainMsg = inputStr.match(msgSplitor); //定義輸入字串
-    let trigger = mainMsg[0].toString().toLowerCase(); //指定啟動詞在第一個詞&把大階強制轉成細階
+        //不是很重要的功能
+        if (IsKeyWordEquals(trigger, ['抽卡', '抽爆', '抽!', '!抽', '抽！', '！抽', '10連抽', '10連', '10抽'])){
+            replyMsgToLine(tokens.reply, [ mainFunctions.gotcha()] );
 
-    //不是很重要的功能
-    if (IsKeyWordEquals(trigger, ['抽卡', '抽爆', '抽!', '!抽', '抽！', '！抽', '10連抽', '10連', '10抽'])){
-        replyMsgToLine(tokens.reply, [ mainFunctions.gotcha()] );
+        } else if (trigger.match(/排序|排列|幫我排/) != null && mainMsg.length >= 3) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.SortIt(inputStr, mainMsg)) ]);
 
-    } else if (trigger.match(/排序|排列|幫我排/) != null && mainMsg.length >= 3) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.SortIt(inputStr, mainMsg)) ]);
+        } else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.choice(inputStr, mainMsg)) ]);
 
-    } else if (trigger.match(/choice|隨機|選項|幫我選/) != null && mainMsg.length >= 3) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.choice(inputStr, mainMsg)) ]);
+        } else if (trigger.match(/立flag|死亡flag/) != null) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('flag')) ]);
 
-    } else if (trigger.match(/立flag|死亡flag/) != null) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.MeowHelpgetRandomText('flag')) ]);
+        // 有打request的
+        } else if (trigger.match(/運氣|運勢/) != null) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.Luck(mainMsg[0])) ]);
 
-    // 有打request的
-    } else if (trigger.match(/運氣|運勢/) != null) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.Luck(mainMsg[0], replyToken)) ]);
+        } else if (IsKeyWordEquals(trigger, ['統一發票','發票','!統一發票','!發票']) && mainMsg.length == 1) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.TWticket()) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['統一發票','發票','!統一發票','!發票']) && mainMsg.length == 1) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.TWticket()) ]);
+        } else if (IsKeyWordEquals(trigger, ['shorten', '縮網址', '短網址']) && mainMsg.length > 1){
+            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.shortenURL(mainMsg)) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['shorten']) && mainMsg.length > 1){
-        replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.shortenURL(mainMsg)) ]);
+        } else if (IsKeyWordEquals(trigger, ['搜尋','google','谷哥']) && mainMsg.length > 1){
+            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.googleSearch(mainMsg)) ]);
+        
+        } else if (IsKeyWordEquals(trigger, ['!日幣', '！日幣', '！jp', '!jp'])) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.JP()) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['搜尋','google','谷哥']) && mainMsg.length > 1){
-        replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.googleSearch(mainMsg)) ]);
-    
-    } else if (IsKeyWordEquals(trigger, ['!日幣', '！日幣', '！jp', '!jp'])) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.JP()) ]);
+        //圖片回應
+        } else if (IsKeyWordEquals(trigger, ['抽老婆']) && mainMsg.length == 1) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.new_waifu()) ]);
 
-    //圖片回應
-    } else if (IsKeyWordEquals(trigger, ['抽老婆']) && mainMsg.length == 1) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.new_waifu()) ]);
+        } else if (IsKeyWordEquals(trigger, ['臭貓', '小方方', '方董']) || IsKeyWordEquals(mainMsg[0], ['FQ', 'FK'])) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('臭貓')) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['臭貓', '小方方', '方董']) || IsKeyWordEquals(mainMsg[0], ['FQ', 'FK'])) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('臭貓')) ]);
+        } else if (IsKeyWordEquals(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('屁孩')) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['狂', '風兒', '屁還', '屁孩', '碩文', '碩彣']) || (trigger == '@碩文' && mainMsg.length == 1) ) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('屁孩')) ]);
+        } else if (IsKeyWordEquals(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('振宇')) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['振宇', '王振宇']) || (trigger == '@王振宇' && mainMsg.length == 1)) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('振宇')) ]);
+        } else if (IsKeyWordEquals(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('明鴻')) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['ㄇㄏ', '名鴻']) || (trigger == '@名鴻' && mainMsg.length == 1)) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('明鴻')) ]);
+        } else if (IsKeyWordEquals(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('良丞')) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['良丞', '良成']) || (trigger == '@王良丞' && mainMsg.length == 1)) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(mainFunctions.getImage('良丞')) ]);
+        } else if (trigger == '生科') {
+            replyMsgToLine(tokens.reply, [ getImageMsg(messages.images.single['生科']) ]);
 
-    } else if (trigger == '生科') {
-        replyMsgToLine(tokens.reply, [ getImageMsg(messages.single['生科']) ]);
+        } else if (trigger.match(/手手/) != null) {
+            replyMsgToLine(tokens.reply, [ getImageMsg(messages.images.single['手手']) ]);
 
-    } else if (trigger.match(/手手/) != null) {
-        replyMsgToLine(tokens.reply, [ getImageMsg(messages.single['手手']) ]);
+        //貓咪嘴砲
+        } else if (trigger == '貓咪') {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.MeowHelp()) ]);
 
-    //貓咪嘴砲
-    } else if (trigger == '貓咪') {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.MeowHelp()) ]);
+        } else if (trigger.match(/喵/) != null) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('meow')) ]);
 
-    } else if (trigger.match(/喵/) != null) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('meow')) ]);
+        } else if (trigger.match(/打l|上線/) != null) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('lol')) ]);
 
-    } else if (trigger.match(/打l|上線/) != null) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('lol')) ]);
+        } else if (trigger.match(/貓/) != null) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('cat')) ]);
 
-    } else if (trigger.match(/貓/) != null) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('cat')) ]);
+        } else if (IsKeyWordEquals(trigger, ['help', '幫助'])) {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.Help()) ]);
 
-    } else if (IsKeyWordEquals(trigger, ['help', '幫助'])) {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.Help()) ]);
+        } else if (trigger == '大哥') {
+            replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('bro')) ]);
 
-    } else if (trigger == '大哥') {
-        replyMsgToLine(tokens.reply, [ getTextMsg(mainFunctions.getRandomText('bro')) ]);
+        //貼圖
+        } else if (IsKeyWordEquals(trigger, ['打架', '互相傷害r', '來互相傷害', '來互相傷害r'])){
+            replyMsgToLine(tokens.reply, [ getStickerMsg("2", "517") ]);
 
-    //貼圖
-    } else if (IsKeyWordEquals(trigger, ['打架', '互相傷害r', '來互相傷害', '來互相傷害r'])){
-        replyMsgToLine(tokens.reply, [ getStickerMsg("2", "517") ]);
+        } else if (IsKeyWordEquals(trigger, ['幫qq','哭哭','qq','qaq'])){
+            replyMsgToLine(tokens.reply, [ getStickerMsg("1", "9") ]);
 
-    } else if (IsKeyWordEquals(trigger,['幫QQ','哭哭','QQ','QAQ'])){
-        replyMsgToLine(tokens.reply, [ getStickerMsg("1", "9") ]);
+        } else if (trigger == '<3'){
+            replyMsgToLine(tokens.reply, [ getStickerMsg("1", "410") ]);
 
-    } else if (trigger == '<3'){
-        replyMsgToLine(tokens.reply, [ getStickerMsg("1", "410") ]);
+        } else if (trigger == '招財貓'){
+            replyMsgToLine(tokens.reply, [ getStickerMsg("4", "607") ]);
 
-    } else if (trigger == '招財貓'){
-        replyMsgToLine(tokens.reply, [ getStickerMsg("4", "607") ]);
+        } else if (IsKeyWordEquals(trigger, ['好冷', '很冷', '冷爆啦', '冷死', '外面好冷'])){
+            replyMsgToLine(tokens.reply, [ getStickerMsg("2", "29") ]);
+        }
 
-    } else if (IsKeyWordEquals(trigger, ['好冷', '很冷', '冷爆啦', '冷死', '外面好冷'])){
-        replyMsgToLine(tokens.reply, [ getStickerMsg("2", "29") ]);
+    }catch(e){
+        console.log('error', e);
+        return;
     }
 }

@@ -22,10 +22,11 @@ class mainFunctions {
         this.shortenURL = this.shortenURL.bind(this);
         this.googleSearch = this.googleSearch.bind(this);
         this.TWticket = this.TWticket.bind(this);
+        this.getTopLevelReply = this.getTopLevelReply.bind(this);
     }
 
     // 文字回覆
-    SortIt(input, mainMsg) {
+    SortIt(input, mainMsg){
         let arr = input.replace(mainMsg[0], '').match(/\S+/ig);
         for (var i = 0; i < arr.length; i++) {
             var randomIndex = getRandom(arr.length);
@@ -36,12 +37,12 @@ class mainFunctions {
         return mainMsg[0] + ' → [' + arr + ']';
     }
 
-    choice (input, mainMsg) {
+    choice (input, mainMsg){
         let a = input.replace(mainMsg[0], '').match(/\S+/ig);
         return mainMsg[0] + '[' + a + '] → ' + a.getRandom();
     }
 
-    Help() {
+    Help(){
         return '【擲骰BOT】 貓咪&小伙伴‧改\
             \n 支援角卡、房間、KP、暗骰等功能\
             \n 使用說明:\
@@ -49,7 +50,7 @@ class mainFunctions {
             ';
     }
 
-    MeowHelp() {
+    MeowHelp(){
         return Meow() + '\n要做什麼喵?\n\n(輸入 help 幫助 以獲得資訊)';
     }
 
@@ -58,7 +59,7 @@ class mainFunctions {
     }
 
     // 圖片回覆
-    new_waifu() {
+    new_waifu(){
         //偷人家的隨機老婆來用
         var new_id = Math.floor(Math.random() * 60000);
         return `https://www.thiswaifudoesnotexist.net/example-${new_id}.jpg`;
@@ -147,7 +148,7 @@ class mainFunctions {
     }
 
     // need promise
-    Luck(str) {
+    Luck(str){
         return new Promise(function(resolve, reject){
             try{
                 var table = ['牡羊.白羊.牡羊座.白羊座', '金牛.金牛座', '雙子.雙子座', '巨蟹.巨蟹座', '獅子.獅子座', '處女.處女座', '天秤.天平.天秤座.天平座', '天蠍.天蠍座', '射手.射手座', '魔羯.魔羯座', '水瓶.水瓶座', '雙魚.雙魚座'];
@@ -195,7 +196,7 @@ class mainFunctions {
         
     }
 
-    JP() {
+    JP(){
         return new Promise(function(resolve, reject){
             try{
                 var options = {
@@ -277,7 +278,7 @@ class mainFunctions {
         });
     }
 
-    TWticket() {
+    TWticket(){
         return new Promise(function(resolve, reject){
             try{
                 var options = {
@@ -309,7 +310,44 @@ class mainFunctions {
                 resolve(e);
             }
         });
-        
+    }
+
+    getTopLevelReply(){
+        return new Promise(function(resolve, reject){
+            try{
+                var selectQuery = 'select A,B,C ';
+                sheetrock({
+                    url: 'https://docs.google.com/spreadsheets/d/15lPzgW8bIymnVwwIHxYPfRJfh7pzC69QeKL4o5G1VSk/edit#gid=0',
+                    query: selectQuery,
+                    callback: function (error, options, response) {
+                        if(error) {
+                            console.log('Fail to get data: ' +　error);
+                            resolve({});
+                        } else {
+                            var result = {}
+                            if(response.rows.length>1){
+                                for(i=1; i<response.rows.length; i++){
+                                    target = JSON.stringify(response.rows[i].toString().replace('Row ',''));
+                                    console.log(target)
+                                    if(target.cellsArray.length < 3){
+                                        return;
+                                    }else{
+                                        result[target.cellsArray[0]] = {
+                                            msg: target.cellsArray[1],
+                                            type: target.cellsArray[2]
+                                        }
+                                    }
+                                }
+                            }
+                            console.log(result);
+                            resolve(result);
+                        }
+                    }
+                });
+            }catch(e){
+                resolve({});
+            }
+        });
     }
 }
 module.exports = new mainFunctions();
