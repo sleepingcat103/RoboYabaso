@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0" />
+		<title>BB TRPG</title>
+		
+		<link rel="stylesheet" href="/scripts/jquery-ui.css">
+		<style>
+			body {
+				background: rgb(239, 239, 239);
+			}
+			div.main {
+				/* display: -webkit-box; */
+			}
+			.cell {
+				width: 24%;
+				height: 50px;
+				background: white;
+				border-radius: 3px;
+				/* margin: 2px; */
+				display: inline-grid;
+			}
+			.cell.wide {
+				width: 49%;
+			}
+			.cell div {
+			}
+			.cell input {
+			}
+		</style>
+	</head>
+	<body>
+	
+		<div class="main">
+			<div class="cell wide">
+				<input class="cell-content" type="text" value=1 />
+				<div class="cell-content">D</div>
+				<input class="cell-content" type="text" value=10 />
+			</div>
+			<div class="cell">
+			</div>
+			<div class="cell">
+			</div>
+			<div class="cell">
+				</div>
+				<div class="cell">
+				</div>
+        </div>
+        
+		<script src="/scripts/dist/jquery.min.js"></script>
+		<script src="/scripts/jquery-ui.js"></script>
+		<script src="/scripts/dist/bricks.js"></script>
+		<!-- <script src="https://unpkg.com/moment"></script> -->
+		<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+		<script>
+			const charCard = JSON.parse('<%= charCard %>'.replace(/&#34;/g,'"'));
+
+			window.onload = function (e) {
+				liff.init(function (data) {
+					initializeApp(data);
+				});
+			};
+			function initializeApp(data){
+				// window.alert(JSON.stringify(data));
+				// $('.main').append(JSON.stringify(data))
+				//liff.closeWindow();
+
+				// liff.sendMessages([{
+				// 	type: 'text',
+				// 	text: "You've successfully sent a message! Hooray!"
+				// }, {
+				// 	type: 'sticker',
+				// 	packageId: '2',
+				// 	stickerId: '144'
+				// }]).then(function () {
+				// 	window.alert("Message sent");
+				// }).catch(function (error) {
+				// 	window.alert("Error sending message: " + error);
+				// });
+
+				// get uid, display name, pic url, status msg 
+				// liff.getProfile().then(function (profile) {
+				// }).catch(function (error) {
+				// 	window.alert("Error getting profile: " + error);
+				// });
+			}
+		</script>
+	</body>
+</html>

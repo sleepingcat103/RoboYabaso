@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
+var path = require('path');
 // var request = require("request");
 var app = express();
 
@@ -10,7 +11,19 @@ var mainFunctions = require('./Controller/mainFunctions.js');
 var messages = require('./JsonData/Messages.json');
 var botToken = 'fHACwQBpF8Jz2Tvr11NcdBkBAPLftsw+/Nym37Lzux87Sim/mjlBXZ+Uox3wdTMn8unRALSm3SHP3TbjWd+aCFsFioFGkhM4yvzgQnD6fBsFd0s7ANMzGyxhqjRBS549Jw9FUGl5UJVHralGlzbGLAdB04t89/1O/w1cDnyilFU=';
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.set('port', (process.env.PORT || 5000));
+
+app.use('/scripts', express.static(path.join(__dirname, 'node_modules/bricks.js')));
+app.use('/scripts', express.static(path.join(__dirname, 'node_modules/jquery')));
+app.use('/scripts', express.static(path.join(__dirname, 'node_modules/jquery-ui-dist')));
+
+app.get('/bb-trpg', function(req, res, next) {
+	res.render('TrpgLiff', {
+		charCard: '{"name":"神崎花火","日語":"65","靈感":"70","知識":"45","信用":"0","魅惑":"15","恐嚇":"15","說服":"10","話術":"5","心理學":"10","心理分析":"1","調查":"25","聆聽":"50","圖書館使用":"20","追蹤":"60","急救":"55","醫學":"1","鎖匠":"1","手上功夫":"10","隱密行動":"10","生存":"10","其他":"1","閃避":"24","攀爬":"40","跳躍":"20","游泳":"56","駕駛":"20","領航":"10","騎術":"5","自然學":"10","神秘學":"5","歷史":"5","會計":"5","估價":"5","法律":"5","喬裝":"5","電腦使用":"5","電器維修":"10","機械維修":"10","重機械操作":"1","str":"15","app":"10","siz":"16","con":"11","pow":"17","edu":"9","dex":"12","int":"14","hp":"14","san":"85","luck":"85","mp":"17","克蘇魯神話":"0","數學":"10","化學":"1","藥學":"1","人類學":"1","考古學":"1","電子學":"1","物理學":"1","工程學":"1","密碼學":"1","天文學":"1","地質學":"1","生物學":"1","動物學":"1","植物學":"1","物證學":"1","投擲":"70","鬥毆":"60","劍":"20","矛":"20","斧頭":"15","絞殺":"15","電鋸":"10","連枷":"10","鞭子":"5","弓箭":"30","手槍":"20","步槍":"25","衝鋒槍":"15","機關槍":"10","重武器":"10","火焰噴射器":"10","空手道":"60","美術":"5","演技":"5","偽造":"5","攝影":"5","克蘇魯神話":"0","item":"布質護腕,手機,單肩背包(生理用品，毛巾，髮圈*6，繃帶，白貼，爽身噴霧等等),金屬簍空指虎(防身用)(在背包),平凡人的資產,","db":"1D4","status":"無"}'
+	});
+})
 
 app.post('/', jsonParser, function (req, res) {
     res.send('ok');
