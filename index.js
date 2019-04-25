@@ -192,7 +192,7 @@ async function dealWithInput(tokens, inputStr) {
             replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.TWticket()) ]);
 
         } else if (IsKeyWordEquals(trigger, ['shorten', '縮網址', '短網址']) && mainMsg.length > 1){
-            replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.shortenURL(mainMsg)) ]);
+            replyMsgToLine(tokens.reply, [ getTextMsg('現在沒有縮網址了喵') ]);
 
         } else if (IsKeyWordEquals(trigger, ['搜尋','google','谷哥']) && mainMsg.length > 1){
             replyMsgToLine(tokens.reply, [ getTextMsg(await mainFunctions.googleSearch(mainMsg)) ]);

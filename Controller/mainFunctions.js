@@ -19,7 +19,7 @@ class mainFunctions {
         this.gotcha = this.gotcha.bind(this);
         this.Luck = this.Luck.bind(this);
         this.JP = this.JP.bind(this);
-        this.shortenURL = this.shortenURL.bind(this);
+        // this.shortenURL = this.shortenURL.bind(this);
         this.googleSearch = this.googleSearch.bind(this);
         this.TWticket = this.TWticket.bind(this);
         this.getTopLevelReply = this.getTopLevelReply.bind(this);
@@ -260,18 +260,20 @@ class mainFunctions {
                     q: tmp
                 });
 
-                var rq = require("request");
-                rq.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
-                    json: {
-                        'longUrl': s
-                    }
-                }, function (error, response, body) {
-                    if(error) {
-                        resolve('error' + error);
-                    } else {
-                        resolve(body.id + '/n' + Messages.text['google'].getRandom());
-                    }
-                });
+                resolve(`${Messages.text['google'].getRandom()}\n${s}`);
+
+                // var rq = require("request");
+                // rq.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyD8cFQEtnwmlbV-D1MtmvLjc_rVGFZfg6s', {
+                //     json: {
+                //         'longUrl': s
+                //     }
+                // }, function (error, response, body) {
+                //     if(error) {
+                //         resolve('error' + error);
+                //     } else {
+                //         resolve(body.id + '/n' + Messages.text['google'].getRandom());
+                //     }
+                // });
             }catch(e){
                 resolve(e);
             }

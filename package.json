@@ -1,5 +1,5 @@
 {
-  "name": "SC",
+  "name": "sc",
   "version": "0.2.0",
   "description": "SC Line Bot",
   "engines": {
@@ -7,16 +7,21 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "supervisor node index.js"
   },
   "dependencies": {
     "body-parser": "1.15.2",
+    "bricks.js": "^1.8.0",
     "cheerio": "1.0.0-rc.2",
+    "ejs": "^2.6.1",
     "express": "4.13.3",
     "fs": "0.0.1-security",
     "google-auth-library": "^3.1.0",
     "googleapis": "^38.0.0",
     "http": "0.0.0",
+    "jquery": "^3.3.1",
+    "jquery-ui-dist": "^1.12.1",
+    "path": "^0.12.7",
     "request": "2.85.0",
     "request-promise": "4.2.2",
     "sheetrock": "^1.1.4"
