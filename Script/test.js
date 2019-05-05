@@ -23,9 +23,10 @@ var sheets = google.sheets('v4');
 try {
 	
 	//Player Format
-	var player = [["4","roomid", "playerid", "CharacterName", "StatusJSon"]];
+	var sampleplayer = [["4","roomid", "playerid", "CharacterName", "StatusJSon"]];
 	
-	SheetDelete(player);
+	SheetRefresh();
+	//SheetDelete(player);
 	//SheetEdit(player);
 	
 }catch(e){
@@ -41,14 +42,16 @@ function SheetRefresh(){
         range:encodeURI('test'),
     }, function(err, response) {
         if (err) {
-            console.log('Error: '+err.message);
+            console.log('Fail to get data: '+err.message);
             return;
         }else{
 			var rows = response.values;
 			
+			var i=0;
 			 //(取出有資料的) 
 			var playerList = rows.filter(function (element,index,array) {
 				if(element[1]!=null){
+					element[0]=++i;
 					return element ;
 				}
 			});
@@ -59,10 +62,25 @@ function SheetRefresh(){
 				range:encodeURI('test'),
 			}, function(err, response) {
 				if (err) {
-					console.log('Error: '+err.message);
+					console.log('Fail to clean data: '+err.message);
 					return;
 				}else{
-					SheetAdd(playerList);  //加回去
+					
+					//加回去
+					sheets.spreadsheets.values.update({
+						spreadsheetId: mySheetId,
+						range: 'test',
+						valueInputOption: "RAW",
+						auth: oauth2Client,
+						resource: {
+							"values": playerList
+						},
+					}, function(err, response) {
+						if (err) {
+							console.log('Fail to rewrite data:'+err.message);
+							return;
+						}else{console.log('Refresh success!');}
+					});
 				}
 			});
 		}
@@ -78,6 +96,7 @@ function SheetAdd(player) {
 		callback: function (error, options, response) {
 			if(error) {
 				console.log('Fail to get data: ' +　error);
+				
 			} else {
 				if(response.rows.length>1){
 					console.log('Character already Existed!');
@@ -143,7 +162,7 @@ function SheetDelete(player) {
     });
 }
 
-//抓取房間玩家&KP資訊
+//抓取房間資訊
 function GetDataByRoomId(roomID){
 	var selectQuery = 'select A,B,C,D,E WHERE B = ' + roomID;
 	sheetrock({
@@ -156,6 +175,26 @@ function GetDataByRoomId(roomID){
 				if(response.rows.length>1){
 					//製作房間&角色資訊
 					console.log(response.rows[1].cellsArray);
+				}
+			}
+		}
+	});
+}
+
+//傳回最大資料編號
+function GetDataCounts(){
+	var selectQuery = 'select MAX (A)';
+	sheetrock({
+		url: 'https://docs.google.com/spreadsheets/d/1QvtxfT4PXrIXwC-gbWABddmrwhd0-zaU4JyNRuHR-ig/edit#gid=0',
+		query: selectQuery,
+		callback: function (error, options, response) {
+			if(error) {
+				console.log('Fail to get data: ' +　error);
+			} else {
+				if(response.rows.length>1){
+					return response.rows[1].cellsArray[0];
+				}else{
+					return 0;
 				}
 			}
 		}
